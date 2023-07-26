@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
 
-[ApiController]
+
+[Authorize]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class WeatherForecastController : BaseController
 {
     private static readonly string[] Summaries = new[]
     {

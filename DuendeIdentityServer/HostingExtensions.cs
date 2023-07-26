@@ -1,6 +1,8 @@
 using Duende.IdentityServer;
+using Duende.IdentityServer.Services;
 using DuendeIdentityServer.Data;
 using DuendeIdentityServer.Models;
+using DuendeIdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -11,6 +13,7 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddTransient<IProfileService, ProfileService>();
         builder.Services.AddRazorPages();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -34,7 +37,8 @@ internal static class HostingExtensions
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
-            .AddAspNetIdentity<ApplicationUser>();
+            .AddAspNetIdentity<ApplicationUser>()
+            .AddProfileService<ProfileService>();
 
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
@@ -47,6 +51,17 @@ internal static class HostingExtensions
                 options.ClientId = "copy client ID from Google here";
                 options.ClientSecret = "copy client secret from Google here";
             });
+        
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CORS", policy => policy.WithOrigins(
+                    "https://localhost:5001",
+                    "https://localhost:6001",
+                    "https://localhost:7001"
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+        });
 
         return builder.Build();
     }
@@ -62,6 +77,11 @@ internal static class HostingExtensions
 
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseIdentityServer();
+
+        
+        app.UseCors("CORS");
+
         app.UseIdentityServer();
         app.UseAuthorization();
 
