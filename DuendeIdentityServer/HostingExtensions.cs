@@ -86,7 +86,7 @@ internal static class HostingExtensions
         app.UseAuthorization();
 
         app.MapRazorPages()
-            .RequireAuthorization();
+            .AllowAnonymous();
 
         return app;
     }
