@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using BudgetPlan.Application.Common.Interfaces;
 using IdentityModel;
 
 namespace BudgetPlan.Api.Services;

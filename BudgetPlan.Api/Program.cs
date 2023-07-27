@@ -1,5 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using BudgetPlan.Api.Services;
+using BudgetPlan.Application;
+using BudgetPlan.Application.Common.Interfaces;
+using BudgetPlan.Infrastructure;
+using BudgetPlan.Persistance;
 using IdentityModel;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +11,10 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
+builder.Services.AddPersistance();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.TryAddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 
@@ -65,7 +73,7 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<AuthorizeCheckOperationFilter>();
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "ToDoApp",
+        Title = "BudgetPlan",
         Version = "v1",
         Description = "",
         TermsOfService = new Uri("https://example.com/terms"),
