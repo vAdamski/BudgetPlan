@@ -17,6 +17,12 @@ public static class Config
             new IdentityResource(
                 name: "role",
                 userClaims: new[] { JwtClaimTypes.Role }),
+            new IdentityResource(
+                name: "firstName",
+                userClaims: new[] { "firstName" }),
+            new IdentityResource(
+                name: "lastName",
+                userClaims: new[] { "lastName" }),
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -37,11 +43,15 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 ClientSecrets = { new Secret("secret".Sha256()) },
                 RequirePkce = true,
-                RequireClientSecret = false, 
-                AllowedScopes = { "api1", "openid", "user", "role", "profile", IdentityServerConstants.LocalApi.ScopeName },
+                RequireClientSecret = false,
+                AllowedScopes =
+                {
+                    "api1", "openid", "user", "role", "profile", IdentityServerConstants.LocalApi.ScopeName,
+                    "firstName", "lastName"
+                },
                 AllowedCorsOrigins = { "https://localhost:7001", "https://localhost:5001" },
                 RedirectUris = { "https://localhost:7001/authentication/login-callback" },
-                PostLogoutRedirectUris = {"https://localhost:7001/"}
+                PostLogoutRedirectUris = { "https://localhost:7001/" }
             },
             new Client
             {
@@ -50,7 +60,16 @@ public static class Config
 
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 ClientSecrets = { new Secret("secret".Sha256()) },
-                AllowedScopes = { "api1", "openid", "user", "role", IdentityServerConstants.LocalApi.ScopeName },
+                AllowedScopes =
+                {
+                    "api1",
+                    "openid",
+                    "user",
+                    "role",
+                    IdentityServerConstants.LocalApi.ScopeName,
+                    "firstName",
+                    "lastName"
+                },
                 AlwaysSendClientClaims = true,
                 AlwaysIncludeUserClaimsInIdToken = true,
                 AllowAccessTokensViaBrowser = true,

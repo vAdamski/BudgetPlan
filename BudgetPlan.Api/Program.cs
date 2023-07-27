@@ -65,7 +65,9 @@ builder.Services.AddSwaggerGen(options =>
                     { "user", "User info" },
                     { "openid", "openid" },
                     { "role", "User role" },
-                    { "IdentityServerApi" , "Identity Server Api Access"}
+                    { "IdentityServerApi" , "Identity Server Api Access"},
+                    { "firstName", "First Name" },
+                    { "lastName", "Last Name" }
                 }
             }
         }
