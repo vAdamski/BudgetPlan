@@ -10,7 +10,6 @@ public static class DependencyInjection
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
         services.AddDbContext<BudgetPlanDbContext>(options => options.UseSqlServer(ConnectionStringDbContext.GetConnectionString()));
-        services.AddScoped<IBudgetPlanDbContext, BudgetPlanDbContext>();
 
         return services;
     }

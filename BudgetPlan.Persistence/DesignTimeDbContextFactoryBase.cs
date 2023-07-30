@@ -11,7 +11,7 @@ public abstract class DesignTimeDbContextFactoryBase<TContext> : IDesignTimeDbCo
 
     public TContext CreateDbContext(string[] args)
     {
-        var basePath = Directory.GetCurrentDirectory() + String.Format("{0}..{0}StreamScheduler.Api", Path.DirectorySeparatorChar);
+        var basePath = Directory.GetCurrentDirectory() + String.Format("{0}..{0}BudgetPlan.Api", Path.DirectorySeparatorChar);
         return Create(basePath, Environment.GetEnvironmentVariable(AspNetCoreEnvironment));
     }
 
