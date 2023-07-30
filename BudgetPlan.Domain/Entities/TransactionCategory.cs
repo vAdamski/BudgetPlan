@@ -9,5 +9,5 @@ public class TransactionCategory : AuditableEntity
     public TransactionType TransactionType { get; set; }
     public int? OverTransactionCategoryId { get; set; }
     public TransactionCategory? OverTransactionCategory { get; set; }
-    public List<TransactionCategory> UnderTransactionCategories { get; set; } = new();
+    public List<BudgetPlanDetails> BudgetPlanDetails { get; set; } = new();
 }
