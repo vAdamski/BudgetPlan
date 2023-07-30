@@ -1,4 +1,4 @@
-namespace BudgetPlan.Persistance;
+namespace BudgetPlan.Persistence;
 
 public static class ConnectionStringDbContext
 {

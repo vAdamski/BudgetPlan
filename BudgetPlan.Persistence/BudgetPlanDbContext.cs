@@ -1,9 +1,10 @@
 using System.Reflection;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Domain.Common;
+using BudgetPlan.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BudgetPlan.Persistance;
+namespace BudgetPlan.Persistence;
 
 public class BudgetPlanDbContext : DbContext, IBudgetPlanDbContext
 {
@@ -25,6 +26,10 @@ public class BudgetPlanDbContext : DbContext, IBudgetPlanDbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
+    
+    public DbSet<TransactionCategory> TransactionCategories { get; set; }
+    public DbSet<TransactionDetails> TransactionDetails { get; set; }
+    public DbSet<BudgetPlanDetails> BudgetPlanDetails { get; set; }
 
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

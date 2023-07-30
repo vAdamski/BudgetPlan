@@ -3,7 +3,7 @@ using BudgetPlan.Api.Services;
 using BudgetPlan.Application;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Infrastructure;
-using BudgetPlan.Persistance;
+using BudgetPlan.Persistence;
 using IdentityModel;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;

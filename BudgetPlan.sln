@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlan.Common", "Budget
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlan.Application", "BudgetPlan.Application\BudgetPlan.Application.csproj", "{B9C2D370-0834-4C3C-A7D5-964FB70EA09A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlan.Persistance", "BudgetPlan.Persistance\BudgetPlan.Persistance.csproj", "{248BD985-5C11-4624-B092-AD6A25703827}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlan.Persistence", "BudgetPlan.Persistence\BudgetPlan.Persistence.csproj", "{248BD985-5C11-4624-B092-AD6A25703827}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlan.Infrastructure", "BudgetPlan.Infrastructure\BudgetPlan.Infrastructure.csproj", "{5B78B44A-57A3-43F5-B13F-E0FA0828BCEB}"
 EndProject

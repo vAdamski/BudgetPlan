@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BudgetPlan.Persistance;
+namespace BudgetPlan.Persistence;
 
 public static class DependencyInjection
 {
