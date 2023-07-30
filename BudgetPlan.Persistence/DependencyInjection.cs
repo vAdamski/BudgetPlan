@@ -7,7 +7,7 @@ namespace BudgetPlan.Persistence;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistance(this IServiceCollection services)
+    public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
         services.AddDbContext<BudgetPlanDbContext>(options => options.UseSqlServer(ConnectionStringDbContext.GetConnectionString()));
         services.AddScoped<IBudgetPlanDbContext, BudgetPlanDbContext>();
