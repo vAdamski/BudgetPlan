@@ -7,7 +7,7 @@ public class AddTransactionCategoryCommandValidator : AbstractValidator<AddTrans
     public AddTransactionCategoryCommandValidator()
     {
         RuleFor(x => x.TransactionCategoryName).MaximumLength(50).NotEmpty();
-        RuleFor(x => x.TransactionType).IsInEnum().NotEmpty();
+        RuleFor(x => x.TransactionType).IsInEnum().NotNull();
     }
 }
 
