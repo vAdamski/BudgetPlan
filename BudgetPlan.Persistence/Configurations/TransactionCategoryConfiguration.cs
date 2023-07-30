@@ -1,5 +1,4 @@
 using BudgetPlan.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BudgetPlan.Persistence.Configurations;

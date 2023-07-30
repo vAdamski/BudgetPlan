@@ -1,4 +1,4 @@
-namespace BudgetPlan.Domain.Enums;
+namespace BudgetPlan.Shared.Enums;
 
 public enum BudgetPlanType
 {
