@@ -1,9 +1,9 @@
 using BudgetPlan.Shared.Enums;
 using MediatR;
 
-namespace BudgetPlan.Application.TransactionCategories.Commands.AddTransactionCategory;
+namespace BudgetPlan.Application.TransactionCategories.Commands.AddOverTransactionCategory;
 
-public class AddTransactionCategoryCommand : IRequest<int>
+public class AddOverTransactionCategoryCommand : IRequest<int>
 {
     public string TransactionCategoryName { get; set; } = "";
     public TransactionType TransactionType { get; set; }

@@ -4,27 +4,27 @@ using BudgetPlan.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace BudgetPlan.Application.TransactionCategories.Commands.AddTransactionCategory;
+namespace BudgetPlan.Application.TransactionCategories.Commands.AddOverTransactionCategory;
 
-public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransactionCategoryCommand, int>
+public class AddOverTransactionCategoryCommandHandler : IRequestHandler<AddOverTransactionCategoryCommand, int>
 {
     private readonly IBudgetPlanDbContext _ctx;
     private readonly ICurrentUserService _currentUserService;
 
-    public AddTransactionCategoryCommandHandler(IBudgetPlanDbContext ctx, ICurrentUserService currentUserService)
+    public AddOverTransactionCategoryCommandHandler(IBudgetPlanDbContext ctx, ICurrentUserService currentUserService)
     {
         _ctx = ctx;
         _currentUserService = currentUserService;
     }
-    
-    public async Task<int> Handle(AddTransactionCategoryCommand request, CancellationToken cancellationToken)
+
+    public async Task<int> Handle(AddOverTransactionCategoryCommand request, CancellationToken cancellationToken)
     {
         TransactionCategory transactionCategory = new TransactionCategory()
         {
             TransactionCategoryName = request.TransactionCategoryName,
             TransactionType = request.TransactionType
         };
-        
+
         try
         {
             if (request.OverTransactionCategoryId != null)
@@ -35,13 +35,13 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
                                 x.StatusId == 1)
                     .Select(x => x.Id)
                     .FirstOrDefaultAsync(cancellationToken);
-            
+
                 if (overTransactionCategoryId == null)
                 {
                     throw new OverTransactionCategoryNotFoundException(overTransactionCategoryId);
                 }
             }
-            
+
             transactionCategory.OverTransactionCategoryId = request.OverTransactionCategoryId;
         }
         catch (Exception e)
@@ -49,7 +49,7 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
             Console.WriteLine(e);
             throw;
         }
-        
+
         await _ctx.TransactionCategories.AddAsync(transactionCategory, cancellationToken);
         await _ctx.SaveChangesAsync(cancellationToken);
 
