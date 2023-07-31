@@ -7,5 +7,4 @@ public class AddOverTransactionCategoryCommand : IRequest<int>
 {
     public string TransactionCategoryName { get; set; } = "";
     public TransactionType TransactionType { get; set; }
-    public int? OverTransactionCategoryId { get; set; }
 }
