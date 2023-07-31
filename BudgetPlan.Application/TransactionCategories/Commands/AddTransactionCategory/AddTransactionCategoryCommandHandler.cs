@@ -26,22 +26,20 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
         
         try
         {
-            if (request.OverTransactionCategoryId != null)
+            var overTransactionCategory = await _ctx.TransactionCategories
+                .Where(x => x.Id == request.OverTransactionCategoryId &&
+                            x.CreatedBy == _currentUserService.Email &&
+                            x.StatusId == 1)
+                .FirstOrDefaultAsync(cancellationToken);
+    
+            if (overTransactionCategory == null)
             {
-                var overTransactionCategory = await _ctx.TransactionCategories
-                    .Where(x => x.OverTransactionCategoryId == request.OverTransactionCategoryId &&
-                                x.CreatedBy == _currentUserService.Email &&
-                                x.StatusId == 1)
-                    .FirstOrDefaultAsync(cancellationToken);
-        
-                if (overTransactionCategory == null)
-                {
-                    throw new OverTransactionCategoryNotFoundException(overTransactionCategory.Id);
-                }
-                
-                transactionCategory.OverTransactionCategoryId = overTransactionCategory.Id;
-                transactionCategory.TransactionType = overTransactionCategory.TransactionType;
+                throw new OverTransactionCategoryNotFoundException(overTransactionCategory.Id);
             }
+            
+            transactionCategory.OverTransactionCategoryId = overTransactionCategory.Id;
+            transactionCategory.TransactionType = overTransactionCategory.TransactionType;
+            
         }
         catch (Exception e)
         {
