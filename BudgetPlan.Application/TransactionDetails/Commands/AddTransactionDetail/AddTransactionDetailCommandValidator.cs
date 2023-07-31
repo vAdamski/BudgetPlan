@@ -6,8 +6,8 @@ public class AddTransactionDetailCommandValidator : AbstractValidator<AddTransac
 {
     public AddTransactionDetailCommandValidator()
     {
-        RuleFor(x => x.Value).GreaterThanOrEqualTo(0).NotEmpty();
-        RuleFor(x => x.Description).MaximumLength(255).NotEmpty();
+        RuleFor(x => x.Value).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.Description).MaximumLength(255);
         RuleFor(x => x.TransactionCategoryId).NotEmpty();
     }
 }
