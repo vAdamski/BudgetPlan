@@ -1,11 +1,11 @@
 using BudgetPlan.Application.TransactionCategories.Commands.AddOverTransactionCategory;
+using BudgetPlan.Application.TransactionCategories.Commands.AddTransactionCategory;
 using BudgetPlan.Application.TransactionCategories.Queries.GetListTransactionCategories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
 
-[Authorize]
 [Route("api/[controller]")]
 public class TransactionCategoryController : BaseController
 {
@@ -17,7 +17,16 @@ public class TransactionCategoryController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddTransactionCategory(AddOverTransactionCategoryCommand command)
+    [Route("overCategory")]
+    public async Task<IActionResult> AddOverTransactionCategory(AddOverTransactionCategoryCommand command)
+    {
+        var response = await Mediator.Send(command);
+        return Ok(response);
+    }
+    
+    [HttpPost]
+    [Route("category")]
+    public async Task<IActionResult> AddTransactionCategory(AddTransactionCategoryCommand command)
     {
         var response = await Mediator.Send(command);
         return Ok(response);
