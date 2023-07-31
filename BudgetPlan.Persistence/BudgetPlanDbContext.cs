@@ -28,7 +28,7 @@ public class BudgetPlanDbContext : DbContext, IBudgetPlanDbContext
     }
     
     public DbSet<TransactionCategory> TransactionCategories { get; set; }
-    public DbSet<TransactionDetails> TransactionDetails { get; set; }
+    public DbSet<TransactionDetail> TransactionDetails { get; set; }
     public DbSet<BudgetPlanDetails> BudgetPlanDetails { get; set; }
 
 

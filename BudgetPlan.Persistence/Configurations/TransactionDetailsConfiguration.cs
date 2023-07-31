@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BudgetPlan.Persistence.Configurations;
 
-public class TransactionDetailsConfiguration : IBaseConfiguration<TransactionDetails>
+public class TransactionDetailsConfiguration : IBaseConfiguration<TransactionDetail>
 {
-    public void Configure(EntityTypeBuilder<TransactionDetails> builder)
+    public void Configure(EntityTypeBuilder<TransactionDetail> builder)
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Value).IsRequired();
