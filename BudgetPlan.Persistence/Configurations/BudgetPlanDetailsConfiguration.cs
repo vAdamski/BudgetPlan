@@ -12,6 +12,8 @@ public class BudgetPlanDetailsConfiguration : IBaseConfiguration<BudgetPlanDetai
         builder.Property(x => x.Value).HasDefaultValue(0f).IsRequired();
         builder.Property(x => x.Description);
         builder.Property(x => x.BudgetPlanType).IsRequired();
+        
+
         builder.HasOne(x => x.BudgetPlan)
             .WithMany(x => x.BudgetPlanDetailsList)
             .HasForeignKey(x => x.BudgetPlanId)
