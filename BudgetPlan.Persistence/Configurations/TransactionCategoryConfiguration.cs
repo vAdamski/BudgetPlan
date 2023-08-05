@@ -14,5 +14,9 @@ public class TransactionCategoryConfiguration : IBaseConfiguration<TransactionCa
 
         builder.HasMany(x => x.BudgetPlanDetails)
             .WithOne(x => x.TransactionCategory);
+        
+        builder.HasMany(x => x.TransactionDetails)
+            .WithOne(x => x.TransactionCategory)
+            .HasForeignKey(x => x.TransactionCategoryId);
     }
 }

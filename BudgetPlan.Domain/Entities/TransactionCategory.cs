@@ -13,4 +13,5 @@ public class TransactionCategory : AuditableEntity
     
     public List<BudgetPlanDetails> BudgetPlanDetails { get; set; } = new();
     public List<TransactionDetail> TransactionDetails { get; set; } = new();
+    public List<TransactionCategory> SubTransactionCategories { get; set; } = new();
 }
