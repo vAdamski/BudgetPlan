@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace BudgetPlan.Application.BudgetPlanDetails.Commands.CreateBudgetPlanDetailsForMonthView;
+namespace BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
 
 public class CreateBudgetPlanCommand : IRequest<int>
 {

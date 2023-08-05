@@ -1,7 +1,6 @@
-using BudgetPlan.Application.BudgetPlanDetails.Commands.CreateBudgetPlanDetailsForMonthView;
 using FluentValidation;
 
-namespace BudgetPlan.Application.BudgetPlanDetails.Commands.CreateBudgetPlan;
+namespace BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
 
 public class CreateBudgetPlanCommandValidator : AbstractValidator<CreateBudgetPlanCommand>
 {
