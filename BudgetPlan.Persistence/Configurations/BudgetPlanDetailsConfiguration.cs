@@ -10,7 +10,6 @@ public class BudgetPlanDetailsConfiguration : IBaseConfiguration<BudgetPlanDetai
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Value).HasDefaultValue(0f).IsRequired();
-        builder.Property(x => x.Description);
         builder.Property(x => x.BudgetPlanType).IsRequired();
         
 
