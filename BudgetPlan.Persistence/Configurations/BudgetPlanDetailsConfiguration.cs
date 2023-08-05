@@ -12,7 +12,13 @@ public class BudgetPlanDetailsConfiguration : IBaseConfiguration<BudgetPlanDetai
         builder.Property(x => x.Value).HasDefaultValue(0f).IsRequired();
         builder.Property(x => x.Description);
         builder.Property(x => x.BudgetPlanType).IsRequired();
-        builder.Property(x => x.DateFrom).IsRequired();
-        builder.Property(x => x.DateTo).IsRequired();
+        builder.HasOne(x => x.BudgetPlan)
+            .WithMany(x => x.BudgetPlanDetailsList)
+            .HasForeignKey(x => x.BudgetPlanId)
+            .OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(x => x.TransactionCategory)
+            .WithMany(x => x.BudgetPlanDetails)
+            .HasForeignKey(x => x.TransactionCategoryId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

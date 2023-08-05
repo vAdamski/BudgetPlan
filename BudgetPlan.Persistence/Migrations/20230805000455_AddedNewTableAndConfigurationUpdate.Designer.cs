@@ -4,6 +4,7 @@ using BudgetPlan.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPlan.Persistence.Migrations
 {
     [DbContext(typeof(BudgetPlanDbContext))]
-    partial class BudgetPlanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230805000455_AddedNewTableAndConfigurationUpdate")]
+    partial class AddedNewTableAndConfigurationUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,9 +182,6 @@ namespace BudgetPlan.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BudgetPlanDetailsId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -221,8 +221,6 @@ namespace BudgetPlan.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetPlanDetailsId");
-
                     b.HasIndex("TransactionCategoryId");
 
                     b.ToTable("TransactionDetails");
@@ -254,17 +252,11 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionDetail", b =>
                 {
-                    b.HasOne("BudgetPlan.Domain.Entities.BudgetPlanDetails", "BudgetPlanDetails")
-                        .WithMany("TransactionDetails")
-                        .HasForeignKey("BudgetPlanDetailsId");
-
                     b.HasOne("BudgetPlan.Domain.Entities.TransactionCategory", "TransactionCategory")
                         .WithMany("TransactionDetails")
                         .HasForeignKey("TransactionCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("BudgetPlanDetails");
 
                     b.Navigation("TransactionCategory");
                 });
@@ -272,11 +264,6 @@ namespace BudgetPlan.Persistence.Migrations
             modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlan", b =>
                 {
                     b.Navigation("BudgetPlanDetailsList");
-                });
-
-            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanDetails", b =>
-                {
-                    b.Navigation("TransactionDetails");
                 });
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionCategory", b =>

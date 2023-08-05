@@ -11,7 +11,7 @@ public class TransactionCategoryConfiguration : IBaseConfiguration<TransactionCa
         builder.Property(x => x.TransactionCategoryName).IsRequired();
         builder.Property(x => x.TransactionType).IsRequired();
         builder.Property(x => x.OverTransactionCategoryId).IsRequired(false);
-        
+
         builder.HasMany(x => x.BudgetPlanDetails)
             .WithOne(x => x.TransactionCategory);
     }

@@ -8,4 +8,8 @@ public class TransactionDetail : AuditableEntity
     public string Description { get; set; } = "";
     public DateTime TransactionDate { get; set; }
     public int TransactionCategoryId { get; set; }
+    public TransactionCategory TransactionCategory { get; set; }
+
+    public int? BudgetPlanDetailsId { get; set; }
+    public BudgetPlanDetails BudgetPlanDetails { get; set; }
 }
