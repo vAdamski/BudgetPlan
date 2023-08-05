@@ -20,7 +20,8 @@ public class CreateBudgetPlanCommandHandler : IRequestHandler<CreateBudgetPlanCo
     public async Task<int> Handle(CreateBudgetPlanCommand request, CancellationToken cancellationToken)
     {
         var categories = await _ctx.TransactionCategories
-            .Where(x => x.CreatedBy == _currentUserService.Email && 
+            .Where(x => x.CreatedBy == _currentUserService.Email &&
+                        x.OverTransactionCategoryId != null &&
                         x.StatusId == 1)
             .ToListAsync(cancellationToken);
         
