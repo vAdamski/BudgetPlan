@@ -1,6 +1,7 @@
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Domain.Entities;
 using BudgetPlan.Domain.Exceptions;
+using BudgetPlan.Shared.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -52,6 +53,29 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
 
         await _ctx.TransactionCategories.AddAsync(transactionCategory, cancellationToken);
         await _ctx.SaveChangesAsync(cancellationToken);
+
+        if (transactionCategory.OverTransactionCategoryId != null)
+        {
+            var budgetPlans = await _ctx.BudgetPlans
+                .Where(x => x.CreatedBy == _currentUserService.Email && 
+                            x.StatusId == 1)
+                .ToListAsync(cancellationToken);
+
+            foreach (var budgetPlan in budgetPlans)
+            {
+                var budgetPlanDetails = new BudgetPlanDetails
+                {
+                    Value = 0,
+                    BudgetPlanType = BudgetPlanType.Monthly,
+                    BudgetPlanId = budgetPlan.Id,
+                    TransactionCategoryId = transactionCategory.Id
+                };
+            
+                await _ctx.BudgetPlanDetails.AddAsync(budgetPlanDetails, cancellationToken);
+            }
+        
+            await _ctx.SaveChangesAsync(cancellationToken);
+        }
 
         return transactionCategory.Id;
     }
