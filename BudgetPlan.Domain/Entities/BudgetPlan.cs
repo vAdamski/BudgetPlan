@@ -4,6 +4,8 @@ namespace BudgetPlan.Domain.Entities;
 
 public class BudgetPlan : AuditableEntity
 {
+    public BudgetPlan() { }
+    
     public BudgetPlan(int year, int month)
     {
         DateFrom = new DateTime(year, month, 1);
