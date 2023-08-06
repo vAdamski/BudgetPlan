@@ -10,5 +10,6 @@ public class BudgetPlanViewModel
         .Sum(x => x.SumOfAllCategories);
     public float Expenses => BudgetPlanOverTransactionCategoryDtos.Where(x => x.TransactionType == TransactionType.Expense)
         .Sum(x => x.SumOfAllCategories);
-    public List<BudgetPlanOverTransactionCategoryDto> BudgetPlanOverTransactionCategoryDtos { get; set; }
+
+    public List<BudgetPlanOverTransactionCategoryDto> BudgetPlanOverTransactionCategoryDtos { get; set; } = new();
 }
