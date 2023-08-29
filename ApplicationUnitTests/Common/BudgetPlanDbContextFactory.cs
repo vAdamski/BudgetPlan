@@ -12,10 +12,8 @@ public static class BudgetPlanDbContextFactory
         var dateTime =  new DateTime(2000,1, 1);
         var dateTimeMock = new Mock<IDateTime>();
         dateTimeMock.Setup(m => m.Now).Returns(dateTime);
-        
-        var currentUserServiceMock = new Mock<ICurrentUserService>();
-        currentUserServiceMock.Setup(m => m.Email).Returns("user@user.pl");
-        currentUserServiceMock.Setup(m => m.IsAuthenticated).Returns(true);
+
+        var currentUserServiceMock = CurrentUserServiceFactory.Create();
         
         var options = new DbContextOptionsBuilder<BudgetPlanDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())

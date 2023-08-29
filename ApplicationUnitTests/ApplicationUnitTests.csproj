@@ -27,8 +27,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BudgetPlan.Api\BudgetPlan.Api.csproj" />
       <ProjectReference Include="..\BudgetPlan.Application\BudgetPlan.Application.csproj" />
       <ProjectReference Include="..\BudgetPlan.Persistence\BudgetPlan.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="BudgetPlans\Queries" />
     </ItemGroup>
 
 </Project>
