@@ -1,4 +1,4 @@
-using BudgetPlan.Api.Services;
+using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Persistence;
 using Moq;
 
@@ -8,8 +8,8 @@ public class CommandTestBase : IDisposable
 {
     protected readonly BudgetPlanDbContext _context;
     protected readonly Mock<BudgetPlanDbContext> _contextMock;
-    protected readonly CurrentUserService _currentUserService;
-    protected readonly Mock<CurrentUserService> _currentUserServiceMock;
+    protected readonly ICurrentUserService _currentUserService;
+    protected readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     public CommandTestBase()
     {
