@@ -25,8 +25,10 @@ public static class BudgetPlanDbContextFactory
         };
         
         var context = mock.Object;
-        
+
         context.Database.EnsureCreated();
+        
+        BudgetPlanDbContextSeedData.Seed(context);
 
         return mock;
     }
