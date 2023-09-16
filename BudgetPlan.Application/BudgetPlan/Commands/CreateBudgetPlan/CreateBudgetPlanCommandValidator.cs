@@ -6,6 +6,7 @@ public class CreateBudgetPlanCommandValidator : AbstractValidator<CreateBudgetPl
 {
     public CreateBudgetPlanCommandValidator()
     {
-        RuleFor(x => x.Date).NotEmpty();
+        RuleFor(x => x.Year).NotEmpty();
+        RuleFor(x => x.Month).NotEmpty();
     }
 }

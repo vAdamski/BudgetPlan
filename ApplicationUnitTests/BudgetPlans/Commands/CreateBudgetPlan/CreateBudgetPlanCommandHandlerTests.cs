@@ -22,11 +22,8 @@ public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
         var todayDate = DateTime.Today;
         var dateTimeFirstDayOfCurrentMonth = GetDateWithFirstDayOfCurrentMonth();
         var dateTimeLastDayOfCurrentMonth = GetDateWithLastDayOfCurrentMonth();
-        
-        var command = new CreateBudgetPlanCommand
-        {
-            Date = todayDate
-        };
+
+        var command = new CreateBudgetPlanCommand(todayDate);
 
         var nextBudgetPlanId = GetNextExpectedBudgetPlanId();
 
