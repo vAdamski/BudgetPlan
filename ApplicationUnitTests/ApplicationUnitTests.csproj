@@ -32,8 +32,4 @@
       <ProjectReference Include="..\BudgetPlan.Persistence\BudgetPlan.Persistence.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="BudgetPlans\Queries" />
-    </ItemGroup>
-
 </Project>
