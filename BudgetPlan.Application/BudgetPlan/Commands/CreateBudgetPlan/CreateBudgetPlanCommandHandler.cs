@@ -34,7 +34,7 @@ public class CreateBudgetPlanCommandHandler : IRequestHandler<CreateBudgetPlanCo
         {
             var budgetPlanDetail = new BudgetPlanDetails
             {
-                Value = 0,
+                ExpectedAmount = 0,
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanId = budgetPlan.Id,
                 TransactionCategoryId = category.Id

@@ -7,7 +7,7 @@ public class BudgetPlanOverTransactionCategoryDto
     public string OverCategoryName { get; set; }
     public TransactionType TransactionType { get; set; }
 
-    public float SumOfAllCategories =>
+    public double SumOfAllCategories =>
         UnderTransactionCategoryDtos.Sum(x => x.BudgetPlanDetailsDto.ValueOfTransactionItemsForDays);
 
     public List<BudgetPlanUnderTransactionCategoryDto> UnderTransactionCategoryDtos { get; set; }

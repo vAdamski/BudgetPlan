@@ -89,6 +89,9 @@ namespace BudgetPlan.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("ExpectedAmount")
+                        .HasColumnType("float");
+
                     b.Property<DateTime?>("Inactivated")
                         .HasColumnType("datetime2");
 
@@ -108,9 +111,6 @@ namespace BudgetPlan.Persistence.Migrations
 
                     b.Property<int?>("TransactionCategoryId")
                         .HasColumnType("int");
-
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -212,8 +212,8 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

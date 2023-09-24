@@ -68,7 +68,7 @@ public class GetBudgetPlanViewCommandHandler : IRequestHandler<GetBudgetPlanView
                     UnderCategoryName = underCategory.TransactionCategoryName,
                     BudgetPlanDetailsDto = new BudgetPlanDetailsDto
                     {
-                        AmountAllocated = budgetPlanDetails.Value
+                        AmountAllocated = budgetPlanDetails.ExpectedAmount
                     }
                 };
 
