@@ -1,6 +1,7 @@
 using ApplicationUnitTests.Common;
 using ApplicationUnitTests.Common.Mocks;
 using BudgetPlan.Application.TransactionDetails.Commands.AddTransactionDetail;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shouldly;
