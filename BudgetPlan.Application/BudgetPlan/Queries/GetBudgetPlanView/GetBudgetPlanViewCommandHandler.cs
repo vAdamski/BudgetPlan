@@ -28,25 +28,19 @@ public class GetBudgetPlanViewCommandHandler : IRequestHandler<GetBudgetPlanView
             .Include(x => x.SubTransactionCategories)
             .ToListAsync(cancellationToken);
 
-        var budgetPlan = await _context
+        var budgetPlanBase = await _context
             .BudgetPlanBases
-            .Where(x => x.CreatedBy == _currentUserService.Email &&
-                        x.StatusId == 1 &&
-                        x.DateFrom.Year == request.Year &&
-                        x.DateFrom.Month == request.Month &&
-                        x.DateFrom.Day == 1 &&
-                        x.DateTo.Year == request.Year &&
-                        x.DateTo.Month == request.Month &&
-                        x.DateTo.Day == DateTime.DaysInMonth(request.Year, request.Month))
+            .Where(x => x.Id == request.BudgetPlanId &&
+                        x.CreatedBy == _currentUserService.Email &&
+                        x.StatusId == 1)
             .Include(x => x.BudgetPlanDetailsList)
-            .ToListAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         var items = await _context.TransactionDetails
             .Where(x => x.CreatedBy == _currentUserService.Email &&
                         x.StatusId == 1 &&
-                        new DateTime(request.Year, request.Month, 1) <= x.TransactionDate &&
-                        x.TransactionDate <= new DateTime(request.Year, request.Month,
-                            DateTime.DaysInMonth(request.Year, request.Month)))
+                        budgetPlanBase.DateFrom <= x.TransactionDate &&
+                        x.TransactionDate <= budgetPlanBase.DateTo)
             .ToListAsync(cancellationToken);
 
         var groupedItems = items.GroupBy(x => x.TransactionDate.Date).OrderBy(x => x.Key).ToList();
@@ -58,8 +52,8 @@ public class GetBudgetPlanViewCommandHandler : IRequestHandler<GetBudgetPlanView
             var underCategories = new List<BudgetPlanUnderTransactionCategoryDto>();
             foreach (var underCategory in overCategory.SubTransactionCategories)
             {
-                var budgetPlanDetails = budgetPlan
-                    .SelectMany(x => x.BudgetPlanDetailsList)
+                var budgetPlanDetails = budgetPlanBase
+                    .BudgetPlanDetailsList
                     .FirstOrDefault(x => x.TransactionCategoryId == underCategory.Id);
 
                 var budgetPlanUnderTransactionCategoryDto = new BudgetPlanUnderTransactionCategoryDto
@@ -72,7 +66,7 @@ public class GetBudgetPlanViewCommandHandler : IRequestHandler<GetBudgetPlanView
                     }
                 };
 
-                int days = DateTime.DaysInMonth(request.Year, request.Month);
+                int days = (budgetPlanBase.DateTo - budgetPlanBase.DateFrom).Days + 1;
                 for (int day = 1; day <= days; day++)
                 {
                     var itemsForDay = groupedItems
