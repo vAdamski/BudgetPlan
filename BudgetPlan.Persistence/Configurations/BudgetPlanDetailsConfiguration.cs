@@ -15,7 +15,7 @@ public class BudgetPlanDetailsConfiguration : IBaseConfiguration<BudgetPlanDetai
 
         builder.HasOne(x => x.BudgetPlanBase)
             .WithMany(x => x.BudgetPlanDetailsList)
-            .HasForeignKey(x => x.BudgetPlanId)
+            .HasForeignKey(x => x.BudgetPlanBaseId)
             .OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(x => x.TransactionCategory)
             .WithMany(x => x.BudgetPlanDetails)

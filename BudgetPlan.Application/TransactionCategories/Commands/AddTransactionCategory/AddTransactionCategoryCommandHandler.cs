@@ -67,7 +67,7 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
                 {
                     ExpectedAmount = 0,
                     BudgetPlanType = BudgetPlanType.Monthly,
-                    BudgetPlanId = budgetPlan.Id,
+                    BudgetPlanBaseId = budgetPlan.Id,
                     TransactionCategoryId = transactionCategory.Id
                 };
             
