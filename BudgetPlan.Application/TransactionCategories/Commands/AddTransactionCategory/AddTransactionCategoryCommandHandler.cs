@@ -56,7 +56,7 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
 
         if (transactionCategory.OverTransactionCategoryId != null)
         {
-            var budgetPlans = await _ctx.BudgetPlans
+            var budgetPlans = await _ctx.BudgetPlanBases
                 .Where(x => x.CreatedBy == _currentUserService.Email && 
                             x.StatusId == 1)
                 .ToListAsync(cancellationToken);

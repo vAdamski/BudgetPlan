@@ -13,7 +13,7 @@ public class BudgetPlanDetailsConfiguration : IBaseConfiguration<BudgetPlanDetai
         builder.Property(x => x.BudgetPlanType).IsRequired();
         
 
-        builder.HasOne(x => x.BudgetPlan)
+        builder.HasOne(x => x.BudgetPlanBase)
             .WithMany(x => x.BudgetPlanDetailsList)
             .HasForeignKey(x => x.BudgetPlanId)
             .OnDelete(DeleteBehavior.NoAction);

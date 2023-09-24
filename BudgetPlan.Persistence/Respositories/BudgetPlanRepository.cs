@@ -1,5 +1,6 @@
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
+using BudgetPlan.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Persistence.Respositories;
@@ -15,9 +16,9 @@ public class BudgetPlanRepository : IBudgetPlanRepository
         _currentUserService = currentUserService;
     }
     
-    public async Task<List<Domain.Entities.BudgetPlan>>  GetBudgetPlansForCurrentUser()
+    public async Task<List<BudgetPlanBase>>  GetBudgetPlansForCurrentUser()
     {
-        return await _context.BudgetPlans
+        return await _context.BudgetPlanBases
             .Where(x => x.CreatedBy == _currentUserService.Email &&
                         x.StatusId == 1)
             .ToListAsync();

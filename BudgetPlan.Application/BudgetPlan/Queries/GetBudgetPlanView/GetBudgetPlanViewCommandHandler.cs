@@ -29,7 +29,7 @@ public class GetBudgetPlanViewCommandHandler : IRequestHandler<GetBudgetPlanView
             .ToListAsync(cancellationToken);
 
         var budgetPlan = await _context
-            .BudgetPlans
+            .BudgetPlanBases
             .Where(x => x.CreatedBy == _currentUserService.Email &&
                         x.StatusId == 1 &&
                         x.DateFrom.Year == request.Year &&

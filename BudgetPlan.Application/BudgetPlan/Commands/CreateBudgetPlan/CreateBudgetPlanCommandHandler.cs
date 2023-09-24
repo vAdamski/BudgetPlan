@@ -25,9 +25,9 @@ public class CreateBudgetPlanCommandHandler : IRequestHandler<CreateBudgetPlanCo
                         x.StatusId == 1)
             .ToListAsync(cancellationToken);
         
-        var budgetPlan = new Domain.Entities.BudgetPlan(request.Year, request.Month);
+        var budgetPlan = new BudgetPlanBase(request.Year, request.Month);
         
-        await _ctx.BudgetPlans.AddAsync(budgetPlan, cancellationToken);
+        await _ctx.BudgetPlanBases.AddAsync(budgetPlan, cancellationToken);
         await _ctx.SaveChangesAsync(cancellationToken);
         
         foreach (var category in categories)

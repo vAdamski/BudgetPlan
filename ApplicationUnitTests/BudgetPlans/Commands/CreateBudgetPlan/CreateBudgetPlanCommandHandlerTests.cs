@@ -35,7 +35,7 @@ public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
 
         var underCategoriesCount = GetCountOfUnderCategoriesForCurrentUser();
 
-        var budgetPlan = await _context.BudgetPlans.Where(x => x.CreatedBy == _currentUserService.Email && x.Id == result)
+        var budgetPlan = await _context.BudgetPlanBases.Where(x => x.CreatedBy == _currentUserService.Email && x.Id == result)
             .Include(x => x.BudgetPlanDetailsList).FirstOrDefaultAsync();
 
         budgetPlan.ShouldNotBeNull();
@@ -68,7 +68,7 @@ public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
     
     private int GetNextExpectedBudgetPlanId()
     {
-        var lastBudgetPlanId = _context.BudgetPlans.Max(x => x.Id);
+        var lastBudgetPlanId = _context.BudgetPlanBases.Max(x => x.Id);
         var nextBudgetPlanId = lastBudgetPlanId + 1;
         return nextBudgetPlanId;
     }
