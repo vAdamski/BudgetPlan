@@ -24,7 +24,7 @@ public class GetBudgetPlanViewCommandHandlerTests
     }
 
     [Fact]
-    public async Task GetBudgetPlanViewCommandHandler_ShouldReturnBudgetPlanView()
+    public async Task Handle_GetBudgetPlanView_GetBudgetPlanViewCommandHandler_ShouldReturnBudgetPlanView()
     {
         // Arrange
         var sut = new GetBudgetPlanViewCommandHandler(_context, _currentUserService);
