@@ -24,11 +24,9 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanBase", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -67,14 +65,12 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanDetails", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BudgetPlanBaseId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("BudgetPlanBaseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("BudgetPlanType")
                         .HasColumnType("int");
@@ -106,8 +102,8 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TransactionCategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("TransactionCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -120,11 +116,9 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionCategory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -147,8 +141,8 @@ namespace BudgetPlan.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OverTransactionCategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("OverTransactionCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
@@ -169,11 +163,9 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -203,8 +195,8 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TransactionCategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TransactionCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
