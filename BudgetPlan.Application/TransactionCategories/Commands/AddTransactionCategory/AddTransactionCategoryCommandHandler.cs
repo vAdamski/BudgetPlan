@@ -12,14 +12,11 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
 {
     private readonly IBudgetPlanDbContext _ctx;
     private readonly ICurrentUserService _currentUserService;
-    private readonly ILogger<AddTransactionCategoryCommandHandler> _logger;
 
-    public AddTransactionCategoryCommandHandler(IBudgetPlanDbContext ctx, ICurrentUserService currentUserService,
-        ILogger<AddTransactionCategoryCommandHandler> logger)
+    public AddTransactionCategoryCommandHandler(IBudgetPlanDbContext ctx, ICurrentUserService currentUserService)
     {
         _ctx = ctx;
         _currentUserService = currentUserService;
-        _logger = logger;
     }
 
     public async Task<Guid> Handle(AddTransactionCategoryCommand request, CancellationToken cancellationToken)
@@ -29,35 +26,25 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
             TransactionCategoryName = request.TransactionCategoryName
         };
 
-        try
-        {
-            var overTransactionCategory = await _ctx.TransactionCategories
-                .Where(x => x.Id == request.OverTransactionCategoryId &&
-                            x.CreatedBy == _currentUserService.Email &&
-                            x.StatusId == 1)
-                .FirstOrDefaultAsync(cancellationToken);
+        var overTransactionCategory = await _ctx.TransactionCategories
+            .Where(x => x.Id == request.OverTransactionCategoryId &&
+                        x.CreatedBy == _currentUserService.Email &&
+                        x.StatusId == 1)
+            .FirstOrDefaultAsync(cancellationToken);
 
-            if (overTransactionCategory == null)
-            {
-                throw new OverTransactionCategoryNotFoundException(overTransactionCategory.Id);
-            }
+        if (overTransactionCategory is null)
+            throw new OverTransactionCategoryNotFoundException(request.OverTransactionCategoryId);
 
-            transactionCategory.OverTransactionCategoryId = overTransactionCategory.Id;
-            transactionCategory.TransactionType = overTransactionCategory.TransactionType;
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error while adding transaction category");
-            throw;
-        }
-
+        transactionCategory.OverTransactionCategoryId = overTransactionCategory.Id;
+        transactionCategory.TransactionType = overTransactionCategory.TransactionType;
+        
         await _ctx.TransactionCategories.AddAsync(transactionCategory, cancellationToken);
         await _ctx.SaveChangesAsync(cancellationToken);
 
         if (transactionCategory.OverTransactionCategoryId != null)
         {
             var budgetPlans = await _ctx.BudgetPlanBases
-                .Where(x => x.CreatedBy == _currentUserService.Email && 
+                .Where(x => x.CreatedBy == _currentUserService.Email &&
                             x.StatusId == 1)
                 .ToListAsync(cancellationToken);
 
@@ -70,10 +57,10 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
                     BudgetPlanBaseId = budgetPlan.Id,
                     TransactionCategoryId = transactionCategory.Id
                 };
-            
+
                 await _ctx.BudgetPlanDetails.AddAsync(budgetPlanDetails, cancellationToken);
             }
-        
+
             await _ctx.SaveChangesAsync(cancellationToken);
         }
 

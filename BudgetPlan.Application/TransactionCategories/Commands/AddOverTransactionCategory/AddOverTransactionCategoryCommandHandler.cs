@@ -9,12 +9,10 @@ namespace BudgetPlan.Application.TransactionCategories.Commands.AddOverTransacti
 public class AddOverTransactionCategoryCommandHandler : IRequestHandler<AddOverTransactionCategoryCommand, Guid>
 {
     private readonly IBudgetPlanDbContext _ctx;
-    private readonly ICurrentUserService _currentUserService;
 
-    public AddOverTransactionCategoryCommandHandler(IBudgetPlanDbContext ctx, ICurrentUserService currentUserService)
+    public AddOverTransactionCategoryCommandHandler(IBudgetPlanDbContext ctx)
     {
         _ctx = ctx;
-        _currentUserService = currentUserService;
     }
 
     public async Task<Guid> Handle(AddOverTransactionCategoryCommand request, CancellationToken cancellationToken)
