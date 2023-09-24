@@ -30,7 +30,7 @@ public class GetBudgetPlanViewCommandHandlerTests
         var sut = new GetBudgetPlanViewCommandHandler(_context, _currentUserService);
         var command = new GetBudgetPlanViewCommand
         {
-            BudgetPlanId = 1
+            BudgetPlanId = BudgetPlanDbContextSeedData.BUDGET_PLAN_BASE_1_GUID
         };
         
         // Act

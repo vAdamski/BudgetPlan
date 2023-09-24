@@ -24,15 +24,11 @@ public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
         var dateTimeLastDayOfCurrentMonth = GetDateWithLastDayOfCurrentMonth();
 
         var command = new CreateBudgetPlanCommand(todayDate);
-
-        var nextBudgetPlanId = GetNextExpectedBudgetPlanId();
-
+        
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal(nextBudgetPlanId, result);
-
         var underCategoriesCount = GetCountOfUnderCategoriesForCurrentUser();
 
         var budgetPlan = await _context.BudgetPlanBases.Where(x => x.CreatedBy == _currentUserService.Email && x.Id == result)
@@ -64,12 +60,5 @@ public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
                         x.CreatedBy == _currentUserService.Email);
 
         return underCategoriesCount;
-    }
-    
-    private int GetNextExpectedBudgetPlanId()
-    {
-        var lastBudgetPlanId = _context.BudgetPlanBases.Max(x => x.Id);
-        var nextBudgetPlanId = lastBudgetPlanId + 1;
-        return nextBudgetPlanId;
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BudgetPlan.Application.TransactionCategories.Commands.AddTransactionCategory;
 
-public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransactionCategoryCommand, int>
+public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransactionCategoryCommand, Guid>
 {
     private readonly IBudgetPlanDbContext _ctx;
     private readonly ICurrentUserService _currentUserService;
@@ -22,7 +22,7 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
         _logger = logger;
     }
 
-    public async Task<int> Handle(AddTransactionCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(AddTransactionCategoryCommand request, CancellationToken cancellationToken)
     {
         TransactionCategory transactionCategory = new TransactionCategory()
         {

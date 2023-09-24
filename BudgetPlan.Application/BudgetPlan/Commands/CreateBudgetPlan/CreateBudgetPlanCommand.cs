@@ -2,7 +2,7 @@ using MediatR;
 
 namespace BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
 
-public class CreateBudgetPlanCommand : IRequest<int>
+public class CreateBudgetPlanCommand : IRequest<Guid>
 {
     private readonly DateTime _date;
     

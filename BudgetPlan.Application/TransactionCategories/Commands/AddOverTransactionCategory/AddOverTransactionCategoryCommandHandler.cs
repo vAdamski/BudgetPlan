@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Application.TransactionCategories.Commands.AddOverTransactionCategory;
 
-public class AddOverTransactionCategoryCommandHandler : IRequestHandler<AddOverTransactionCategoryCommand, int>
+public class AddOverTransactionCategoryCommandHandler : IRequestHandler<AddOverTransactionCategoryCommand, Guid>
 {
     private readonly IBudgetPlanDbContext _ctx;
     private readonly ICurrentUserService _currentUserService;
@@ -17,7 +17,7 @@ public class AddOverTransactionCategoryCommandHandler : IRequestHandler<AddOverT
         _currentUserService = currentUserService;
     }
 
-    public async Task<int> Handle(AddOverTransactionCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(AddOverTransactionCategoryCommand request, CancellationToken cancellationToken)
     {
         TransactionCategory transactionCategory = new TransactionCategory()
         {

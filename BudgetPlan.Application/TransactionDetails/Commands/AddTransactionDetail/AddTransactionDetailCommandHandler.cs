@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BudgetPlan.Application.TransactionDetails.Commands.AddTransactionDetail;
 
-public class AddTransactionDetailCommandHandler : IRequestHandler<AddTransactionDetailCommand, int>
+public class AddTransactionDetailCommandHandler : IRequestHandler<AddTransactionDetailCommand, Guid>
 {
     private readonly IBudgetPlanDbContext _ctx;
     private readonly ICurrentUserService _currentUserService;
@@ -21,7 +21,7 @@ public class AddTransactionDetailCommandHandler : IRequestHandler<AddTransaction
         _logger = logger;
     }
 
-    public async Task<int> Handle(AddTransactionDetailCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(AddTransactionDetailCommand request, CancellationToken cancellationToken)
     {
         try
         {

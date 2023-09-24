@@ -5,5 +5,5 @@ namespace BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
 
 public class GetBudgetPlanViewCommand : IRequest<BudgetPlanViewModel>
 {
-    public int BudgetPlanId { get; set; }
+    public Guid BudgetPlanId { get; set; }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
 
-public class CreateBudgetPlanCommandHandler : IRequestHandler<CreateBudgetPlanCommand, int>
+public class CreateBudgetPlanCommandHandler : IRequestHandler<CreateBudgetPlanCommand, Guid>
 {
     private readonly IBudgetPlanDbContext _ctx;
     private readonly ICurrentUserService _currentUserService;
@@ -17,7 +17,7 @@ public class CreateBudgetPlanCommandHandler : IRequestHandler<CreateBudgetPlanCo
         _currentUserService = currentUserService;
     }
 
-    public async Task<int> Handle(CreateBudgetPlanCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateBudgetPlanCommand request, CancellationToken cancellationToken)
     {
         var categories = await _ctx.TransactionCategories
             .Where(x => x.CreatedBy == _currentUserService.Email &&

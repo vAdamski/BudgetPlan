@@ -10,7 +10,7 @@ namespace BudgetPlan.Api.Controllers;
 public class BudgetPlanController : BaseController
 {
     [HttpGet]
-    public async Task<IActionResult> GetViewModel(int id)
+    public async Task<IActionResult> GetViewModel(Guid id)
     {
         return Ok(await Mediator.Send(new GetBudgetPlanViewCommand {BudgetPlanId = id}));
     }
