@@ -1,4 +1,4 @@
-using BudgetPlan.Shared.Enums;
+using BudgetPlan.Domain.Enums;
 
 namespace BudgetPlan.Shared.Dtos;
 

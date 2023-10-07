@@ -1,5 +1,5 @@
 using BudgetPlan.Domain.Common;
-using BudgetPlan.Shared.Enums;
+using BudgetPlan.Domain.Enums;
 
 namespace BudgetPlan.Domain.Entities;
 

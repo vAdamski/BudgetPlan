@@ -2,7 +2,6 @@ using ApplicationUnitTests.Common;
 using ApplicationUnitTests.Common.Mocks;
 using BudgetPlan.Application.TransactionCategories.Commands.AddTransactionCategory;
 using BudgetPlan.Domain.Exceptions;
-using BudgetPlan.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;

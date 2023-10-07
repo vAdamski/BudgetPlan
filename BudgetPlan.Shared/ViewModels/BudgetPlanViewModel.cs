@@ -1,5 +1,5 @@
+using BudgetPlan.Domain.Enums;
 using BudgetPlan.Shared.Dtos;
-using BudgetPlan.Shared.Enums;
 
 namespace BudgetPlan.Shared.ViewModels;
 

@@ -1,4 +1,4 @@
-using BudgetPlan.Shared.Enums;
+using BudgetPlan.Domain.Enums;
 using MediatR;
 
 namespace BudgetPlan.Application.TransactionCategories.Commands.AddOverTransactionCategory;

@@ -1,6 +1,5 @@
 using ApplicationUnitTests.Common;
 using AutoMapper;
-using BudgetPlan.Api.Services;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Services;
 using BudgetPlan.Application.TransactionCategories.Queries.GetListTransactionCategories;

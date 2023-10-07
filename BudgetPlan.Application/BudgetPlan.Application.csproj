@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BudgetPlan.Domain\BudgetPlan.Domain.csproj" />
+      <ProjectReference Include="..\BudgetPlan.Shared\BudgetPlan.Shared.csproj" />
     </ItemGroup>
 
 </Project>

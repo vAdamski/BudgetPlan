@@ -3,6 +3,7 @@ using AutoMapper;
 using BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Persistence;
+using BudgetPlan.Persistence.Respositories;
 using BudgetPlan.Shared.ViewModels;
 using Shouldly;
 using Xunit;
@@ -27,7 +28,7 @@ public class GetBudgetPlanViewCommandHandlerTests
     public async Task Handle_GetBudgetPlanView_GetBudgetPlanViewCommandHandler_ShouldReturnBudgetPlanView()
     {
         // Arrange
-        var sut = new GetBudgetPlanViewCommandHandler(_context, _currentUserService);
+        var sut = new GetBudgetPlanViewCommandHandler(_context, _currentUserService, new BudgetPlanBaseRepository(_context, _currentUserService));
         var command = new GetBudgetPlanViewCommand
         {
             BudgetPlanId = BudgetPlanDbContextSeedData.BUDGET_PLAN_BASE_1_GUID

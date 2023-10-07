@@ -30,6 +30,7 @@
       <ProjectReference Include="..\BudgetPlan.Api\BudgetPlan.Api.csproj" />
       <ProjectReference Include="..\BudgetPlan.Application\BudgetPlan.Application.csproj" />
       <ProjectReference Include="..\BudgetPlan.Persistence\BudgetPlan.Persistence.csproj" />
+      <ProjectReference Include="..\BudgetPlan.Shared\BudgetPlan.Shared.csproj" />
     </ItemGroup>
 
 </Project>

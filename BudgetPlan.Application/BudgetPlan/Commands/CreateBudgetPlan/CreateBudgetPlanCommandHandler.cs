@@ -1,6 +1,6 @@
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Domain.Entities;
-using BudgetPlan.Shared.Enums;
+using BudgetPlan.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

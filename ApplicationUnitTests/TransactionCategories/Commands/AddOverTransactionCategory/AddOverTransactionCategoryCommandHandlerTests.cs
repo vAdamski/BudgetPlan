@@ -1,6 +1,6 @@
 using ApplicationUnitTests.Common;
 using BudgetPlan.Application.TransactionCategories.Commands.AddOverTransactionCategory;
-using BudgetPlan.Shared.Enums;
+using BudgetPlan.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;

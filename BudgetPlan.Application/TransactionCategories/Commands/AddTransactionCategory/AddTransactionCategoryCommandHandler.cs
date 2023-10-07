@@ -1,7 +1,7 @@
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Domain.Entities;
+using BudgetPlan.Domain.Enums;
 using BudgetPlan.Domain.Exceptions;
-using BudgetPlan.Shared.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

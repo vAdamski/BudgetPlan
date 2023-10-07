@@ -1,6 +1,6 @@
 using BudgetPlan.Domain.Entities;
+using BudgetPlan.Domain.Enums;
 using BudgetPlan.Persistence;
-using BudgetPlan.Shared.Enums;
 
 namespace ApplicationUnitTests.Common;
 

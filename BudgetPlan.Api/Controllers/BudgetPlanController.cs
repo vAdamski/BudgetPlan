@@ -1,7 +1,5 @@
 using BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
 using BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
-using BudgetPlan.Shared.ViewModels;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
