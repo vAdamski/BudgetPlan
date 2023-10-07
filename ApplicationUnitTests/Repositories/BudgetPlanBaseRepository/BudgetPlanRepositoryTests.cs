@@ -89,7 +89,37 @@ public class BudgetPlanRepositoryTests
     }
     
     [Fact]
-    public async Task GetById_GetBudgetPlanBase_GivenInvalidId_ShouldReturnNull()
+    public async Task GetById_GetBudgetPlanBase_GivenInvalidId_ShouldThrowBudgetPlanNotFoundException()
+    {
+        // Arrange
+        var repository = new BudgetPlan.Persistence.Respositories.BudgetPlanBaseRepository(_context, _currentUserService);
+        var invalidId = Guid.NewGuid();
+        
+        // Act
+        await Should.ThrowAsync<BudgetPlanNotFoundException>(repository.GetById(invalidId));
+    }
+
+    [Fact]
+    public async Task
+        GetByIdWithBudgetPlanDetailsList_GetBudgetPlanBase_ShouldReturnBudgetPlaneBaseWithWithBudgetPlanDetailsList()
+    {
+        // Arrange
+        var repository = new BudgetPlan.Persistence.Respositories.BudgetPlanBaseRepository(_context, _currentUserService);
+        var validId = BudgetPlanDbContextSeedData.BUDGET_PLAN_BASE_1_GUID;
+        
+        // Act
+        var result = await repository.GetById(validId);
+        
+        // Assert
+        result.ShouldNotBeNull();
+        result.Id.ShouldBe(validId);
+        result.StatusId.ShouldBe(1);
+        result.BudgetPlanDetailsList.ShouldNotBeNull();
+        result.BudgetPlanDetailsList.Count.ShouldBeGreaterThan(0);
+    }
+    
+    [Fact]
+    public async Task GetByIdWithBudgetPlanDetailsList_GetBudgetPlanBase_GivenInvalidId_ShouldThrowBudgetPlanNotFoundException()
     {
         // Arrange
         var repository = new BudgetPlan.Persistence.Respositories.BudgetPlanBaseRepository(_context, _currentUserService);
