@@ -38,6 +38,21 @@ public class BudgetPlanBaseRepository : IBudgetPlanBaseRepository
         
         return budgetPlanBase;
     }
+    
+    public async Task<BudgetPlanBase> GetByIdWithBudgetPlanDetailsList(Guid id, CancellationToken cancellationToken = default)
+    {
+        var budgetPlanBase = await _context.BudgetPlanBases
+            .Where(x => x.Id == id &&
+                        x.CreatedBy == _currentUserService.Email &&
+                        x.StatusId == 1)
+            .Include(x => x.BudgetPlanDetailsList)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (budgetPlanBase == null)
+            throw new BudgetPlanNotFoundException(id);
+        
+        return budgetPlanBase;
+    }
 
     public async Task<List<BudgetPlanBase>> GetActiveBudgetPlansBasesForCurrentUser(CancellationToken cancellationToken = default)
     {
