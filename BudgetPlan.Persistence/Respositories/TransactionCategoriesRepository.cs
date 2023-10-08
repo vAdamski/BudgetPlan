@@ -16,7 +16,7 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
         _currentUserService = currentUserService;
     }
 
-    public async Task<List<TransactionCategory>> GetTransactionCategoriesWithDetailsForCurrentUser()
+    public async Task<List<TransactionCategory>> GetTransactionCategoriesWithDetailsForCurrentUser(CancellationToken cancellationToken = default)
     {
         var categoriesWithDetails = await _context
             .TransactionCategories
@@ -24,7 +24,7 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
                         x.StatusId == 1 &&
                         x.OverTransactionCategoryId == null)
             .Include(x => x.SubTransactionCategories)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return categoriesWithDetails;
     }
