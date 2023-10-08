@@ -1,3 +1,5 @@
+using BudgetPlan.Domain.Entities;
+
 namespace BudgetPlan.Shared.Dtos;
 
 public class TransactionCategoryDto

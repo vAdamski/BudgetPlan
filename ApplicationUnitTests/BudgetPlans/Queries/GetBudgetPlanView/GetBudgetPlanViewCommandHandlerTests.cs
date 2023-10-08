@@ -28,7 +28,7 @@ public class GetBudgetPlanViewCommandHandlerTests
     public async Task Handle_GetBudgetPlanView_GetBudgetPlanViewCommandHandler_ShouldReturnBudgetPlanView()
     {
         // Arrange
-        var sut = new GetBudgetPlanViewCommandHandler(_context, _currentUserService, new BudgetPlanBaseRepository(_context, _currentUserService));
+        var sut = new GetBudgetPlanViewCommandHandler();
         var command = new GetBudgetPlanViewCommand
         {
             BudgetPlanId = BudgetPlanDbContextSeedData.BUDGET_PLAN_BASE_1_GUID
