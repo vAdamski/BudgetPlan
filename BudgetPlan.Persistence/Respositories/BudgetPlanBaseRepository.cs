@@ -25,6 +25,17 @@ public class BudgetPlanBaseRepository : IBudgetPlanBaseRepository
             .ToListAsync(cancellationToken);
     }
     
+    public async Task<List<BudgetPlanBase>> GetBudgetPlansForUser(string userEmail,CancellationToken cancellationToken = default)
+    {
+        if (userEmail == null)
+            throw new ArgumentNullException(nameof(userEmail));
+        
+        return await _context.BudgetPlanBases
+            .Where(x => x.CreatedBy == userEmail &&
+                        x.StatusId == 1)
+            .ToListAsync(cancellationToken);
+    }
+    
     public async Task<BudgetPlanBase> GetById(Guid id, CancellationToken cancellationToken = default)
     {
         var budgetPlanBase = await _context.BudgetPlanBases

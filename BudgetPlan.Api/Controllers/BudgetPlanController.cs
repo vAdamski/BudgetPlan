@@ -1,5 +1,6 @@
 using BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
 using BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
+using BudgetPlan.Application.BudgetPlan.Queries.GetUserBudgetPlansList;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,14 @@ public class BudgetPlanController : BaseController
     {
         return Ok(await Mediator.Send(new GetBudgetPlanViewCommand {BudgetPlanId = id}));
     }
+    
+    [HttpGet]
+    [Route("list")]
+    public async Task<IActionResult> GetList()
+    {
+        return Ok(await Mediator.Send(new GetUserBudgetPlansListQuery()));
+    }
+    
     
     [HttpPost]
     public async Task<IActionResult> Create([FromForm]CreateBudgetPlanDto createBudgetPlan)
