@@ -128,4 +128,46 @@ public class BudgetPlanRepositoryTests
         // Act
         await Should.ThrowAsync<BudgetPlanNotFoundException>(repository.GetById(invalidId));
     }
+
+    [Fact]
+    public async Task GetBudgetPlansForUser_BudgetPlanRepository_GivenValidEmail_ShouldReturnData()
+    {
+        // Arrange
+        var repository = new BudgetPlan.Persistence.Respositories.BudgetPlanBaseRepository(_context, _currentUserService);
+        var validEmail = BudgetPlanDbContextSeedData.CREATED_BY;
+        
+        // Act
+        var result = await repository.GetBudgetPlansForUser(validEmail);
+        
+        // Assert
+        result.ShouldNotBeNull();
+        result.Count.ShouldBeGreaterThan(0);
+        result.ForEach(x => x.CreatedBy.ShouldBe(validEmail));
+    }
+    
+    [Fact]
+    public async Task GetBudgetPlansForUser_BudgetPlanRepository_GivenEmptyEmail_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        var repository = new BudgetPlan.Persistence.Respositories.BudgetPlanBaseRepository(_context, _currentUserService);
+        string emptyEmail = null;
+        
+        // Act
+        await Should.ThrowAsync<ArgumentNullException>(repository.GetBudgetPlansForUser(emptyEmail));
+    }
+    
+    [Fact]
+    public async Task GetBudgetPlansForUser_BudgetPlanRepository_GivenInvalidEmail_ShouldReturnEmptyList()
+    {
+        // Arrange
+        var repository = new BudgetPlan.Persistence.Respositories.BudgetPlanBaseRepository(_context, _currentUserService);
+        var invalidEmail = "invalidEmail";
+        
+        // Act
+        var result = await repository.GetBudgetPlansForUser(invalidEmail);
+        
+        // Assert
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(0);
+    }
 }
