@@ -44,7 +44,7 @@ public class BudgetPlanVmCreatorService : IBudgetPlanVmCreatorService
         }
 
         List<BudgetPlanOverTransactionCategoryDto> otc = await GetOverTransactionCategories();
-        
+
         otc = await FillUnderCategoriesWithTransactionDetails(otc, budgetPlanBase);
 
         BudgetPlanViewModel vm = new BudgetPlanViewModel(otc);
@@ -94,17 +94,19 @@ public class BudgetPlanVmCreatorService : IBudgetPlanVmCreatorService
                 var x = transactionDetails
                     .Where(td => td.TransactionCategoryId == utc.UnderCategoryId)
                     .GroupBy(td => td.TransactionDate)
-                    .Select(g => new TransactionItemsForDayDto(g.Key.ToDateOnly(), g.Select(x => new TransactionItemDto(x)).ToList()))
+                    .Select(g =>
+                        new TransactionItemsForDayDto(g.Key.ToDateOnly(),
+                            g.Select(x => new TransactionItemDto(x)).ToList()))
                     .ToList();
 
-                double amountAllocated = budgetPlanBase.BudgetPlanDetailsList
-                    .First(bpd => bpd.TransactionCategoryId == utc.UnderCategoryId).ExpectedAmount;
-                
-                utc.BudgetPlanDetailsDto = new BudgetPlanDetailsDto(x, amountAllocated);
+                var budgetPlanDetails = budgetPlanBase.BudgetPlanDetailsList
+                    .First(bpd => bpd.TransactionCategoryId == utc.UnderCategoryId);
+
+                utc.BudgetPlanDetailsDto =
+                    new BudgetPlanDetailsDto(budgetPlanDetails.Id, x, budgetPlanDetails.ExpectedAmount);
             });
         });
-        
+
         return otcs;
     }
 }
-

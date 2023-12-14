@@ -59,10 +59,25 @@ public class GetBudgetPlanViewCommandHandlerTests
         result.Balance.ShouldBe(5500 - (2000 + 1000 + 140 + 150 + 250));
         result.BudgetPlanOverTransactionCategoryDtos.ShouldNotBeNull();
         result.BudgetPlanOverTransactionCategoryDtos.Count.ShouldBe(3);
-        result.BudgetPlanOverTransactionCategoryDtos.First(x => x.OverCategoryName == "Earnings").UnderTransactionCategoryDtos.First(x => x.UnderCategoryName == "Work").BudgetPlanDetailsDto.AmountAllocated.ShouldBe(5500);
-        result.BudgetPlanOverTransactionCategoryDtos.First(x => x.OverCategoryName == "Home").UnderTransactionCategoryDtos.First(x => x.UnderCategoryName == "Food").BudgetPlanDetailsDto.AmountAllocated.ShouldBe(1500);
-        result.BudgetPlanOverTransactionCategoryDtos.First(x => x.OverCategoryName == "Home").UnderTransactionCategoryDtos.First(x => x.UnderCategoryName == "Rent").BudgetPlanDetailsDto.AmountAllocated.ShouldBe(2000);
-        result.BudgetPlanOverTransactionCategoryDtos.First(x => x.OverCategoryName == "Others").UnderTransactionCategoryDtos.First(x => x.UnderCategoryName == "Car fuel").BudgetPlanDetailsDto.AmountAllocated.ShouldBe(500);
-        result.BudgetPlanOverTransactionCategoryDtos.First(x => x.OverCategoryName == "Others").UnderTransactionCategoryDtos.First(x => x.UnderCategoryName == "Education").BudgetPlanDetailsDto.AmountAllocated.ShouldBe(1000);
+        GetBudgetPlanDetailsDtoAmountAllocated(result, "Earnings", "Work").ShouldBe(5500);
+        GetBudgetPlanDetailsDtoId(result, "Earnings", "Work").ShouldBe(BudgetPlanDbContextSeedData.BUDGET_PLAN_DETAILS_1_GUID);
+        GetBudgetPlanDetailsDtoAmountAllocated(result, "Home", "Food").ShouldBe(1500);
+        GetBudgetPlanDetailsDtoId(result, "Home", "Food").ShouldBe(BudgetPlanDbContextSeedData.BUDGET_PLAN_DETAILS_2_GUID);
+        GetBudgetPlanDetailsDtoAmountAllocated(result, "Home", "Rent").ShouldBe(2000);
+        GetBudgetPlanDetailsDtoId(result, "Home", "Rent").ShouldBe(BudgetPlanDbContextSeedData.BUDGET_PLAN_DETAILS_3_GUID);
+        GetBudgetPlanDetailsDtoAmountAllocated(result, "Others", "Car fuel").ShouldBe(500);
+        GetBudgetPlanDetailsDtoId(result, "Others", "Car fuel").ShouldBe(BudgetPlanDbContextSeedData.BUDGET_PLAN_DETAILS_4_GUID);
+        GetBudgetPlanDetailsDtoAmountAllocated(result, "Others", "Education").ShouldBe(1000);
+        GetBudgetPlanDetailsDtoId(result, "Others", "Education").ShouldBe(BudgetPlanDbContextSeedData.BUDGET_PLAN_DETAILS_5_GUID);
+    }
+    
+    private double GetBudgetPlanDetailsDtoAmountAllocated(BudgetPlanViewModel vm, string overCategoryName, string underCategoryName)
+    {
+        return vm.BudgetPlanOverTransactionCategoryDtos.First(x => x.OverCategoryName == overCategoryName).UnderTransactionCategoryDtos.First(x => x.UnderCategoryName == underCategoryName).BudgetPlanDetailsDto.AmountAllocated;
+    }
+    
+    private Guid GetBudgetPlanDetailsDtoId(BudgetPlanViewModel vm, string overCategoryName, string underCategoryName)
+    {
+        return vm.BudgetPlanOverTransactionCategoryDtos.First(x => x.OverCategoryName == overCategoryName).UnderTransactionCategoryDtos.First(x => x.UnderCategoryName == underCategoryName).BudgetPlanDetailsDto.Id;
     }
 }
