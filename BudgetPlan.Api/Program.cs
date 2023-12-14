@@ -6,7 +6,6 @@ using BudgetPlan.Infrastructure;
 using BudgetPlan.Persistence;
 using IdentityModel;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -22,7 +21,7 @@ builder.Logging.AddSerilog(logger);
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
-builder.Services.AddPersistence();
+builder.Services.AddPersistence(builder.Configuration);
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.TryAddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 
@@ -116,6 +115,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+using var scope = builder.Services.BuildServiceProvider().CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<BudgetPlanDbContext>();
+dbContext.Database.EnsureCreated();
 
 var app = builder.Build();
 
