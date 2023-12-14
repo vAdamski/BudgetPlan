@@ -1,6 +1,7 @@
 using System.Reflection;
 using BudgetPlan.Application.Common.Behaviours;
 using BudgetPlan.Application.Common.Interfaces;
+using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Application.Services;
 using FluentValidation;
 using MediatR;
@@ -19,6 +20,7 @@ public static class DependencyInjection
         
         // Services
         services.AddTransient<ITransactionCategoryListViewModelFactory, TransactionCategoryListViewModelFactory>();
+        services.AddTransient<IBudgetPlanVmCreatorService, BudgetPlanVmCreatorService>();
         
         // Pipelines
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));

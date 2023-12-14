@@ -1,5 +1,6 @@
 using BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
 using BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
+using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
@@ -14,8 +15,8 @@ public class BudgetPlanController : BaseController
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create(CreateBudgetPlanCommand command)
+    public async Task<IActionResult> Create([FromForm]CreateBudgetPlanDto createBudgetPlan)
     {
-        return Ok(await Mediator.Send(command));
+        return Ok(await Mediator.Send(new CreateBudgetPlanCommand(new DateTime(createBudgetPlan.Year, createBudgetPlan.Month, 1))));
     }
 }

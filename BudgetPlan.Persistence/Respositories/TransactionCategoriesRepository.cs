@@ -16,7 +16,8 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
         _currentUserService = currentUserService;
     }
 
-    public async Task<List<TransactionCategory>> GetTransactionCategoriesWithDetailsForCurrentUser(CancellationToken cancellationToken = default)
+    public async Task<List<TransactionCategory>> GetTransactionCategoriesWithUnderTransactionCategoriesForCurrentUser(
+        CancellationToken cancellationToken = default)
     {
         var categoriesWithDetails = await _context
             .TransactionCategories

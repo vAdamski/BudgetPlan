@@ -65,7 +65,7 @@ public class PrepareViewModelTransactionsCategoriesService : IPrepareViewModelTr
     {
         try
         {
-            return await _transactionCategoriesRepository.GetTransactionCategoriesWithDetailsForCurrentUser(cancellationToken);
+            return await _transactionCategoriesRepository.GetTransactionCategoriesWithUnderTransactionCategoriesForCurrentUser(cancellationToken);
         }
         catch (Exception e)
         {

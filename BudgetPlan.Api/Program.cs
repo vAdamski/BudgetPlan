@@ -6,6 +6,7 @@ using BudgetPlan.Infrastructure;
 using BudgetPlan.Persistence;
 using IdentityModel;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -30,6 +31,7 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
+        
         options.Authority = "https://localhost:5001";
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters

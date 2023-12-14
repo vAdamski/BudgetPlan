@@ -4,6 +4,6 @@ namespace BudgetPlan.Application.Common.Interfaces.Repositories;
 
 public interface ITransactionCategoriesRepository
 {
-    Task<List<TransactionCategory>> GetTransactionCategoriesWithDetailsForCurrentUser(
+    Task<List<TransactionCategory>> GetTransactionCategoriesWithUnderTransactionCategoriesForCurrentUser(
         CancellationToken cancellationToken = default);
 }

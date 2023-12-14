@@ -4,11 +4,6 @@ namespace BudgetPlan.Shared.Dtos;
 
 public class BudgetPlanUnderTransactionCategoryDto
 {
-    public BudgetPlanUnderTransactionCategoryDto()
-    {
-        
-    }
-
     public BudgetPlanUnderTransactionCategoryDto(TransactionCategory transactionCategory)
     {
         if (transactionCategory == null)
@@ -20,7 +15,7 @@ public class BudgetPlanUnderTransactionCategoryDto
         UnderCategoryName = transactionCategory.TransactionCategoryName;
     }
     
-    public Guid UnderCategoryId { get; set; }
-    public string UnderCategoryName { get; set; }
+    public Guid UnderCategoryId { get;}
+    public string UnderCategoryName { get;}
     public BudgetPlanDetailsDto BudgetPlanDetailsDto { get; set; }
 }

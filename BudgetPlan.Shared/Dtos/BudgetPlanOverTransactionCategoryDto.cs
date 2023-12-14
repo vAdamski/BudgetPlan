@@ -5,11 +5,6 @@ namespace BudgetPlan.Shared.Dtos;
 
 public class BudgetPlanOverTransactionCategoryDto
 {
-    public BudgetPlanOverTransactionCategoryDto()
-    {
-        
-    }
-
     public BudgetPlanOverTransactionCategoryDto(TransactionCategory transactionCategory)
     {
         if (transactionCategory == null)
@@ -35,11 +30,11 @@ public class BudgetPlanOverTransactionCategoryDto
         UnderTransactionCategoryDtos = underTransactionCategories.Select(x => new BudgetPlanUnderTransactionCategoryDto(x)).ToList();
     }
     
-    public string OverCategoryName { get; set; }
-    public TransactionType TransactionType { get; set; }
+    public string OverCategoryName { get; }
+    public TransactionType TransactionType { get;}
 
     public double SumOfAllCategories =>
         UnderTransactionCategoryDtos.Sum(x => x.BudgetPlanDetailsDto.ValueOfTransactionItemsForDays);
 
-    public List<BudgetPlanUnderTransactionCategoryDto> UnderTransactionCategoryDtos { get; set; }
+    public List<BudgetPlanUnderTransactionCategoryDto> UnderTransactionCategoryDtos { get; }
 }
