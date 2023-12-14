@@ -9,3 +9,43 @@ services:
       - MSSQL_SA_PASSWORD=Pass1234$
     ports:
       - 1433:1433
+    networks:
+      - budgetplan-network
+          
+  api:
+    image: budgetplan-api
+    depends_on: 
+      - sqlserver
+    container_name: budgetplan-api
+    build:
+      context: .
+      dockerfile: BudgetPlan.API/Dockerfile
+    ports:
+      - 5000:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - DB_CONNECTION_STRING="Server=sqlserver,1433;Initial Catalog=BudgetPlanDatabase;Persist Security Info=False;User ID=sa;Password=Pass1234$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+    networks:
+      - budgetplan-network    
+  
+  ids:
+    image: identityserver
+    depends_on:
+      - sqlserver
+    container_name: identityserver
+    build:
+      context: .
+      dockerfile: DuendeIdentityServer/Dockerfile
+    ports:
+      - 5001:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - DB_CONNECTION_STRING="Server=sqlserver,1433;Initial Catalog=BudgetPlanIDSDatabase;Persist Security Info=False;User ID=sa;Password=Pass1234$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+    networks:
+      - budgetplan-network
+    
+networks:
+  budgetplan-network:
+    driver: bridge
