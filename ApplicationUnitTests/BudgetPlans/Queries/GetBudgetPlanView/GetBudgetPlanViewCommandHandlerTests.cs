@@ -51,6 +51,11 @@ public class GetBudgetPlanViewCommandHandlerTests
         // Act
         var result = await commandHandler.Handle(command, CancellationToken.None);
         
+        var from = _context.BudgetPlanBases.First(x => x.Id == BudgetPlanDbContextSeedData.BUDGET_PLAN_BASE_1_GUID).DateFrom;
+        var to = _context.BudgetPlanBases.First(x => x.Id == BudgetPlanDbContextSeedData.BUDGET_PLAN_BASE_1_GUID).DateTo;
+        
+        var daysCount = (to - from).Days + 1;
+        
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBeOfType<BudgetPlanViewModel>();
@@ -69,6 +74,14 @@ public class GetBudgetPlanViewCommandHandlerTests
         GetBudgetPlanDetailsDtoId(result, "Others", "Car fuel").ShouldBe(BudgetPlanDbContextSeedData.BUDGET_PLAN_DETAILS_4_GUID);
         GetBudgetPlanDetailsDtoAmountAllocated(result, "Others", "Education").ShouldBe(1000);
         GetBudgetPlanDetailsDtoId(result, "Others", "Education").ShouldBe(BudgetPlanDbContextSeedData.BUDGET_PLAN_DETAILS_5_GUID);
+        
+        result.BudgetPlanOverTransactionCategoryDtos.ForEach(otc =>
+        {
+            otc.UnderTransactionCategoryDtos.ForEach(utc =>
+            {
+                utc.BudgetPlanDetailsDto.TransactionItemsForDaysDtos.Count.ShouldBe(daysCount);
+            });
+        });
     }
     
     private double GetBudgetPlanDetailsDtoAmountAllocated(BudgetPlanViewModel vm, string overCategoryName, string underCategoryName)
