@@ -91,19 +91,23 @@ public class BudgetPlanVmCreatorService : IBudgetPlanVmCreatorService
         {
             otc.UnderTransactionCategoryDtos.ForEach(utc =>
             {
-                var x = transactionDetails
-                    .Where(td => td.TransactionCategoryId == utc.UnderCategoryId)
-                    .GroupBy(td => td.TransactionDate)
-                    .Select(g =>
-                        new TransactionItemsForDayDto(g.Key.ToDateOnly(),
-                            g.Select(x => new TransactionItemDto(x)).ToList()))
-                    .ToList();
-
                 var budgetPlanDetails = budgetPlanBase.BudgetPlanDetailsList
                     .First(bpd => bpd.TransactionCategoryId == utc.UnderCategoryId);
+                
+                List<TransactionItemsForDayDto> transactionItemsForDayDtos = new();
+                for (var date = budgetPlanBase.DateFrom; date <= budgetPlanBase.DateTo; date = date.AddDays(1))
+                {
+                    List<TransactionItemDto> transactionItemDtos = new();
+                    transactionItemDtos.AddRange(transactionDetails
+                        .Where(td => td.TransactionCategoryId == utc.UnderCategoryId &&
+                                     td.TransactionDate.ToDateOnly() == date.ToDateOnly())
+                        .Select(x => new TransactionItemDto(x)).ToList());
+                    
+                    transactionItemsForDayDtos.Add(new TransactionItemsForDayDto(date.ToDateOnly(), transactionItemDtos));
+                }
 
                 utc.BudgetPlanDetailsDto =
-                    new BudgetPlanDetailsDto(budgetPlanDetails.Id, x, budgetPlanDetails.ExpectedAmount);
+                    new BudgetPlanDetailsDto(budgetPlanDetails.Id, transactionItemsForDayDtos, budgetPlanDetails.ExpectedAmount);
             });
         });
 
