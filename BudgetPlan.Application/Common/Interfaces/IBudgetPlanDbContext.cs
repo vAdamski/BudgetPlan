@@ -9,6 +9,6 @@ public interface IBudgetPlanDbContext
     DbSet<TransactionDetail> TransactionDetails { get; set; }
     DbSet<BudgetPlanDetails> BudgetPlanDetails { get; set; }
     DbSet<BudgetPlanBase> BudgetPlanBases { get; set; }
-    
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken());
 }
