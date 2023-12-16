@@ -1,8 +1,8 @@
 using ApplicationUnitTests.Common;
 using AutoMapper;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetListTransactionCategories;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Services;
-using BudgetPlan.Application.TransactionCategories.Queries.GetListTransactionCategories;
 using BudgetPlan.Persistence;
 using BudgetPlan.Shared.ViewModels;
 using Microsoft.EntityFrameworkCore;

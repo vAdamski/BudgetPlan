@@ -1,5 +1,5 @@
 using ApplicationUnitTests.Common;
-using BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
+using BudgetPlan.Application.Actions.BudgetPlanActions.Commands.CreateBudgetPlan;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;

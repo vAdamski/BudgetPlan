@@ -1,6 +1,6 @@
 using ApplicationUnitTests.Common;
 using AutoMapper;
-using BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
+using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetBudgetPlanView;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Services;
 using BudgetPlan.Persistence;

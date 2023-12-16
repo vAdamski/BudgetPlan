@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="TransactionCategories\Queries" />
+      <Folder Include="Actions\" />
     </ItemGroup>
 
     <ItemGroup>

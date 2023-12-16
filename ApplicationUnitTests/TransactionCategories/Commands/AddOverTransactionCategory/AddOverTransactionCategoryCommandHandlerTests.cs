@@ -1,5 +1,5 @@
 using ApplicationUnitTests.Common;
-using BudgetPlan.Application.TransactionCategories.Commands.AddOverTransactionCategory;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddOverTransactionCategory;
 using BudgetPlan.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;

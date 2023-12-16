@@ -1,6 +1,6 @@
 using BudgetPlan.Shared.ViewModels;
 
-namespace BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
+namespace BudgetPlan.Application.Common.Interfaces.Services;
 
 public interface IBudgetPlanViewModelBuilderService
 {

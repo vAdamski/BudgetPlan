@@ -1,4 +1,3 @@
-using BudgetPlan.Application.TransactionDetails.Commands.AddTransactionDetail;
 using Microsoft.Extensions.Logging;
 using Moq;
 

@@ -1,6 +1,6 @@
 using ApplicationUnitTests.Common;
 using ApplicationUnitTests.Common.Mocks;
-using BudgetPlan.Application.TransactionCategories.Commands.AddTransactionCategory;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddTransactionCategory;
 using BudgetPlan.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;

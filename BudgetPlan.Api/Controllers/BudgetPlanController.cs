@@ -1,6 +1,6 @@
-using BudgetPlan.Application.BudgetPlan.Commands.CreateBudgetPlan;
-using BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
-using BudgetPlan.Application.BudgetPlan.Queries.GetUserBudgetPlansList;
+using BudgetPlan.Application.Actions.BudgetPlanActions.Commands.CreateBudgetPlan;
+using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetBudgetPlanView;
+using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetUserBudgetPlansList;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 

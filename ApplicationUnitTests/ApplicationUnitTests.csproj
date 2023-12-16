@@ -33,4 +33,8 @@
       <ProjectReference Include="..\BudgetPlan.Shared\BudgetPlan.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Common\Mocks\BudgetPlanBaseRepositoryMock.cs" />
+    </ItemGroup>
+
 </Project>

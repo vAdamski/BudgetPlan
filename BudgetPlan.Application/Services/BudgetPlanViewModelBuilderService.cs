@@ -1,8 +1,7 @@
-using System.Runtime.Intrinsics.X86;
 using BudgetPlan.Application.Common.Interfaces.Services;
 using BudgetPlan.Shared.ViewModels;
 
-namespace BudgetPlan.Application.BudgetPlan.Queries.GetBudgetPlanView;
+namespace BudgetPlan.Application.Services;
 
 public class BudgetPlanViewModelBuilderService : IBudgetPlanViewModelBuilderService
 {

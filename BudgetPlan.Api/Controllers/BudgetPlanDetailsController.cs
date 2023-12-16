@@ -1,4 +1,4 @@
-using BudgetPlan.Application.BudgetPlanDetailsActions.Commands.UpdateBudgetPlanDetail;
+using BudgetPlan.Application.Actions.BudgetPlanDetailsActions.Commands.UpdateBudgetPlanDetail;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 

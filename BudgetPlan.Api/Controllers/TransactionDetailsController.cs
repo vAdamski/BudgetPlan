@@ -1,4 +1,4 @@
-using BudgetPlan.Application.TransactionDetails.Commands.AddTransactionDetail;
+using BudgetPlan.Application.Actions.TransactionDetailsActions.Commands.AddTransactionDetail;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
