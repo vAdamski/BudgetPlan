@@ -21,7 +21,7 @@ builder.Logging.AddSerilog(logger);
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
-builder.Services.AddPersistence();
+builder.Services.AddPersistence(builder.Configuration);
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.TryAddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 
@@ -30,6 +30,7 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
+        
         options.Authority = "https://localhost:5001";
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
@@ -114,6 +115,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+using var scope = builder.Services.BuildServiceProvider().CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<BudgetPlanDbContext>();
+dbContext.Database.EnsureCreated();
 
 var app = builder.Build();
 

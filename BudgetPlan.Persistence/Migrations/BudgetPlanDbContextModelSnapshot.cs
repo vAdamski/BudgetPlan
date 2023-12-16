@@ -22,13 +22,11 @@ namespace BudgetPlan.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlan", b =>
+            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanBase", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -62,19 +60,17 @@ namespace BudgetPlan.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BudgetPlans");
+                    b.ToTable("BudgetPlanBases");
                 });
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanDetails", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BudgetPlanId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("BudgetPlanBaseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("BudgetPlanType")
                         .HasColumnType("int");
@@ -85,6 +81,9 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ExpectedAmount")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("Inactivated")
                         .HasColumnType("datetime2");
@@ -103,15 +102,12 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TransactionCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
+                    b.Property<Guid?>("TransactionCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetPlanId");
+                    b.HasIndex("BudgetPlanBaseId");
 
                     b.HasIndex("TransactionCategoryId");
 
@@ -120,11 +116,9 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionCategory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -147,8 +141,8 @@ namespace BudgetPlan.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OverTransactionCategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("OverTransactionCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
@@ -169,11 +163,9 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -203,14 +195,14 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TransactionCategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TransactionCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -221,15 +213,15 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanDetails", b =>
                 {
-                    b.HasOne("BudgetPlan.Domain.Entities.BudgetPlan", "BudgetPlan")
+                    b.HasOne("BudgetPlan.Domain.Entities.BudgetPlanBase", "BudgetPlanBase")
                         .WithMany("BudgetPlanDetailsList")
-                        .HasForeignKey("BudgetPlanId");
+                        .HasForeignKey("BudgetPlanBaseId");
 
                     b.HasOne("BudgetPlan.Domain.Entities.TransactionCategory", "TransactionCategory")
                         .WithMany("BudgetPlanDetails")
                         .HasForeignKey("TransactionCategoryId");
 
-                    b.Navigation("BudgetPlan");
+                    b.Navigation("BudgetPlanBase");
 
                     b.Navigation("TransactionCategory");
                 });
@@ -254,7 +246,7 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Navigation("TransactionCategory");
                 });
 
-            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlan", b =>
+            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanBase", b =>
                 {
                     b.Navigation("BudgetPlanDetailsList");
                 });

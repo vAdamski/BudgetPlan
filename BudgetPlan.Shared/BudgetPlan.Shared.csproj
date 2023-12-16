@@ -5,5 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Enums\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BudgetPlan.Common\BudgetPlan.Common.csproj" />
+      <ProjectReference Include="..\BudgetPlan.Domain\BudgetPlan.Domain.csproj" />
+    </ItemGroup>
     
 </Project>

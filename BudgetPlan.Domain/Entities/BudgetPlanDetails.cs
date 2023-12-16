@@ -1,14 +1,14 @@
 using BudgetPlan.Domain.Common;
-using BudgetPlan.Shared.Enums;
+using BudgetPlan.Domain.Enums;
 
 namespace BudgetPlan.Domain.Entities;
 
 public class BudgetPlanDetails : AuditableEntity
 {
-    public float Value { get; set; } = 0f;
+    public double ExpectedAmount { get; set; } = 0f;
     public BudgetPlanType BudgetPlanType { get; set; }
-    public int? BudgetPlanId { get; set; }
-    public BudgetPlan BudgetPlan { get; set; }
-    public int? TransactionCategoryId { get; set; }
+    public Guid? BudgetPlanBaseId { get; set; }
+    public BudgetPlanBase BudgetPlanBase { get; set; }
+    public Guid? TransactionCategoryId { get; set; }
     public TransactionCategory TransactionCategory { get; set; }
 }

@@ -1,15 +1,15 @@
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Services;
-using IdentityModel;
 using DuendeIdentityServer.Models;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DuendeIdentityServer.Pages.Logout;
+namespace DuendeIdentityServer.Pages.Account.Logout;
 
 [SecurityHeaders]
 [AllowAnonymous]

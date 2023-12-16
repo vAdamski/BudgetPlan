@@ -18,11 +18,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="TransactionCategories\Queries" />
+      <Folder Include="Actions\" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BudgetPlan.Common\BudgetPlan.Common.csproj" />
       <ProjectReference Include="..\BudgetPlan.Domain\BudgetPlan.Domain.csproj" />
+      <ProjectReference Include="..\BudgetPlan.Shared\BudgetPlan.Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
-using BudgetPlan.Application.TransactionCategories.Commands.AddOverTransactionCategory;
-using BudgetPlan.Application.TransactionCategories.Commands.AddTransactionCategory;
-using BudgetPlan.Application.TransactionCategories.Queries.GetListTransactionCategories;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddOverTransactionCategory;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddTransactionCategory;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetListTransactionCategories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
