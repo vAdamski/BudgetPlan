@@ -1,7 +1,8 @@
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddOverTransactionCategory;
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddTransactionCategory;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.DeleteTransactionCategory;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.DeleteTransactionCategoryWithMigrationAction;
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetListTransactionCategories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
@@ -10,6 +11,7 @@ namespace BudgetPlan.Api.Controllers;
 public class TransactionCategoryController : BaseController
 {
     [HttpGet]
+    [Route("list")]
     public async Task<IActionResult> GetListTransactionCategories()
     {
         var response = await Mediator.Send(new GetListTransactionCategoriesQuery());
@@ -17,7 +19,7 @@ public class TransactionCategoryController : BaseController
     }
 
     [HttpPost]
-    [Route("overCategory")]
+    [Route("createOverCategory")]
     public async Task<IActionResult> AddOverTransactionCategory(AddOverTransactionCategoryCommand command)
     {
         var response = await Mediator.Send(command);
@@ -25,10 +27,26 @@ public class TransactionCategoryController : BaseController
     }
     
     [HttpPost]
-    [Route("category")]
+    [Route("createCategory")]
     public async Task<IActionResult> AddTransactionCategory(AddTransactionCategoryCommand command)
     {
         var response = await Mediator.Send(command);
         return Ok(response);
+    }
+    
+    [HttpDelete]
+    [Route("delete/utc/{id}")]
+    public async Task<IActionResult> DeleteTransactionCategory(Guid id)
+    {
+        await Mediator.Send(new DeleteTransactionCategoryCommand(id));
+        return NoContent();
+    }
+    
+    [HttpDelete]
+    [Route("delete/utc/{id}/{migrationId}")]
+    public async Task<IActionResult> DeleteTransactionCategory(Guid id, Guid migrationId)
+    {
+        await Mediator.Send(new DeleteTransactionCategoryWithMigrationActionCommand(id, migrationId));
+        return NoContent();
     }
 }
