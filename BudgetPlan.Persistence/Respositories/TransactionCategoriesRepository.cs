@@ -3,7 +3,6 @@ using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Domain.Entities;
 using BudgetPlan.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace BudgetPlan.Persistence.Respositories;
 
@@ -11,15 +10,12 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
 {
     private readonly IBudgetPlanDbContext _context;
     private readonly ICurrentUserService _currentUserService;
-    private readonly ILogger<TransactionCategoriesRepository> _logger;
 
     public TransactionCategoriesRepository(IBudgetPlanDbContext context,
-        ICurrentUserService currentUserService,
-        ILogger<TransactionCategoriesRepository> logger)
+        ICurrentUserService currentUserService)
     {
         _context = context;
         _currentUserService = currentUserService;
-        _logger = logger;
     }
 
 
@@ -58,15 +54,7 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
 
         _context.TransactionCategories.Remove(transactionCategory);
 
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error while deleting transaction category with id = {id}", id);
-            throw;
-        }
+        await _context.SaveChangesAsync();
     }
 
     public async Task<TransactionCategory> GetTransactionCategory(Guid id, string userEmail,
@@ -90,5 +78,18 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
             throw new TransactionCategoryNotFoundException(id);
 
         return transactionCategory;
+    }
+
+    public async Task<bool> IsTransactionCategoryUnderCategory(Guid transactionCategoryId)
+    {
+        var transactionCategory = await _context.TransactionCategories
+            .Where(x => x.Id == transactionCategoryId &&
+                        x.StatusId == 1)
+            .FirstOrDefaultAsync();
+
+        if (transactionCategory == null)
+            throw new TransactionCategoryNotFoundException(transactionCategoryId);
+
+        return transactionCategory.OverTransactionCategoryId != null;
     }
 }
