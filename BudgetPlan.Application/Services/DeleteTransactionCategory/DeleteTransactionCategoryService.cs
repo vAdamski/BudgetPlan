@@ -2,7 +2,7 @@ using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Application.Common.Interfaces.Services;
 using BudgetPlan.Domain.Entities;
-using Microsoft.Extensions.Logging;
+using BudgetPlan.Domain.Exceptions;
 
 namespace BudgetPlan.Application.Services.DeleteTransactionCategory;
 
@@ -11,17 +11,14 @@ public class DeleteTransactionCategoryService : IDeleteTransactionCategoryServic
     private readonly ITransactionCategoriesRepository _transactionCategoriesRepository;
     private readonly ITransactionDetailsRepository _transactionDetailsRepository;
     private readonly ICurrentUserService _currentUserService;
-    private readonly ILogger<DeleteTransactionCategoryService> _logger;
 
     public DeleteTransactionCategoryService(
         ITransactionCategoriesRepository transactionCategoriesRepository,
-        ICurrentUserService currentUserService,
-        ILogger<DeleteTransactionCategoryService> logger, 
-        ITransactionDetailsRepository transactionDetailsRepository)
+        ITransactionDetailsRepository transactionDetailsRepository,
+        ICurrentUserService currentUserService)
     {
         _transactionCategoriesRepository = transactionCategoriesRepository;
         _currentUserService = currentUserService;
-        _logger = logger;
         _transactionDetailsRepository = transactionDetailsRepository;
     }
 
@@ -32,6 +29,9 @@ public class DeleteTransactionCategoryService : IDeleteTransactionCategoryServic
     
     public async Task DeleteTransactionCategoryWithMigrationItems(Guid id, Guid utcId, CancellationToken cancellationToken = default)
     {
+        if (!await IsTransactionCategoryUnderCategory(utcId))
+            throw new TransactionCategoryCannotBeOverTransactionCategoryException(utcId);
+        
         List<TransactionDetail> transactionDetails = 
             await GetTransactionDetails(id, _currentUserService.Email, cancellationToken);
         
@@ -48,38 +48,25 @@ public class DeleteTransactionCategoryService : IDeleteTransactionCategoryServic
     
     private async Task<List<TransactionDetail>> GetTransactionDetails(Guid transactionCategoryId, string userEmail, CancellationToken cancellationToken)
     {
-        TransactionCategory transactionCategory;
-
-        try
-        {
-            transactionCategory = await _transactionCategoriesRepository
-                .GetTransactionCategory(transactionCategoryId, userEmail, cancellationToken);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, e.Message);
-            throw;
-        }
-        
         List<TransactionDetail> transactionDetails;
 
-        if (transactionCategory.OverTransactionCategoryId != null)
+        if (await IsTransactionCategoryUnderCategory(transactionCategoryId))
             transactionDetails = await _transactionDetailsRepository
-                .GetTransactionDetailsForUnderTransactionCategory(transactionCategory.Id, userEmail, cancellationToken);
+                .GetTransactionDetailsForUnderTransactionCategory(transactionCategoryId, userEmail, cancellationToken);
         else
             transactionDetails = await _transactionDetailsRepository
-                .GetTransactionDetailsForOverTransactionCategory(transactionCategory.Id, userEmail, cancellationToken);
+                .GetTransactionDetailsForOverTransactionCategory(transactionCategoryId, userEmail, cancellationToken);
 
         return transactionDetails;
     }
     
     private async Task DeleteTransactionCategory(Guid id, string userEmail, CancellationToken cancellationToken)
     {
-        List<TransactionDetail> transactionDetails = 
-            await GetTransactionDetails(id, userEmail, cancellationToken);
-        
-        await _transactionDetailsRepository.DeleteRangeAsync(transactionDetails, cancellationToken);
-        
         await _transactionCategoriesRepository.DeleteAsync(id, userEmail, cancellationToken);
+    }
+
+    private async Task<bool> IsTransactionCategoryUnderCategory(Guid transactionCategoryId)
+    {
+        return await _transactionCategoriesRepository.IsTransactionCategoryUnderCategory(transactionCategoryId);
     }
 }

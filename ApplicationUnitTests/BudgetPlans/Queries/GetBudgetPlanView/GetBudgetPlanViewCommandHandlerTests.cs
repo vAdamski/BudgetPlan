@@ -1,5 +1,4 @@
 using ApplicationUnitTests.Common;
-using ApplicationUnitTests.Common.Mocks;
 using AutoMapper;
 using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetBudgetPlanView;
 using BudgetPlan.Application.Common.Interfaces;
@@ -33,7 +32,7 @@ public class GetBudgetPlanViewCommandHandlerTests
         // Arrange
         var creatorService = new BudgetPlanVmCreatorService(
             new BudgetPlanBaseRepository(_context, _currentUserService),
-            new TransactionCategoriesRepository(_context, _currentUserService, LoggerMockFactory<TransactionCategoriesRepository>.Create()),
+            new TransactionCategoriesRepository(_context, _currentUserService),
             new Logger<BudgetPlanBaseRepository>(new LoggerFactory()),
             new TransactionDetailsRepository(_context),
             _currentUserService
