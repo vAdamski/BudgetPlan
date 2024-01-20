@@ -28,7 +28,7 @@ public class DeleteTransactionCategoryWithMigrationActionCommandHandler : IReque
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error while deleting transaction category");
+            _logger.LogError(e, "Error while deleting transaction category with migration items");
             throw;
         }
     }
