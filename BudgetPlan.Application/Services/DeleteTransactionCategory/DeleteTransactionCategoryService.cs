@@ -26,27 +26,32 @@ public class DeleteTransactionCategoryService : IDeleteTransactionCategoryServic
     {
         await DeleteTransactionCategory(id, _currentUserService.Email, cancellationToken);
     }
-    
-    public async Task DeleteTransactionCategoryWithMigrationItems(Guid id, Guid utcId, CancellationToken cancellationToken = default)
+
+    public async Task DeleteTransactionCategoryWithMigrationItems(Guid transactionCategoryToDeleteId,
+        Guid underTransactionCategoryMigrationToId, CancellationToken cancellationToken = default)
     {
-        if (!await IsTransactionCategoryUnderCategory(utcId))
-            throw new TransactionCategoryCannotBeOverTransactionCategoryException(utcId);
-        
-        List<TransactionDetail> transactionDetails = 
-            await GetTransactionDetails(id, _currentUserService.Email, cancellationToken);
-        
+        if (!await IsTransactionCategoryUnderCategory(underTransactionCategoryMigrationToId))
+            throw new TransactionCategoryCannotBeOverTransactionCategoryException(
+                underTransactionCategoryMigrationToId);
+
+        if (!await IsTransactionCategoryMigrateToIsUnderTransactionCategoryToDelete(transactionCategoryToDeleteId,
+                underTransactionCategoryMigrationToId))
+            throw new TransactionCategoryMigrateToCannotBeUnderTransactionCategoryToDeleteException(
+                "Destination transaction category cannot be under the transaction category to delete.");
+
+        List<TransactionDetail> transactionDetails =
+            await GetTransactionDetails(transactionCategoryToDeleteId, _currentUserService.Email, cancellationToken);
+
         if (transactionDetails.Any())
-            transactionDetails.ForEach(td =>
-            {
-                td.TransactionCategoryId = utcId;
-            });
-        
+            transactionDetails.ForEach(td => { td.TransactionCategoryId = underTransactionCategoryMigrationToId; });
+
         await _transactionDetailsRepository.UpdateTransactionDetails(transactionDetails, cancellationToken);
-        
-        await DeleteTransactionCategory(id, _currentUserService.Email, cancellationToken);
+
+        await DeleteTransactionCategory(transactionCategoryToDeleteId, _currentUserService.Email, cancellationToken);
     }
-    
-    private async Task<List<TransactionDetail>> GetTransactionDetails(Guid transactionCategoryId, string userEmail, CancellationToken cancellationToken)
+
+    private async Task<List<TransactionDetail>> GetTransactionDetails(Guid transactionCategoryId, string userEmail,
+        CancellationToken cancellationToken)
     {
         List<TransactionDetail> transactionDetails;
 
@@ -59,7 +64,7 @@ public class DeleteTransactionCategoryService : IDeleteTransactionCategoryServic
 
         return transactionDetails;
     }
-    
+
     private async Task DeleteTransactionCategory(Guid id, string userEmail, CancellationToken cancellationToken)
     {
         await _transactionCategoriesRepository.DeleteAsync(id, userEmail, cancellationToken);
@@ -68,5 +73,13 @@ public class DeleteTransactionCategoryService : IDeleteTransactionCategoryServic
     private async Task<bool> IsTransactionCategoryUnderCategory(Guid transactionCategoryId)
     {
         return await _transactionCategoriesRepository.IsTransactionCategoryUnderCategory(transactionCategoryId);
+    }
+
+    private async Task<bool> IsTransactionCategoryMigrateToIsUnderTransactionCategoryToDelete(
+        Guid underTransactionCategoryToDelete,
+        Guid underTransactionCategoryToCheck)
+    {
+        return await _transactionCategoriesRepository.IsTransactionCategoryInclude(underTransactionCategoryToDelete,
+            underTransactionCategoryToCheck);
     }
 }

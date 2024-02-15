@@ -92,4 +92,11 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
 
         return transactionCategory.OverTransactionCategoryId != null;
     }
+
+    public Task<bool> IsTransactionCategoryInclude(Guid mainTransactionCategory, Guid transactionCategoryToCheck)
+    {
+        return _context.TransactionCategories
+            .AnyAsync(x => x.Id == mainTransactionCategory &&
+                           x.SubTransactionCategories.Any(y => y.Id == transactionCategoryToCheck));
+    }
 }
