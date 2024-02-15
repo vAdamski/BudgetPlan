@@ -29,7 +29,7 @@ public class GetUserBudgetPlansListQueryHandler : IRequestHandler<GetUserBudgetP
         var userEmail = _currentUserService.Email;
         
         if (userEmail == null)
-            throw new UserEmailNotFoundInTokenException();
+            throw new UserEmailNotFoundInTokenException("User email was not found in token.");
 
         List<BudgetPlanBase> budgetPlanBases;
         try

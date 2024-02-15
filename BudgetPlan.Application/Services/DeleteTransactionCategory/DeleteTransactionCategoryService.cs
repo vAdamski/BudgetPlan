@@ -31,8 +31,8 @@ public class DeleteTransactionCategoryService : IDeleteTransactionCategoryServic
         Guid underTransactionCategoryMigrationToId, CancellationToken cancellationToken = default)
     {
         if (!await IsTransactionCategoryUnderCategory(underTransactionCategoryMigrationToId))
-            throw new TransactionCategoryCannotBeOverTransactionCategoryException(
-                underTransactionCategoryMigrationToId);
+            throw new TransactionCategoryCannotBeOverTransactionCategoryException($"Transaction category with id {underTransactionCategoryMigrationToId} is not under transaction category"
+                );
 
         if (!await IsTransactionCategoryMigrateToIsUnderTransactionCategoryToDelete(transactionCategoryToDeleteId,
                 underTransactionCategoryMigrationToId))

@@ -1,6 +1,8 @@
 namespace BudgetPlan.Domain.Exceptions;
 
-public class UserEmailNotFoundInTokenException : Exception
+public class UserEmailNotFoundInTokenException : ExceptionBase
 {
-    public UserEmailNotFoundInTokenException() : base($"User email was not found in token.") { }
+    public UserEmailNotFoundInTokenException(string message) : base(message)
+    {
+    }
 }

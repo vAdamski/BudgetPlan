@@ -45,7 +45,7 @@ public class BudgetPlanBaseRepository : IBudgetPlanBaseRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         if (budgetPlanBase == null)
-            throw new BudgetPlanNotFoundException(id);
+            throw new BudgetPlanNotFoundException($"Budget plan with id {id} was not found");
         
         return budgetPlanBase;
     }
@@ -60,7 +60,7 @@ public class BudgetPlanBaseRepository : IBudgetPlanBaseRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         if (budgetPlanBase == null)
-            throw new BudgetPlanNotFoundException(id);
+            throw new BudgetPlanNotFoundException($"Budget plan with id {id} was not found");
         
         return budgetPlanBase;
     }

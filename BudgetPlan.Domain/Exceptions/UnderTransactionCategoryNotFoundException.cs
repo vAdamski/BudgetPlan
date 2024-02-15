@@ -1,10 +1,8 @@
 namespace BudgetPlan.Domain.Exceptions;
 
-public class UnderTransactionCategoryNotFoundException : Exception
+public class UnderTransactionCategoryNotFoundException : ExceptionBase
 {
-    public UnderTransactionCategoryNotFoundException(Guid guid) 
-        : base($"Under transaction category with Id = {guid} has not")
+    public UnderTransactionCategoryNotFoundException(string message) : base(message)
     {
-        
     }
 }

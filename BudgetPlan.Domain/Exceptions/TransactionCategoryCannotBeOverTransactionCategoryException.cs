@@ -1,9 +1,8 @@
 namespace BudgetPlan.Domain.Exceptions;
 
-public class TransactionCategoryCannotBeOverTransactionCategoryException : Exception
+public class TransactionCategoryCannotBeOverTransactionCategoryException : ExceptionBase
 {
-    public TransactionCategoryCannotBeOverTransactionCategoryException(Guid transactionCategoryId)
-        : base($"Transaction category with id {transactionCategoryId} is not under transaction category")
+    public TransactionCategoryCannotBeOverTransactionCategoryException(string message) : base(message)
     {
     }
 }
