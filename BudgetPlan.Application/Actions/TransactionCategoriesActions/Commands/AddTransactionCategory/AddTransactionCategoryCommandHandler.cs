@@ -32,7 +32,7 @@ public class AddTransactionCategoryCommandHandler : IRequestHandler<AddTransacti
             .FirstOrDefaultAsync(cancellationToken);
 
         if (overTransactionCategory is null)
-            throw new OverTransactionCategoryNotFoundException(request.OverTransactionCategoryId);
+            throw new OverTransactionCategoryNotFoundException($"TransactionCategory with Id = {request.OverTransactionCategoryId} has not been found for this user!");
 
         transactionCategory.OverTransactionCategoryId = overTransactionCategory.Id;
         transactionCategory.TransactionType = overTransactionCategory.TransactionType;

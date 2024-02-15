@@ -50,7 +50,7 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         if (transactionCategory == null)
-            throw new TransactionCategoryNotFoundException(id);
+            throw new TransactionCategoryNotFoundException($"Transaction category with Id = {id} has not been found for this user!");
 
         _context.TransactionCategories.Remove(transactionCategory);
 
@@ -75,7 +75,7 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         if (transactionCategory == null)
-            throw new TransactionCategoryNotFoundException(id);
+            throw new TransactionCategoryNotFoundException($"Transaction category with Id = {id} has not been found for this user!");
 
         return transactionCategory;
     }
@@ -88,7 +88,7 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
             .FirstOrDefaultAsync();
 
         if (transactionCategory == null)
-            throw new TransactionCategoryNotFoundException(transactionCategoryId);
+            throw new TransactionCategoryNotFoundException($"Transaction category with Id = {transactionCategoryId} has not been found for this user!");
 
         return transactionCategory.OverTransactionCategoryId != null;
     }

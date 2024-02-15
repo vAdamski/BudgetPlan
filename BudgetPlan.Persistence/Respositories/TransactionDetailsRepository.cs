@@ -25,7 +25,7 @@ public class TransactionDetailsRepository : ITransactionDetailsRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         if (otc == null)
-            throw new OverTransactionCategoryNotFoundException(id);
+            throw new OverTransactionCategoryNotFoundException($"TransactionCategory with Id = {id} has not been found for this user!");
         
         var transactionDetails = new List<TransactionDetail>();
         
@@ -46,7 +46,7 @@ public class TransactionDetailsRepository : ITransactionDetailsRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         if (utc == null)
-            throw new UnderTransactionCategoryNotFoundException(id);
+            throw new UnderTransactionCategoryNotFoundException($"Under transaction category with Id = {id} has not");
 
         return utc.TransactionDetails;
     }

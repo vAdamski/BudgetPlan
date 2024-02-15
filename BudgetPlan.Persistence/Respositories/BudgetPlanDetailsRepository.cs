@@ -26,7 +26,7 @@ public class BudgetPlanDetailsRepository : IBudgetPlanDetailsRepository
 
         if (budgetPlanDetail == null)
         {
-            throw new BudgetPlanDetailNotFoundException(id);
+            throw new BudgetPlanDetailNotFoundException($"Budget plan detail with id {id} was not found");
         }
 
         budgetPlanDetail.ExpectedAmount = expectedAmount;
