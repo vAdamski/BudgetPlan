@@ -31,6 +31,8 @@ public class BudgetPlanDbContext : DbContext, IBudgetPlanDbContext
     public DbSet<TransactionDetail> TransactionDetails { get; set; }
     public DbSet<BudgetPlanDetails> BudgetPlanDetails { get; set; }
     public DbSet<BudgetPlanBase> BudgetPlanBases { get; set; }
+    public DbSet<Access> Accesses { get; set; }
+    public DbSet<AccessedPerson> AccessedPersons { get; set; }
 
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

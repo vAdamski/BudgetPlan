@@ -11,4 +11,7 @@ public class BudgetPlanDetails : AuditableEntity
     public BudgetPlanBase BudgetPlanBase { get; set; }
     public Guid? TransactionCategoryId { get; set; }
     public TransactionCategory TransactionCategory { get; set; }
+    
+    public Guid? AccessId { get; set; }
+    public Access? Access { get; set; }
 }

@@ -16,4 +16,7 @@ public class BudgetPlanBase : AuditableEntity
     public DateTime DateTo { get; private set; }
     
     public List<BudgetPlanDetails> BudgetPlanDetailsList { get; set; } = new();
+    
+    public Guid? AccessId { get; set; }
+    public Access? Access { get; set; }
 }

@@ -1,4 +1,5 @@
 using BudgetPlan.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BudgetPlan.Persistence.Configurations;
@@ -15,6 +16,7 @@ public class TransactionDetailsConfiguration : IBaseConfiguration<TransactionDet
         
         builder.HasOne(x => x.TransactionCategory)
             .WithMany(x => x.TransactionDetails)
-            .HasForeignKey(x => x.TransactionCategoryId);
+            .HasForeignKey(x => x.TransactionCategoryId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
