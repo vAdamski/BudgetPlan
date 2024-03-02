@@ -9,4 +9,7 @@ public class TransactionDetail : AuditableEntity
     public DateTime TransactionDate { get; set; }
     public Guid TransactionCategoryId { get; set; }
     public TransactionCategory TransactionCategory { get; set; }
+    
+    public Guid? AccessId { get; set; }
+    public Access? Access { get; set; }
 }
