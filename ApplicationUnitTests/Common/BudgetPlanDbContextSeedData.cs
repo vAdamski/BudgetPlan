@@ -31,6 +31,14 @@ public static class BudgetPlanDbContextSeedData
     
     public static void Seed(BudgetPlanDbContext context)
     {
+        var access = Access.Create();
+        access.AddPerson(CREATED_BY);
+
+        context.Accesses.AddRange(new List<Access>()
+        {
+            access
+        });
+        
         context.TransactionCategories.AddRange(new[]
         {
             new TransactionCategory
@@ -41,7 +49,8 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 TransactionCategoryName = "Earnings",
                 TransactionType = TransactionType.Income,
-                OverTransactionCategoryId = null
+                OverTransactionCategoryId = null,
+                AccessId = access.Id
             },
             new TransactionCategory
             {
@@ -51,7 +60,8 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 TransactionCategoryName = "Work",
                 TransactionType = TransactionType.Income,
-                OverTransactionCategoryId = TRANSACTION_CATEGORY_1_GUID
+                OverTransactionCategoryId = TRANSACTION_CATEGORY_1_GUID,
+                AccessId = access.Id
             },
             new TransactionCategory
             {
@@ -61,7 +71,8 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 TransactionCategoryName = "Home",
                 TransactionType = TransactionType.Expense,
-                OverTransactionCategoryId = null
+                OverTransactionCategoryId = null,
+                AccessId = access.Id
             },
             new TransactionCategory
             {
@@ -71,7 +82,8 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 TransactionCategoryName = "Food",
                 TransactionType = TransactionType.Expense,
-                OverTransactionCategoryId = TRANSACTION_CATEGORY_3_GUID
+                OverTransactionCategoryId = TRANSACTION_CATEGORY_3_GUID,
+                AccessId = access.Id
             },
             new TransactionCategory
             {
@@ -81,7 +93,8 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 TransactionCategoryName = "Rent",
                 TransactionType = TransactionType.Expense,
-                OverTransactionCategoryId = TRANSACTION_CATEGORY_3_GUID
+                OverTransactionCategoryId = TRANSACTION_CATEGORY_3_GUID,
+                AccessId = access.Id
             },
             new TransactionCategory
             {
@@ -91,7 +104,8 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 TransactionCategoryName = "Others",
                 TransactionType = TransactionType.Expense,
-                OverTransactionCategoryId = null
+                OverTransactionCategoryId = null,
+                AccessId = access.Id
             },
             new TransactionCategory
             {
@@ -101,7 +115,8 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 TransactionCategoryName = "Car fuel",
                 TransactionType = TransactionType.Expense,
-                OverTransactionCategoryId = TRANSACTION_CATEGORY_6_GUID
+                OverTransactionCategoryId = TRANSACTION_CATEGORY_6_GUID,
+                AccessId = access.Id
             },
             new TransactionCategory
             {
@@ -111,7 +126,8 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 TransactionCategoryName = "Education",
                 TransactionType = TransactionType.Expense,
-                OverTransactionCategoryId = TRANSACTION_CATEGORY_6_GUID
+                OverTransactionCategoryId = TRANSACTION_CATEGORY_6_GUID,
+                AccessId = access.Id
             }
         });
 
@@ -123,6 +139,7 @@ public static class BudgetPlanDbContextSeedData
                 CreatedBy = CREATED_BY,
                 Created = new DateTime(2023, 9, 1),
                 StatusId = 1,
+                AccessId = access.Id
             }
         });
         
@@ -138,6 +155,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
                 TransactionCategoryId = TRANSACTION_CATEGORY_2_GUID,
+                AccessId = access.Id
             },
             new BudgetPlanDetails
             {
@@ -149,6 +167,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
                 TransactionCategoryId = TRANSACTION_CATEGORY_4_GUID,
+                AccessId = access.Id
             },
             new BudgetPlanDetails
             {
@@ -160,6 +179,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
                 TransactionCategoryId = TRANSACTION_CATEGORY_5_GUID,
+                AccessId = access.Id
             },
             new BudgetPlanDetails
             {
@@ -171,6 +191,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
                 TransactionCategoryId = TRANSACTION_CATEGORY_7_GUID,
+                AccessId = access.Id
             },
             new BudgetPlanDetails
             {
@@ -182,6 +203,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
                 TransactionCategoryId = TRANSACTION_CATEGORY_8_GUID,
+                AccessId = access.Id
             },
         });
         
@@ -197,6 +219,7 @@ public static class BudgetPlanDbContextSeedData
                 Description = "Salary",
                 TransactionDate = new DateTime(2023,9,10),
                 TransactionCategoryId = TRANSACTION_CATEGORY_2_GUID,
+                AccessId = access.Id
             },
             new TransactionDetail
             {
@@ -208,6 +231,7 @@ public static class BudgetPlanDbContextSeedData
                 Description = "Rent",
                 TransactionDate = new DateTime(2023,9,10),
                 TransactionCategoryId = TRANSACTION_CATEGORY_5_GUID,
+                AccessId = access.Id
             },
             new TransactionDetail
             {
@@ -219,6 +243,7 @@ public static class BudgetPlanDbContextSeedData
                 Description = "Education",
                 TransactionDate = new DateTime(2023,9,10),
                 TransactionCategoryId = TRANSACTION_CATEGORY_8_GUID,
+                AccessId = access.Id
             },
             new TransactionDetail
             {
@@ -230,6 +255,7 @@ public static class BudgetPlanDbContextSeedData
                 Description = "Car fuel",
                 TransactionDate = new DateTime(2023,9,11),
                 TransactionCategoryId = TRANSACTION_CATEGORY_7_GUID,
+                AccessId = access.Id
             },
             new TransactionDetail
             {
@@ -241,6 +267,7 @@ public static class BudgetPlanDbContextSeedData
                 Description = "Food shop",
                 TransactionDate = new DateTime(2023,9,11),
                 TransactionCategoryId = TRANSACTION_CATEGORY_4_GUID,
+                AccessId = access.Id
             },
             new TransactionDetail
             {
@@ -252,9 +279,9 @@ public static class BudgetPlanDbContextSeedData
                 Description = "Food shop",
                 TransactionDate = new DateTime(2023,9,18),
                 TransactionCategoryId = TRANSACTION_CATEGORY_4_GUID,
+                AccessId = access.Id
             }
         });
-
 
         context.SaveChanges();
     }
