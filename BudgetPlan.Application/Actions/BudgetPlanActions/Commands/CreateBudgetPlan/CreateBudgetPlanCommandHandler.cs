@@ -25,7 +25,7 @@ public class CreateBudgetPlanCommandHandler : IRequestHandler<CreateBudgetPlanCo
                         x.StatusId == 1)
             .ToListAsync(cancellationToken);
         
-        var budgetPlan = new BudgetPlanBase(request.Year, request.Month);
+        var budgetPlan = new BudgetPlanBase(request.Year, request.Month, _currentUserService.Email);
         
         await _ctx.BudgetPlanBases.AddAsync(budgetPlan, cancellationToken);
         await _ctx.SaveChangesAsync(cancellationToken);

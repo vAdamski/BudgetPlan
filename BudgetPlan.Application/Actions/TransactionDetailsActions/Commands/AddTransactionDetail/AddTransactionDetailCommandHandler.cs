@@ -34,7 +34,7 @@ public class AddTransactionDetailCommandHandler : IRequestHandler<AddTransaction
 
             if (!categories.Contains(request.TransactionCategoryId))
             {
-                throw new TransactionCategoryNotFoundException($"Transaction category with Id = {request.TransactionCategoryId} has not been found for this user!");
+                throw new TransactionCategoryNotFoundException(request.TransactionCategoryId);
             }
         }
         catch (Exception e)

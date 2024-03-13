@@ -117,7 +117,7 @@ public static class BudgetPlanDbContextSeedData
 
         context.BudgetPlanBases.AddRange(new[]
         {
-            new BudgetPlanBase(2023,9)
+            new BudgetPlanBase(2023,9, CREATED_BY)
             {
                 Id = BUDGET_PLAN_BASE_1_GUID,
                 CreatedBy = CREATED_BY,

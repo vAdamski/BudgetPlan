@@ -16,11 +16,6 @@ public class Access : AuditableEntity
     {
     }
 
-    public Access(AccessedPerson accessedPerson)
-    {
-        AccessedPersons = new List<AccessedPerson> { accessedPerson };
-    }
-
     public Access(List<AccessedPerson> accessedPersons)
     {
         AccessedPersons = accessedPersons;
@@ -53,5 +48,10 @@ public class Access : AuditableEntity
     public bool IsAccessed(string email)
     {
         return AccessedPersons.Any(p => p.Email == email);
+    }
+
+    public static Access Create()
+    {
+        return new Access();
     }
 }

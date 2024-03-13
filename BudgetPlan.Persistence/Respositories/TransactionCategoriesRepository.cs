@@ -50,7 +50,7 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         if (transactionCategory == null)
-            throw new TransactionCategoryNotFoundException($"Transaction category with Id = {id} has not been found for this user!");
+            throw new TransactionCategoryNotFoundException(id);
 
         _context.TransactionCategories.Remove(transactionCategory);
 
@@ -75,7 +75,7 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
             .FirstOrDefaultAsync(cancellationToken);
 
         if (transactionCategory == null)
-            throw new TransactionCategoryNotFoundException($"Transaction category with Id = {id} has not been found for this user!");
+            throw new TransactionCategoryNotFoundException(id);
 
         return transactionCategory;
     }
@@ -88,15 +88,16 @@ public class TransactionCategoriesRepository : ITransactionCategoriesRepository
             .FirstOrDefaultAsync();
 
         if (transactionCategory == null)
-            throw new TransactionCategoryNotFoundException($"Transaction category with Id = {transactionCategoryId} has not been found for this user!");
+            throw new TransactionCategoryNotFoundException(transactionCategoryId);
 
         return transactionCategory.OverTransactionCategoryId != null;
     }
 
-    public Task<bool> IsTransactionCategoryInclude(Guid mainTransactionCategory, Guid transactionCategoryToCheck)
+    public async Task<bool> IsTransactionCategoryInclude(Guid mainTransactionCategoryId, Guid transactionCategoryIdToCheck)
     {
-        return _context.TransactionCategories
-            .AnyAsync(x => x.Id == mainTransactionCategory &&
-                           x.SubTransactionCategories.Any(y => y.Id == transactionCategoryToCheck));
+        return await _context.TransactionCategories
+            .AsSplitQuery()
+            .AnyAsync(x => x.Id == mainTransactionCategoryId &&
+                      x.SubTransactionCategories.Any(x => x.Id == transactionCategoryIdToCheck));
     }
 }

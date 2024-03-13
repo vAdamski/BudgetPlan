@@ -34,10 +34,9 @@ public class DeleteTransactionCategoryService : IDeleteTransactionCategoryServic
             throw new TransactionCategoryCannotBeOverTransactionCategoryException($"Transaction category with id {underTransactionCategoryMigrationToId} is not under transaction category"
                 );
 
-        if (!await IsTransactionCategoryMigrateToIsUnderTransactionCategoryToDelete(transactionCategoryToDeleteId,
+        if (await IsTransactionCategoryMigrateToIsUnderTransactionCategoryToDelete(transactionCategoryToDeleteId,
                 underTransactionCategoryMigrationToId))
-            throw new TransactionCategoryMigrateToCannotBeUnderTransactionCategoryToDeleteException(
-                "Destination transaction category cannot be under the transaction category to delete.");
+            throw new TransactionCategoryMigrateToCannotBeUnderTransactionCategoryToDeleteException();
 
         List<TransactionDetail> transactionDetails =
             await GetTransactionDetails(transactionCategoryToDeleteId, _currentUserService.Email, cancellationToken);

@@ -2,7 +2,8 @@
 
 public class TransactionCategoryMigrateToCannotBeUnderTransactionCategoryToDeleteException : ExceptionBase
 {
-    public TransactionCategoryMigrateToCannotBeUnderTransactionCategoryToDeleteException(string message) : base(message)
-    {   
+    public TransactionCategoryMigrateToCannotBeUnderTransactionCategoryToDeleteException() : base(
+        "Destination transaction category cannot be under the transaction category to delete.")
+    {
     }
 }
