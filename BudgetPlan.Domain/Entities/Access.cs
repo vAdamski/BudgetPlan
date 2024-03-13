@@ -16,11 +16,6 @@ public class Access : AuditableEntity
     {
     }
 
-    public Access(List<AccessedPerson> accessedPersons)
-    {
-        AccessedPersons = accessedPersons;
-    }
-
     public void AddPerson(string email)
     {
         if (string.IsNullOrEmpty(email))

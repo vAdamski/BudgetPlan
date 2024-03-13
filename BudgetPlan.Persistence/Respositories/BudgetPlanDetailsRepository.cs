@@ -21,8 +21,8 @@ public class BudgetPlanDetailsRepository : IBudgetPlanDetailsRepository
     {
         var budgetPlanDetail = await _context.BudgetPlanDetails.FirstOrDefaultAsync(x =>
             x.Id == id &&
-            x.BudgetPlanBase.CreatedBy == _currentUserService.Email &&
-            x.BudgetPlanBase.StatusId == 1);
+            x.BudgetPlanBase.Access.AccessedPersons.Any(y => y.Email == _currentUserService.Email) &&
+            x.IsActive);
 
         if (budgetPlanDetail == null)
         {
