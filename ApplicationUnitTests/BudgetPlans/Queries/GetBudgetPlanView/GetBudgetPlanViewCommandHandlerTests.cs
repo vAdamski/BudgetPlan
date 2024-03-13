@@ -1,5 +1,6 @@
 using ApplicationUnitTests.Common;
 using AutoMapper;
+using BudgetPlan.Api.Services;
 using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetBudgetPlanView;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Services;
@@ -7,6 +8,7 @@ using BudgetPlan.Persistence;
 using BudgetPlan.Persistence.Respositories;
 using BudgetPlan.Shared.ViewModels;
 using Microsoft.Extensions.Logging;
+using Moq;
 using Shouldly;
 using Xunit;
 

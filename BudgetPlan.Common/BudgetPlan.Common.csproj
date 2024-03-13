@@ -7,4 +7,8 @@
         <LangVersion>default</LangVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BudgetPlan.Domain\BudgetPlan.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

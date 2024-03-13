@@ -1,5 +1,6 @@
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
+using BudgetPlan.Common.Extension;
 using BudgetPlan.Domain.Entities;
 using BudgetPlan.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,8 @@ public class TransactionDetailsRepository : ITransactionDetailsRepository
         string userEmail, CancellationToken cancellationToken = default)
     {
         var otc = await _ctx.TransactionCategories
-            .Where(otc => otc.Id == id && otc.CreatedBy == userEmail && otc.StatusId == 1)
+            .Where(otc => otc.Id == id && otc.CreatedBy == userEmail)
+            .IsActive()
             .Include(otc => otc.SubTransactionCategories)
             .ThenInclude(utc => utc.TransactionDetails)
             .FirstOrDefaultAsync(cancellationToken);
@@ -41,7 +43,8 @@ public class TransactionDetailsRepository : ITransactionDetailsRepository
         string userEmail, CancellationToken cancellationToken = default)
     {
         var utc = await _ctx.TransactionCategories
-            .Where(utc => utc.Id == id && utc.CreatedBy == userEmail && utc.StatusId == 1)
+            .Where(utc => utc.Id == id && utc.CreatedBy == userEmail)
+            .IsActive()
             .Include(utc => utc.TransactionDetails)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -68,8 +71,8 @@ public class TransactionDetailsRepository : ITransactionDetailsRepository
     {
         return await _ctx.TransactionDetails.Where(x => x.CreatedBy == userEmail &&
                                                         x.TransactionDate >= dateFrom &&
-                                                        x.TransactionDate <= dateTo &&
-                                                        x.StatusId == 1)
+                                                        x.TransactionDate <= dateTo)
+            .IsActive()
             .ToListAsync();
     }
 }
