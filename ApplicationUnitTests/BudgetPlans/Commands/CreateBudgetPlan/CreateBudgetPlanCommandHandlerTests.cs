@@ -40,6 +40,32 @@ public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
         budgetPlan.BudgetPlanDetailsList.Count.ShouldBe(underCategoriesCount);
     }
     
+    [Fact]
+    public async Task Handle_GivenValidCommand_ShouldCreateAccessWithCurrentUserMail()
+    {
+        // Arrange
+        var todayDate = DateTime.Today;
+        var dateTimeFirstDayOfCurrentMonth = GetDateWithFirstDayOfCurrentMonth();
+        var dateTimeLastDayOfCurrentMonth = GetDateWithLastDayOfCurrentMonth();
+
+        var command = new CreateBudgetPlanCommand(todayDate);
+        
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
+        
+        // Assert
+        var budgetPlan = await _context.BudgetPlanBases
+            .Where(x => x.CreatedBy == _currentUserService.Email && x.Id == result)
+            .Include(x => x.Access)
+            .ThenInclude(x => x.AccessedPersons)
+            .FirstOrDefaultAsync();
+        
+        budgetPlan.ShouldNotBeNull();
+        budgetPlan.Access.ShouldNotBeNull();
+        budgetPlan.Access.AccessedPersons.Count.ShouldBe(1);
+        budgetPlan.Access.IsAccessed(_currentUserService.Email).ShouldBe(true);
+    }
+    
     private DateTime GetDateWithFirstDayOfCurrentMonth()
     {
         var date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);

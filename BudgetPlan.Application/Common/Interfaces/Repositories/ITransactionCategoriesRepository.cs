@@ -8,5 +8,5 @@ public interface ITransactionCategoriesRepository
         CancellationToken cancellationToken = default);
     Task DeleteAsync(Guid id, string userEmail, CancellationToken cancellationToken = default);
     Task<bool> IsTransactionCategoryUnderCategory(Guid transactionCategoryId);
-    Task<bool> IsTransactionCategoryInclude(Guid mainTransactionCategory, Guid transactionCategoryToCheck);
+    Task<bool> IsTransactionCategoryInclude(Guid mainTransactionCategoryId, Guid transactionCategoryIdToCheck);
 }
