@@ -13,6 +13,12 @@ public class AccessConfiguration : IBaseConfiguration<Access>
         builder.HasMany(x => x.AccessedPersons)
             .WithOne(x => x.Access)
             .HasForeignKey(x => x.AccessId);
+        
+        builder.HasMany(x => x.BudgetPlans)
+            .WithOne(x => x.Access)
+            .HasForeignKey(x => x.AccessId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany(x => x.BudgetPlanBases)
             .WithOne(x => x.Access)
