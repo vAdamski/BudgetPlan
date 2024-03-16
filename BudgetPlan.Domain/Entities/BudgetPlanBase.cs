@@ -31,6 +31,9 @@ public class BudgetPlanBase : AuditableEntity
     
     public List<BudgetPlanDetails> BudgetPlanDetailsList { get; set; } = new();
     
+    public Guid BudgetPlanId { get; private set; }
+    public BudgetPlan BudgetPlan { get; private set; }
+    
     public Guid? AccessId { get; set; }
     public Access? Access { get; set; }
 }
