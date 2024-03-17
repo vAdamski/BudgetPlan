@@ -1,6 +1,4 @@
 using ApplicationUnitTests.Common;
-using AutoMapper;
-using BudgetPlan.Api.Services;
 using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetBudgetPlanView;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Services;
@@ -8,7 +6,6 @@ using BudgetPlan.Persistence;
 using BudgetPlan.Persistence.Respositories;
 using BudgetPlan.Shared.ViewModels;
 using Microsoft.Extensions.Logging;
-using Moq;
 using Shouldly;
 using Xunit;
 
@@ -19,12 +16,10 @@ public class GetBudgetPlanViewCommandHandlerTests
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly BudgetPlanDbContext _context;
-    private readonly IMapper _mapper;
 
     public GetBudgetPlanViewCommandHandlerTests(QueryTestFixtures fixtures)
     {
         _context = fixtures.Context;
-        _mapper = fixtures.Mapper;
         _currentUserService = fixtures.CurrentUserService;
     }
 

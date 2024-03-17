@@ -1,5 +1,4 @@
 using ApplicationUnitTests.Common;
-using AutoMapper;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Domain.Exceptions;
 using BudgetPlan.Persistence;
@@ -14,12 +13,10 @@ public class BudgetPlanRepositoryTests
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly BudgetPlanDbContext _context;
-    private readonly IMapper _mapper;
 
     public BudgetPlanRepositoryTests(QueryTestFixtures fixtures)
     {
         _context = fixtures.Context;
-        _mapper = fixtures.Mapper;
         _currentUserService = fixtures.CurrentUserService;
     }
     
