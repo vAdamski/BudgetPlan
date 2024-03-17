@@ -1,7 +1,6 @@
 using System.Reflection;
 using BudgetPlan.Application.Common.Behaviours;
 using BudgetPlan.Application.Common.Interfaces;
-using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Application.Common.Interfaces.Services;
 using BudgetPlan.Application.Services;
 using BudgetPlan.Application.Services.DeleteTransactionCategory;
@@ -18,7 +17,6 @@ public static class DependencyInjection
         // DI
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         
         // Services
         services.AddTransient<ITransactionCategoryListViewModelFactory, TransactionCategoryListViewModelFactory>();
