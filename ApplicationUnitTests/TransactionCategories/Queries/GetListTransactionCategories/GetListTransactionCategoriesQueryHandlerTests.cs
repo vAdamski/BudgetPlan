@@ -1,5 +1,4 @@
 using ApplicationUnitTests.Common;
-using AutoMapper;
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetListTransactionCategories;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Services;
@@ -16,12 +15,10 @@ public class GetListTransactionCategoriesQueryHandlerTests
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly BudgetPlanDbContext _context;
-    private readonly IMapper _mapper;
 
     public GetListTransactionCategoriesQueryHandlerTests(QueryTestFixtures fixtures)
     {
         _context = fixtures.Context;
-        _mapper = fixtures.Mapper;
         _currentUserService = fixtures.CurrentUserService;
     }
 
