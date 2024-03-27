@@ -7,7 +7,7 @@ using BudgetPlan.Shared.ViewModels;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetUserBudgetPlansList;
+namespace BudgetPlan.Application.Actions.BudgetPlanBaseActions.Queries.GetUserBudgetPlansList;
 
 public class GetUserBudgetPlansListQueryHandler : IRequestHandler<GetUserBudgetPlansListQuery, BudgetPlanListViewModel>
 {

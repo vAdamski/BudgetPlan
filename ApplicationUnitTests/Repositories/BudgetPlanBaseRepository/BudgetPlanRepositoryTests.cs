@@ -43,7 +43,7 @@ public class BudgetPlanRepositoryTests
     {
         // Arrange
         var repository = new BudgetPlan.Persistence.Respositories.BudgetPlanBaseRepository(_context, _currentUserService);
-        var guidBudgetPlanBaseToDelete = BudgetPlanDbContextSeedData.BUDGET_PLAN_BASE_1_GUID;
+        var guidBudgetPlanBaseToDelete = _context.BudgetPlanBases.First().Id;
         
         // Act
         await repository.DeleteAsync(guidBudgetPlanBaseToDelete);

@@ -3,7 +3,7 @@ using BudgetPlan.Shared.ViewModels;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetBudgetPlanView;
+namespace BudgetPlan.Application.Actions.BudgetPlanBaseActions.Queries.GetBudgetPlanView;
 
 public class GetBudgetPlanViewCommandHandler : IRequestHandler<GetBudgetPlanViewCommand, BudgetPlanViewModel>
 {

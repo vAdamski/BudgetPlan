@@ -3,7 +3,7 @@ using BudgetPlan.Domain.Exceptions;
 
 namespace BudgetPlan.Domain.Entities;
 
-public class BudgetPlan : AuditableEntity
+public class BudgetPlanEntity : AuditableEntity
 {
     private List<BudgetPlanBase> _budgetPlanBases = new();
     
@@ -14,22 +14,32 @@ public class BudgetPlan : AuditableEntity
     public Access Access { get; private set; }
     
     
-    private BudgetPlan()
+    private BudgetPlanEntity()
     {
         
     }
 
-    public static BudgetPlan Create(string name, string email)
+    public static BudgetPlanEntity Create(string name, string email)
     {
         if (string.IsNullOrEmpty(name))
             throw new BudgetPlanNameNullOrEmptyException();
         
-        var budgetPlan = new BudgetPlan
+        var access = Access.Create(email);
+        
+        var budgetPlan = new BudgetPlanEntity
         {
             Name = name,
-            Access = Access.Create(email)
+            AccessId = access.Id,
+            Access = access,
         };
 
         return budgetPlan;
+    }
+    
+    public BudgetPlanBase AddBudgetPlanBase(DateOnly dateFrom, DateOnly dateTo)
+    {
+        var budgetPlanBase = new BudgetPlanBase(dateFrom, dateTo, this);
+        _budgetPlanBases.Add(budgetPlanBase);
+        return budgetPlanBase;
     }
 }

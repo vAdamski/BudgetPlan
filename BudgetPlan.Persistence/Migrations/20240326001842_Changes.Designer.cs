@@ -4,6 +4,7 @@ using BudgetPlan.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPlan.Persistence.Migrations
 {
     [DbContext(typeof(BudgetPlanDbContext))]
-    partial class BudgetPlanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240326001842_Changes")]
+    partial class Changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,11 +123,11 @@ namespace BudgetPlan.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("DateFrom")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateFrom")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("DateTo")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateTo")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Inactivated")
                         .HasColumnType("datetime2");

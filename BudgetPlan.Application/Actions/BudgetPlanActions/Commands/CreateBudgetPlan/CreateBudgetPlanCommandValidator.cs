@@ -6,7 +6,8 @@ public class CreateBudgetPlanCommandValidator : AbstractValidator<CreateBudgetPl
 {
     public CreateBudgetPlanCommandValidator()
     {
-        RuleFor(x => x.Year).NotEmpty();
-        RuleFor(x => x.Month).NotEmpty();
+        // RuleFor(v => v.Name)
+        //     .MaximumLength(200)
+        //     .NotEmpty();
     }
 }

@@ -7,57 +7,44 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Persistence.Respositories;
 
-public class BudgetPlanBaseRepository : IBudgetPlanBaseRepository
+public class BudgetPlanBaseRepository(IBudgetPlanDbContext context, ICurrentUserService currentUserService)
+    : IBudgetPlanBaseRepository
 {
-    private readonly IBudgetPlanDbContext _context;
-    private readonly ICurrentUserService _currentUserService;
-
-    public BudgetPlanBaseRepository(IBudgetPlanDbContext context, ICurrentUserService currentUserService)
+    public async Task<BudgetPlanBase> Create(Guid budgetPlanId, DateOnly dateFrom, DateOnly dateTo)
     {
-        _context = context;
-        _currentUserService = currentUserService;
-    }
-
-    public async Task<List<BudgetPlanBase>> GetBudgetPlansForCurrentUser(CancellationToken cancellationToken = default)
-    {
-        return await _context.BudgetPlanBases
-            .Where(x => x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email))
+        var budgetPlan = await context.BudgetPlanEntities
+            .Where(x => x.Id == budgetPlanId && x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
             .IsActive()
-            .ToListAsync(cancellationToken);
+            .FirstOrDefaultAsync();
+        
+        if (budgetPlan == null)
+            throw new BudgetPlanNotFoundException(budgetPlanId);
+        
+        var budgetPlanBase = budgetPlan.AddBudgetPlanBase(dateFrom, dateTo);
+        
+        await context.SaveChangesAsync();
+        
+        return budgetPlanBase;
     }
-
+    
     public async Task<List<BudgetPlanBase>> GetBudgetPlansForUser(string userEmail,
         CancellationToken cancellationToken = default)
     {
         if (userEmail == null)
             throw new ArgumentNullException(nameof(userEmail));
 
-        return await _context.BudgetPlanBases
-            .Where(x => x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email))
+        return await context.BudgetPlanBases
+            .Where(x => x.Access.AccessedPersons.Any(x => x.Email == userEmail))
             .IsActive()
             .ToListAsync(cancellationToken);
-    }
-
-    public async Task<BudgetPlanBase> GetById(Guid id, CancellationToken cancellationToken = default)
-    {
-        var budgetPlanBase = await _context.BudgetPlanBases
-            .Where(x => x.Id == id &&
-                        x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email))
-            .IsActive()
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (budgetPlanBase == null)
-            throw new BudgetPlanNotFoundException(id);
-
-        return budgetPlanBase;
     }
 
     public async Task<BudgetPlanBase> GetByIdWithBudgetPlanDetailsList(Guid id,
         CancellationToken cancellationToken = default)
     {
-        var budgetPlanBase = await _context.BudgetPlanBases
+        var budgetPlanBase = await context.BudgetPlanBases
             .Where(x => x.Id == id &&
-                        x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email))
+                        x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
             .IsActive()
             .Include(x => x.BudgetPlanDetailsList)
             .FirstOrDefaultAsync(cancellationToken);
@@ -66,41 +53,5 @@ public class BudgetPlanBaseRepository : IBudgetPlanBaseRepository
             throw new BudgetPlanNotFoundException(id);
 
         return budgetPlanBase;
-    }
-
-    public async Task<List<BudgetPlanBase>> GetActiveBudgetPlansBasesForCurrentUser(
-        CancellationToken cancellationToken = default)
-    {
-        return await _context.BudgetPlanBases
-            .Where(x => x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email))
-            .IsActive()
-            .ToListAsync(cancellationToken);
-    }
-
-    public async Task DeleteAsync(BudgetPlanBase budgetPlanBase, CancellationToken cancellationToken = default)
-    {
-        var budgetPlanDetails = await _context.BudgetPlanDetails
-            .Where(x => x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email) &&
-                        x.BudgetPlanBaseId == budgetPlanBase.Id)
-            .IsActive()
-            .ToListAsync(cancellationToken);
-
-        _context.BudgetPlanDetails.RemoveRange(budgetPlanDetails);
-
-        _context.BudgetPlanBases.Remove(budgetPlanBase);
-
-        await _context.SaveChangesAsync(cancellationToken);
-    }
-
-    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var budgetPlanBase = await _context.BudgetPlanBases
-            .Where(x => x.Id == id &&
-                        x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email))
-            .IsActive()
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (budgetPlanBase != null)
-            await DeleteAsync(budgetPlanBase, cancellationToken);
     }
 }

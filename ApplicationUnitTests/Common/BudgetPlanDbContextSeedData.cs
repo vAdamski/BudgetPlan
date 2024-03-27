@@ -7,6 +7,7 @@ namespace ApplicationUnitTests.Common;
 public static class BudgetPlanDbContextSeedData
 {
     public const string CREATED_BY = "user@user.pl";
+    public static Guid BUDGET_PLAN_ENTITY_1_GUID = new Guid("f123456a-789b-4cde-8f01-23456789abcd");
     public static Guid TRANSACTION_CATEGORY_1_GUID = new Guid("d7b2bba5-2c34-48ea-adfb-1135e76c7664"); // Earnings
     public static Guid TRANSACTION_CATEGORY_2_GUID = new Guid("82f63e23-b538-496e-9e52-176b489b794f"); // Salary
     public static Guid TRANSACTION_CATEGORY_3_GUID = new Guid("c9f120f7-783f-40ea-9b2d-e0e0e54d24ab"); // Home
@@ -15,7 +16,7 @@ public static class BudgetPlanDbContextSeedData
     public static Guid TRANSACTION_CATEGORY_6_GUID = new Guid("1fe50bca-2015-45d5-87c2-7cd195a74aa7"); // Others
     public static Guid TRANSACTION_CATEGORY_7_GUID = new Guid("dd4f852c-112c-4d9f-8e2f-76fdd0a1e3c1"); // Car fuel
     public static Guid TRANSACTION_CATEGORY_8_GUID = new Guid("8f4e62c8-3e0f-43ca-9d9f-cdecad5ff9b2"); // Education
-    public static Guid BUDGET_PLAN_BASE_1_GUID = new Guid("ba6b61b8-cb33-4d91-8f75-0f9da1d74151");
+    // public static Guid BUDGET_PLAN_BASE_1_GUID = new Guid("ba6b61b8-cb33-4d91-8f75-0f9da1d74151");
     public static Guid BUDGET_PLAN_DETAILS_1_GUID = new Guid("0e157ffb-35df-4e90-98d1-d343ff944ed5");
     public static Guid BUDGET_PLAN_DETAILS_2_GUID = new Guid("f9a95b6c-9c3c-47d4-84d2-17e5c2ff35c2");
     public static Guid BUDGET_PLAN_DETAILS_3_GUID = new Guid("d5c6e5b3-6c36-4a86-aaae-e3fbbf785cdc");
@@ -37,6 +38,14 @@ public static class BudgetPlanDbContextSeedData
         context.Accesses.AddRange(new List<Access>()
         {
             access
+        });
+
+        BudgetPlanEntity budgetPlanEntity = BudgetPlanEntity.Create("Home Payments", CREATED_BY);
+        var budgetPlanBase = budgetPlanEntity.AddBudgetPlanBase(2023, 9, CREATED_BY);
+        
+        context.BudgetPlanEntities.AddRange(new []
+        {
+            budgetPlanEntity
         });
         
         context.TransactionCategories.AddRange(new[]
@@ -135,11 +144,12 @@ public static class BudgetPlanDbContextSeedData
         {
             new BudgetPlanBase(2023,9, CREATED_BY)
             {
-                Id = BUDGET_PLAN_BASE_1_GUID,
+                Id = budgetPlanBase.Id,
                 CreatedBy = CREATED_BY,
                 Created = new DateTime(2023, 9, 1),
                 StatusId = 1,
-                AccessId = access.Id
+                AccessId = access.Id,
+                BudgetPlanEntityId = budgetPlanEntity.Id
             }
         });
         
@@ -153,7 +163,7 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 ExpectedAmount = 5500,
                 BudgetPlanType = BudgetPlanType.Monthly,
-                BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
+                BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_2_GUID,
                 AccessId = access.Id
             },
@@ -165,7 +175,7 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 ExpectedAmount = 1500,
                 BudgetPlanType = BudgetPlanType.Monthly,
-                BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
+                BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_4_GUID,
                 AccessId = access.Id
             },
@@ -177,7 +187,7 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 ExpectedAmount = 2000,
                 BudgetPlanType = BudgetPlanType.Monthly,
-                BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
+                BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_5_GUID,
                 AccessId = access.Id
             },
@@ -189,7 +199,7 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 ExpectedAmount = 500,
                 BudgetPlanType = BudgetPlanType.Monthly,
-                BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
+                BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_7_GUID,
                 AccessId = access.Id
             },
@@ -201,7 +211,7 @@ public static class BudgetPlanDbContextSeedData
                 StatusId = 1,
                 ExpectedAmount = 1000,
                 BudgetPlanType = BudgetPlanType.Monthly,
-                BudgetPlanBaseId = BUDGET_PLAN_BASE_1_GUID,
+                BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_8_GUID,
                 AccessId = access.Id
             },

@@ -100,10 +100,10 @@ public class BudgetPlanVmCreatorService : IBudgetPlanVmCreatorService
                     List<TransactionItemDto> transactionItemDtos = new();
                     transactionItemDtos.AddRange(transactionDetails
                         .Where(td => td.TransactionCategoryId == utc.UnderCategoryId &&
-                                     td.TransactionDate.ToDateOnly() == date.ToDateOnly())
+                                     td.TransactionDate.ToDateOnly() == date)
                         .Select(x => new TransactionItemDto(x)).ToList());
                     
-                    transactionItemsForDayDtos.Add(new TransactionItemsForDayDto(date.ToDateOnly(), transactionItemDtos));
+                    transactionItemsForDayDtos.Add(new TransactionItemsForDayDto(date, transactionItemDtos));
                 }
 
                 utc.BudgetPlanDetailsDto =
