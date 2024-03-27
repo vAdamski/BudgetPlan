@@ -1,5 +1,5 @@
 using ApplicationUnitTests.Common;
-using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetBudgetPlanView;
+using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Queries.GetBudgetPlanView;
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Services;
 using BudgetPlan.Persistence;

@@ -66,12 +66,15 @@ public class TransactionDetailsRepository : ITransactionDetailsRepository
         await _ctx.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<List<TransactionDetail>> GetTransactionsForUserBetweenDates(string userEmail, DateTime dateFrom,
-        DateTime dateTo)
+    public async Task<List<TransactionDetail>> GetTransactionsForUserBetweenDates(string userEmail, DateOnly dateFrom,
+        DateOnly dateTo)
     {
+        DateTime dateFromWithTime = dateFrom.ToDateTime();
+        DateTime dateToWithTime = dateTo.ToDateTime();
+        
         return await _ctx.TransactionDetails.Where(x => x.CreatedBy == userEmail &&
-                                                        x.TransactionDate >= dateFrom &&
-                                                        x.TransactionDate <= dateTo)
+                                                        x.TransactionDate >= dateFromWithTime &&
+                                                        x.TransactionDate <= dateToWithTime)
             .IsActive()
             .ToListAsync();
     }

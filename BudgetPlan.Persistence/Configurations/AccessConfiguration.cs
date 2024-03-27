@@ -14,7 +14,7 @@ public class AccessConfiguration : IBaseConfiguration<Access>
             .WithOne(x => x.Access)
             .HasForeignKey(x => x.AccessId);
         
-        builder.HasMany(x => x.BudgetPlans)
+        builder.HasMany(x => x.BudgetPlanEntities)
             .WithOne(x => x.Access)
             .HasForeignKey(x => x.AccessId)
             .IsRequired()

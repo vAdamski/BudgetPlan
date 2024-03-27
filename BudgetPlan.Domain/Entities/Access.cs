@@ -7,7 +7,7 @@ public class Access : AuditableEntity
 {
     public List<AccessedPerson> AccessedPersons { get; private set; } = new();
     
-    public List<BudgetPlan> BudgetPlans { get; private set; } = new();
+    public List<BudgetPlanEntity> BudgetPlanEntities { get; private set; } = new();
     public List<BudgetPlanBase> BudgetPlanBases { get; private set; } = new();
     public List<BudgetPlanDetails> BudgetPlanDetails { get; private set; } = new();
     public List<TransactionCategory> TransactionCategories { get; private set; } = new();
@@ -15,6 +15,7 @@ public class Access : AuditableEntity
 
     private Access()
     {
+        Id = Guid.NewGuid();
     }
 
     public void AddPerson(string email)

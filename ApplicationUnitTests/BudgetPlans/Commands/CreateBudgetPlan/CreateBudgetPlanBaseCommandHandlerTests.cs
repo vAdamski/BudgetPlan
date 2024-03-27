@@ -1,18 +1,18 @@
 using ApplicationUnitTests.Common;
-using BudgetPlan.Application.Actions.BudgetPlanActions.Commands.CreateBudgetPlan;
+using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Commands.CreateBudgetPlanBase;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;
 
 namespace ApplicationUnitTests.BudgetPlans.Commands.CreateBudgetPlan;
 
-public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
+public class CreateBudgetPlanBaseCommandHandlerTests : CommandTestBase
 {
-    private readonly CreateBudgetPlanCommandHandler _handler;
+    private readonly CreateBudgetPlanBaseCommandHandler _handler;
 
-    public CreateBudgetPlanCommandHandlerTests() : base()
+    public CreateBudgetPlanBaseCommandHandlerTests() : base()
     {
-        _handler = new CreateBudgetPlanCommandHandler(_context, _currentUserService);
+        _handler = new CreateBudgetPlanBaseCommandHandler(_context, _currentUserService);
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
         var dateTimeFirstDayOfCurrentMonth = GetDateWithFirstDayOfCurrentMonth();
         var dateTimeLastDayOfCurrentMonth = GetDateWithLastDayOfCurrentMonth();
 
-        var command = new CreateBudgetPlanCommand(todayDate);
+        var command = new CreateBudgetPlanBaseCommand(todayDate);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -49,7 +49,7 @@ public class CreateBudgetPlanCommandHandlerTests : CommandTestBase
         var dateTimeFirstDayOfCurrentMonth = GetDateWithFirstDayOfCurrentMonth();
         var dateTimeLastDayOfCurrentMonth = GetDateWithLastDayOfCurrentMonth();
 
-        var command = new CreateBudgetPlanCommand(todayDate);
+        var command = new CreateBudgetPlanBaseCommand(todayDate);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

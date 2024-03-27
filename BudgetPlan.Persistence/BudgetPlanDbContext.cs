@@ -33,7 +33,7 @@ public class BudgetPlanDbContext : DbContext, IBudgetPlanDbContext
     public DbSet<BudgetPlanBase> BudgetPlanBases { get; set; }
     public DbSet<Access> Accesses { get; set; }
     public DbSet<AccessedPerson> AccessedPersons { get; set; }
-
+    public DbSet<BudgetPlanEntity> BudgetPlanEntities { get; set; }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
