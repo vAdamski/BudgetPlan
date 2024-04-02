@@ -1,4 +1,3 @@
-using BudgetPlan.Application.Actions.BudgetPlanDetailsActions.Commands.UpdateBudgetPlanDetail;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +10,6 @@ public class BudgetPlanDetailsController : BaseController
     [HttpPut]
     public async Task<IActionResult> UpdateBudgetPlanDetail(UpdateBudgetPlanDetailDto dto)
     {
-        await Mediator.Send(new UpdateBudgetPlanDetailCommand(dto));
-        return NoContent();
+        throw new NotImplementedException();
     }
 }

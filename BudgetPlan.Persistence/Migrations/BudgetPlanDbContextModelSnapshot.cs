@@ -22,56 +22,21 @@ namespace BudgetPlan.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BudgetPlan.Domain.Entities.Access", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Inactivated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InactivatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Accesses");
-                });
-
             modelBuilder.Entity("BudgetPlan.Domain.Entities.AccessedPerson", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AccessId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DataAccessId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -96,7 +61,7 @@ namespace BudgetPlan.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccessId");
+                    b.HasIndex("DataAccessId");
 
                     b.ToTable("AccessedPersons");
                 });
@@ -107,10 +72,7 @@ namespace BudgetPlan.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AccessId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BudgetPlanEntityId")
+                    b.Property<Guid?>("BudgetPlanEntityId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
@@ -120,11 +82,8 @@ namespace BudgetPlan.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("DateFrom")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("DateTo")
-                        .HasColumnType("date");
+                    b.Property<Guid?>("DataAccessId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Inactivated")
                         .HasColumnType("datetime2");
@@ -145,9 +104,9 @@ namespace BudgetPlan.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccessId");
+                    b.HasIndex("BudgetPlanEntityId1");
 
-                    b.HasIndex("BudgetPlanEntityId");
+                    b.HasIndex("DataAccessId1");
 
                     b.ToTable("BudgetPlanBases");
                 });
@@ -156,9 +115,6 @@ namespace BudgetPlan.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AccessId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BudgetPlanBaseId")
@@ -173,6 +129,9 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DataAccessId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("ExpectedAmount")
                         .HasColumnType("float");
@@ -199,9 +158,9 @@ namespace BudgetPlan.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccessId");
-
                     b.HasIndex("BudgetPlanBaseId");
+
+                    b.HasIndex("DataAccessId");
 
                     b.HasIndex("TransactionCategoryId");
 
@@ -214,15 +173,15 @@ namespace BudgetPlan.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AccessId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DataAccessId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Inactivated")
                         .HasColumnType("datetime2");
@@ -247,18 +206,15 @@ namespace BudgetPlan.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccessId");
+                    b.HasIndex("DataAccessId");
 
                     b.ToTable("BudgetPlanEntities");
                 });
 
-            modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionCategory", b =>
+            modelBuilder.Entity("BudgetPlan.Domain.Entities.DataAccess", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AccessId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
@@ -282,24 +238,60 @@ namespace BudgetPlan.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("OverTransactionCategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TransactionCategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TransactionType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccessId");
+                    b.ToTable("DataAccesses");
+                });
 
-                    b.HasIndex("OverTransactionCategoryId");
+            modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BudgetPlanEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DataAccessId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("Inactivated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InactivatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TransactionCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetPlanEntityId");
+
+                    b.HasIndex("DataAccessId");
+
+                    b.HasIndex("TransactionCategoryId");
 
                     b.ToTable("TransactionCategories");
                 });
@@ -341,7 +333,7 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TransactionCategoryId")
+                    b.Property<Guid?>("TransactionCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TransactionDate")
@@ -361,95 +353,97 @@ namespace BudgetPlan.Persistence.Migrations
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.AccessedPerson", b =>
                 {
-                    b.HasOne("BudgetPlan.Domain.Entities.Access", "Access")
+                    b.HasOne("BudgetPlan.Domain.Entities.DataAccess", "DataAccess")
                         .WithMany("AccessedPersons")
-                        .HasForeignKey("AccessId");
+                        .HasForeignKey("DataAccessId");
 
-                    b.Navigation("Access");
+                    b.Navigation("DataAccess");
                 });
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanBase", b =>
                 {
-                    b.HasOne("BudgetPlan.Domain.Entities.Access", "Access")
+                    b.HasOne("BudgetPlan.Domain.Entities.BudgetPlanEntity", null)
                         .WithMany("BudgetPlanBases")
-                        .HasForeignKey("AccessId");
+                        .HasForeignKey("BudgetPlanEntityId1");
 
-                    b.HasOne("BudgetPlan.Domain.Entities.BudgetPlanEntity", "BudgetPlanEntity")
+                    b.HasOne("BudgetPlan.Domain.Entities.DataAccess", null)
                         .WithMany("BudgetPlanBases")
-                        .HasForeignKey("BudgetPlanEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Access");
-
-                    b.Navigation("BudgetPlanEntity");
+                        .HasForeignKey("DataAccessId1");
                 });
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanDetails", b =>
                 {
-                    b.HasOne("BudgetPlan.Domain.Entities.Access", "Access")
-                        .WithMany("BudgetPlanDetails")
-                        .HasForeignKey("AccessId");
-
                     b.HasOne("BudgetPlan.Domain.Entities.BudgetPlanBase", "BudgetPlanBase")
                         .WithMany("BudgetPlanDetailsList")
                         .HasForeignKey("BudgetPlanBaseId");
+
+                    b.HasOne("BudgetPlan.Domain.Entities.DataAccess", "DataAccess")
+                        .WithMany("BudgetPlanDetails")
+                        .HasForeignKey("DataAccessId");
 
                     b.HasOne("BudgetPlan.Domain.Entities.TransactionCategory", "TransactionCategory")
                         .WithMany("BudgetPlanDetails")
                         .HasForeignKey("TransactionCategoryId");
 
-                    b.Navigation("Access");
-
                     b.Navigation("BudgetPlanBase");
+
+                    b.Navigation("DataAccess");
 
                     b.Navigation("TransactionCategory");
                 });
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanEntity", b =>
                 {
-                    b.HasOne("BudgetPlan.Domain.Entities.Access", "Access")
+                    b.HasOne("BudgetPlan.Domain.Entities.DataAccess", "DataAccess")
                         .WithMany("BudgetPlanEntities")
-                        .HasForeignKey("AccessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DataAccessId");
 
-                    b.Navigation("Access");
+                    b.Navigation("DataAccess");
                 });
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionCategory", b =>
                 {
-                    b.HasOne("BudgetPlan.Domain.Entities.Access", "Access")
+                    b.HasOne("BudgetPlan.Domain.Entities.BudgetPlanEntity", null)
                         .WithMany("TransactionCategories")
-                        .HasForeignKey("AccessId");
+                        .HasForeignKey("BudgetPlanEntityId");
 
-                    b.HasOne("BudgetPlan.Domain.Entities.TransactionCategory", "OverTransactionCategory")
+                    b.HasOne("BudgetPlan.Domain.Entities.DataAccess", null)
+                        .WithMany("TransactionCategories")
+                        .HasForeignKey("DataAccessId");
+
+                    b.HasOne("BudgetPlan.Domain.Entities.TransactionCategory", null)
                         .WithMany("SubTransactionCategories")
-                        .HasForeignKey("OverTransactionCategoryId");
-
-                    b.Navigation("Access");
-
-                    b.Navigation("OverTransactionCategory");
+                        .HasForeignKey("TransactionCategoryId");
                 });
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionDetail", b =>
                 {
-                    b.HasOne("BudgetPlan.Domain.Entities.Access", "Access")
+                    b.HasOne("BudgetPlan.Domain.Entities.DataAccess", "Access")
                         .WithMany("TransactionDetails")
                         .HasForeignKey("AccessId");
 
                     b.HasOne("BudgetPlan.Domain.Entities.TransactionCategory", "TransactionCategory")
                         .WithMany("TransactionDetails")
-                        .HasForeignKey("TransactionCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TransactionCategoryId");
 
                     b.Navigation("Access");
 
                     b.Navigation("TransactionCategory");
                 });
 
-            modelBuilder.Entity("BudgetPlan.Domain.Entities.Access", b =>
+            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanBase", b =>
+                {
+                    b.Navigation("BudgetPlanDetailsList");
+                });
+
+            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanEntity", b =>
+                {
+                    b.Navigation("BudgetPlanBases");
+
+                    b.Navigation("TransactionCategories");
+                });
+
+            modelBuilder.Entity("BudgetPlan.Domain.Entities.DataAccess", b =>
                 {
                     b.Navigation("AccessedPersons");
 
@@ -462,16 +456,6 @@ namespace BudgetPlan.Persistence.Migrations
                     b.Navigation("TransactionCategories");
 
                     b.Navigation("TransactionDetails");
-                });
-
-            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanBase", b =>
-                {
-                    b.Navigation("BudgetPlanDetailsList");
-                });
-
-            modelBuilder.Entity("BudgetPlan.Domain.Entities.BudgetPlanEntity", b =>
-                {
-                    b.Navigation("BudgetPlanBases");
                 });
 
             modelBuilder.Entity("BudgetPlan.Domain.Entities.TransactionCategory", b =>

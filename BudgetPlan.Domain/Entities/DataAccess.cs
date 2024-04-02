@@ -3,7 +3,7 @@ using BudgetPlan.Domain.Exceptions;
 
 namespace BudgetPlan.Domain.Entities;
 
-public class Access : AuditableEntity
+public class DataAccess : AuditableEntity
 {
     public List<AccessedPerson> AccessedPersons { get; private set; } = new();
     
@@ -13,10 +13,7 @@ public class Access : AuditableEntity
     public List<TransactionCategory> TransactionCategories { get; private set; } = new();
     public List<TransactionDetail> TransactionDetails { get; private set; } = new();
 
-    private Access()
-    {
-        Id = Guid.NewGuid();
-    }
+    private DataAccess() { }
 
     public void AddPerson(string email)
     {
@@ -26,7 +23,7 @@ public class Access : AuditableEntity
         if (IsAccessed(email))
             throw new CurrentEmailIsAlreadyAccessedException(email);
 
-        AccessedPersons.Add(new AccessedPerson(Id, email));
+        AccessedPersons.Add(new AccessedPerson(email));
     }
 
     public void RemovePerson(string email)
@@ -47,14 +44,14 @@ public class Access : AuditableEntity
         return AccessedPersons.Any(p => p.Email == email);
     }
 
-    public static Access Create()
+    public static DataAccess Create()
     {
-        return new Access();
+        return new DataAccess();
     }
     
-    public static Access Create(string email)
+    public static DataAccess Create(string email)
     {
-        var access = new Access();
+        var access = new DataAccess();
         access.AddPerson(email);
         return access;
     }

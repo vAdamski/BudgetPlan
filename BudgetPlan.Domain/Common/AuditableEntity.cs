@@ -2,7 +2,7 @@ namespace BudgetPlan.Domain.Common;
 
 public class AuditableEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
     public string CreatedBy { get; set; } = "";
     public DateTime Created { get; set; }
     public string ModifiedBy { get; set; } = "";

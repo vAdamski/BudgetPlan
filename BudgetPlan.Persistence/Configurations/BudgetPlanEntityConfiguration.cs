@@ -4,15 +4,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BudgetPlan.Persistence.Configurations;
 
-public class BudgetPlanConfiguration : IBaseConfiguration<Domain.Entities.BudgetPlanEntity>
+public class BudgetPlanEntityConfiguration : IBaseConfiguration<BudgetPlanEntity>
 {
     public void Configure(EntityTypeBuilder<BudgetPlanEntity> builder)
     {
         builder.HasKey(x => x.Id);
 
+        builder.HasOne(x => x.DataAccess)
+            .WithMany(y => y.BudgetPlanEntities)
+            .HasForeignKey(x => x.DataAccessId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
+
         builder.HasMany(x => x.BudgetPlanBases)
-            .WithOne(x => x.BudgetPlanEntity)
+            .WithOne(y => y.BudgetPlanEntity)
             .HasForeignKey(x => x.BudgetPlanEntityId)
+            .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

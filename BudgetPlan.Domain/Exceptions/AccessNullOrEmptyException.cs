@@ -1,6 +1,6 @@
 namespace BudgetPlan.Domain.Exceptions;
 
-public class AccessNullOrEmptyException() : Exception("Access cannot be null or empty.")
+public class AccessNullOrEmptyException() : Exception("DataAccess cannot be null or empty.")
 {
     
 }

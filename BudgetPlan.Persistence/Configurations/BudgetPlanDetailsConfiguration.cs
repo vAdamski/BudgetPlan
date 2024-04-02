@@ -11,16 +11,21 @@ public class BudgetPlanDetailsConfiguration : IBaseConfiguration<BudgetPlanDetai
         builder.HasKey(x => x.Id);
         builder.Property(x => x.ExpectedAmount).HasDefaultValue(0f).IsRequired();
         builder.Property(x => x.BudgetPlanType).IsRequired();
-        
 
         builder.HasOne(x => x.BudgetPlanBase)
-            .WithMany(x => x.BudgetPlanDetailsList)
+            .WithMany(y => y.BudgetPlanDetailsList)
             .HasForeignKey(x => x.BudgetPlanBaseId)
             .OnDelete(DeleteBehavior.NoAction);
         
         builder.HasOne(x => x.TransactionCategory)
-            .WithMany(x => x.BudgetPlanDetails)
+            .WithMany(y => y.BudgetPlanDetails)
             .HasForeignKey(x => x.TransactionCategoryId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(x => x.DataAccess)
+            .WithMany(y => y.BudgetPlanDetails)
+            .HasForeignKey(x => x.DataAccessId)
+            .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

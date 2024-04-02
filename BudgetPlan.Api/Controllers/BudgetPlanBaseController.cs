@@ -1,6 +1,4 @@
 using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Commands.CreateBudgetPlanBase;
-using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Queries.GetBudgetPlanView;
-using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Queries.GetUserBudgetPlansList;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,20 +10,22 @@ public class BudgetPlanBaseController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetViewModel(Guid id)
     {
-        return Ok(await Mediator.Send(new GetBudgetPlanViewCommand {BudgetPlanId = id}));
+        throw new NotImplementedException();
     }
     
     [HttpGet]
     [Route("list")]
     public async Task<IActionResult> GetList()
     {
-        return Ok(await Mediator.Send(new GetUserBudgetPlansListQuery()));
+        throw new NotImplementedException();
     }
     
     
     [HttpPost]
     public async Task<IActionResult> Create([FromForm]CreateBudgetPlanBaseDto createBudgetPlanBase)
     {
-        return Ok(await Mediator.Send(new CreateBudgetPlanBaseCommand(createBudgetPlanBase.DateFrom, createBudgetPlanBase.DateTo, createBudgetPlanBase.BudgetPlanEntityId)));
+        var response = await Mediator.Send(new CreateBudgetPlanBaseCommand(createBudgetPlanBase.DateFrom, createBudgetPlanBase.DateTo, createBudgetPlanBase.BudgetPlanEntityId));
+        
+        return Ok(response);
     }
 }

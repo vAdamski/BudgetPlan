@@ -15,8 +15,15 @@ public class TransactionDetailsConfiguration : IBaseConfiguration<TransactionDet
         builder.Property(x => x.TransactionCategoryId).IsRequired();
         
         builder.HasOne(x => x.TransactionCategory)
-            .WithMany(x => x.TransactionDetails)
+            .WithMany(y => y.TransactionDetails)
             .HasForeignKey(x => x.TransactionCategoryId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(x => x.Access)
+            .WithMany(y => y.TransactionDetails)
+            .HasForeignKey(x => x.AccessId)
+            .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

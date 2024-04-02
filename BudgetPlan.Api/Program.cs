@@ -73,7 +73,7 @@ builder.Services.AddSwaggerGen(options =>
                     { "user", "User info" },
                     { "openid", "openid" },
                     { "role", "User role" },
-                    { "IdentityServerApi" , "Identity Server Api Access"},
+                    { "IdentityServerApi" , "Identity Server Api DataAccess"},
                     { "firstName", "First Name" },
                     { "lastName", "Last Name" }
                 }
@@ -83,7 +83,7 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<AuthorizeCheckOperationFilter>();
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "BudgetPlan",
+        Title = "BudgetPlanEntity",
         Version = "v1",
         Description = "",
         TermsOfService = new Uri("https://example.com/terms"),

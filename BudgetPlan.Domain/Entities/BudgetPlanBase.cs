@@ -6,31 +6,29 @@ namespace BudgetPlan.Domain.Entities;
 
 public class BudgetPlanBase : AuditableEntity
 {
-    public DateOnly DateFrom { get; private set; }
-    public DateOnly DateTo { get; private set; }
+    private List<BudgetPlanDetails> _budgetPlanDetailsList = new();
     
-    public List<BudgetPlanDetails> BudgetPlanDetailsList { get; set; } = new();
+    public DateOnly DateFrom { get; }
+    public DateOnly DateTo { get; }
     
-    public Guid BudgetPlanEntityId { get; private set; }
-    public BudgetPlanEntity BudgetPlanEntity { get; private set; }
+    public Guid? BudgetPlanEntityId { get; }
+    public BudgetPlanEntity? BudgetPlanEntity { get; }
     
-    public Guid? AccessId { get; set; }
-    public Access? Access { get; set; }
+    public Guid? DataAccessId { get; }
+    public DataAccess? DataAccess { get; }
+    
+    public IReadOnlyCollection<BudgetPlanDetails> BudgetPlanDetailsList => _budgetPlanDetailsList.AsReadOnly();
     
     private BudgetPlanBase() { }
     
-    public BudgetPlanBase(DateOnly dateFrom, DateOnly dateTo, BudgetPlanEntity budgetPlanEntity)
+    public BudgetPlanBase(DateOnly dateFrom, DateOnly dateTo, Guid budgetPlanEntityId, Guid dataAccessId)
     {
         if (dateFrom > dateTo)
-        {
             throw new InvalidDateRangeException();
-        }
         
-        BudgetPlanEntityId = budgetPlanEntity.Id;
-        BudgetPlanEntity = budgetPlanEntity;
+        BudgetPlanEntityId = budgetPlanEntityId;
         
-        AccessId = budgetPlanEntity.AccessId;
-        Access = budgetPlanEntity.Access;
+        DataAccessId = dataAccessId;
         
         DateFrom = dateFrom;
         DateTo = dateTo;
@@ -38,14 +36,11 @@ public class BudgetPlanBase : AuditableEntity
     
     public void AddBudgetPlanDetail(Guid categoryId)
     {
-        var budgetPlanDetail = new BudgetPlanDetails
-        {
-            ExpectedAmount = 0,
-            BudgetPlanType = BudgetPlanType.Monthly,
-            BudgetPlanBaseId = Id,
-            TransactionCategoryId = categoryId
-        };
+        if (DataAccessId == null)
+            throw new AccessIdNullOrEmptyException();
         
-        BudgetPlanDetailsList.Add(budgetPlanDetail);
+        var budgetPlanDetail = new BudgetPlanDetails(0, BudgetPlanType.Monthly, Id, categoryId, DataAccessId.Value);
+        
+        _budgetPlanDetailsList.Add(budgetPlanDetail);
     }
 }

@@ -13,7 +13,7 @@ public class BudgetPlanBaseRepository(IBudgetPlanDbContext context, ICurrentUser
     public async Task<BudgetPlanBase> Create(Guid budgetPlanId, DateOnly dateFrom, DateOnly dateTo)
     {
         var budgetPlan = await context.BudgetPlanEntities
-            .Where(x => x.Id == budgetPlanId && x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
+            .Where(x => x.Id == budgetPlanId && x.DataAccess.AccessedPersons.Any(x => x.Email == currentUserService.Email))
             .IsActive()
             .FirstOrDefaultAsync();
         
@@ -34,7 +34,7 @@ public class BudgetPlanBaseRepository(IBudgetPlanDbContext context, ICurrentUser
             throw new ArgumentNullException(nameof(userEmail));
 
         return await context.BudgetPlanBases
-            .Where(x => x.Access.AccessedPersons.Any(x => x.Email == userEmail))
+            .Where(x => x.DataAccess.AccessedPersons.Any(x => x.Email == userEmail))
             .IsActive()
             .ToListAsync(cancellationToken);
     }
@@ -44,7 +44,7 @@ public class BudgetPlanBaseRepository(IBudgetPlanDbContext context, ICurrentUser
     {
         var budgetPlanBase = await context.BudgetPlanBases
             .Where(x => x.Id == id &&
-                        x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
+                        x.DataAccess.AccessedPersons.Any(x => x.Email == currentUserService.Email))
             .IsActive()
             .Include(x => x.BudgetPlanDetailsList)
             .FirstOrDefaultAsync(cancellationToken);

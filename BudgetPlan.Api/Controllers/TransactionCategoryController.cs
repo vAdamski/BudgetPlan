@@ -1,8 +1,5 @@
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddOverTransactionCategory;
-using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddTransactionCategory;
-using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.DeleteTransactionCategory;
-using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.DeleteTransactionCategoryWithMigrationAction;
-using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetListTransactionCategories;
+using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
@@ -14,39 +11,36 @@ public class TransactionCategoryController : BaseController
     [Route("list")]
     public async Task<IActionResult> GetListTransactionCategories()
     {
-        var response = await Mediator.Send(new GetListTransactionCategoriesQuery());
-        return Ok(response);
+        throw new NotImplementedException();
     }
 
     [HttpPost]
     [Route("createOverCategory")]
-    public async Task<IActionResult> AddOverTransactionCategory(AddOverTransactionCategoryCommand command)
+    public async Task<IActionResult> AddOverTransactionCategory([FromForm] AddOverTransactionCategoryDto dto)
     {
-        var response = await Mediator.Send(command);
+        var response = await Mediator.Send(new AddOverTransactionCategoryCommand(dto.BudgetPlanId, dto.Name, dto.TransactionType));
+        
         return Ok(response);
     }
     
     [HttpPost]
     [Route("createCategory")]
-    public async Task<IActionResult> AddTransactionCategory(AddTransactionCategoryCommand command)
+    public async Task<IActionResult> AddTransactionCategory()
     {
-        var response = await Mediator.Send(command);
-        return Ok(response);
+        throw new NotImplementedException();
     }
     
     [HttpDelete]
     [Route("delete/utc/{id}")]
     public async Task<IActionResult> DeleteTransactionCategory(Guid id)
     {
-        await Mediator.Send(new DeleteTransactionCategoryCommand(id));
-        return NoContent();
+        throw new NotImplementedException();
     }
     
     [HttpDelete]
     [Route("delete/utc/{id}/{migrationId}")]
     public async Task<IActionResult> DeleteTransactionCategory(Guid id, Guid migrationId)
     {
-        await Mediator.Send(new DeleteTransactionCategoryWithMigrationActionCommand(id, migrationId));
-        return NoContent();
+        throw new NotImplementedException();
     }
 }

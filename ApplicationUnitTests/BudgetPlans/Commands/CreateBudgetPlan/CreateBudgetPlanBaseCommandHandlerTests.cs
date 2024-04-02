@@ -57,14 +57,14 @@ public class CreateBudgetPlanBaseCommandHandlerTests : CommandTestBase
         // Assert
         var budgetPlan = await _context.BudgetPlanBases
             .Where(x => x.CreatedBy == _currentUserService.Email && x.Id == result)
-            .Include(x => x.Access)
+            .Include(x => x.DataAccess)
             .ThenInclude(x => x.AccessedPersons)
             .FirstOrDefaultAsync();
 
         budgetPlan.ShouldNotBeNull();
-        budgetPlan.Access.ShouldNotBeNull();
-        budgetPlan.Access.AccessedPersons.Count.ShouldBe(1);
-        budgetPlan.Access.IsAccessed(_currentUserService.Email).ShouldBe(true);
+        budgetPlan.DataAccess.ShouldNotBeNull();
+        budgetPlan.DataAccess.AccessedPersons.Count.ShouldBe(1);
+        budgetPlan.DataAccess.IsAccessed(_currentUserService.Email).ShouldBe(true);
     }
 
     private DateTime GetDateWithFirstDayOfCurrentMonth()
