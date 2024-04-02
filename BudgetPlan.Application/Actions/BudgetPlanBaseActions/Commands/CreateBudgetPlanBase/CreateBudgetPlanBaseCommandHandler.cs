@@ -27,18 +27,7 @@ public class CreateBudgetPlanBaseCommandHandler : IRequestHandler<CreateBudgetPl
         if (budgetPlan == null)
             throw new NotFoundException(nameof(BudgetPlanEntity), request.BudgetPlanEntityId);
         
-        var categories = await _ctx.TransactionCategories
-            .Where(x => x.CreatedBy == _currentUserService.Email &&
-                        x.OverTransactionCategoryId != null &&
-                        x.StatusId == 1)
-            .ToListAsync(cancellationToken);
-        
         var budgetPlanBase = budgetPlan.AddBudgetPlanBase(request.DateFrom, request.DateTo);
-        
-        foreach (var category in categories)
-        {
-            budgetPlanBase.AddBudgetPlanDetail(category.Id);
-        }
         
         await _ctx.SaveChangesAsync(cancellationToken);
         

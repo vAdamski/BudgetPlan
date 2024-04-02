@@ -32,10 +32,10 @@ public static class BudgetPlanDbContextSeedData
     
     public static void Seed(BudgetPlanDbContext context)
     {
-        var access = Access.Create();
+        var access = DataAccess.Create();
         access.AddPerson(CREATED_BY);
 
-        context.Accesses.AddRange(new List<Access>()
+        context.DataAccesses.AddRange(new List<DataAccess>()
         {
             access
         });
@@ -148,7 +148,7 @@ public static class BudgetPlanDbContextSeedData
                 CreatedBy = CREATED_BY,
                 Created = new DateTime(2023, 9, 1),
                 StatusId = 1,
-                AccessId = access.Id,
+                DataAccessId = access.Id,
                 BudgetPlanEntityId = budgetPlanEntity.Id
             }
         });
@@ -165,7 +165,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_2_GUID,
-                AccessId = access.Id
+                DataAccessId = access.Id
             },
             new BudgetPlanDetails
             {
@@ -177,7 +177,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_4_GUID,
-                AccessId = access.Id
+                DataAccessId = access.Id
             },
             new BudgetPlanDetails
             {
@@ -189,7 +189,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_5_GUID,
-                AccessId = access.Id
+                DataAccessId = access.Id
             },
             new BudgetPlanDetails
             {
@@ -201,7 +201,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_7_GUID,
-                AccessId = access.Id
+                DataAccessId = access.Id
             },
             new BudgetPlanDetails
             {
@@ -213,7 +213,7 @@ public static class BudgetPlanDbContextSeedData
                 BudgetPlanType = BudgetPlanType.Monthly,
                 BudgetPlanBaseId = budgetPlanBase.Id,
                 TransactionCategoryId = TRANSACTION_CATEGORY_8_GUID,
-                AccessId = access.Id
+                DataAccessId = access.Id
             },
         });
         

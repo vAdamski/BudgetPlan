@@ -19,18 +19,19 @@ public class BudgetPlanDetailsRepository : IBudgetPlanDetailsRepository
 
     public async Task UpdateBudgetPlanDetail(Guid id, double expectedAmount)
     {
-        var budgetPlanDetail = await _context.BudgetPlanDetails.FirstOrDefaultAsync(x =>
-            x.Id == id &&
-            x.BudgetPlanBase.Access.AccessedPersons.Any(y => y.Email == _currentUserService.Email) &&
-            x.IsActive);
-
-        if (budgetPlanDetail == null)
-        {
-            throw new BudgetPlanDetailNotFoundException(id);
-        }
-
-        budgetPlanDetail.ExpectedAmount = expectedAmount;
-
-        await _context.SaveChangesAsync();
+        throw new NotImplementedException();
+        // var budgetPlanDetail = await _context.BudgetPlanDetails.FirstOrDefaultAsync(x =>
+        //     x.Id == id &&
+        //     x.BudgetPlanBase.DataAccess.AccessedPersons.Any(y => y.Email == _currentUserService.Email) &&
+        //     x.IsActive);
+        //
+        // if (budgetPlanDetail == null)
+        // {
+        //     throw new BudgetPlanDetailNotFoundException(id);
+        // }
+        //
+        // budgetPlanDetail.ExpectedAmount = expectedAmount;
+        //
+        // await _context.SaveChangesAsync();
     }
 }

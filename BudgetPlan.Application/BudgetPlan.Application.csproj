@@ -22,4 +22,14 @@
       <ProjectReference Include="..\BudgetPlan.Shared\BudgetPlan.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Actions\BudgetPlanBaseActions\Queries\GetBudgetPlanView\" />
+      <Folder Include="Actions\BudgetPlanBaseActions\Queries\GetUserBudgetPlansList\" />
+      <Folder Include="Actions\BudgetPlanDetailsActions\Commands\UpdateBudgetPlanDetail\" />
+      <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategoryWithMigrationAction\" />
+      <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategory\" />
+      <Folder Include="Actions\TransactionCategoriesActions\Queries\GetListTransactionCategories\" />
+      <Folder Include="Actions\TransactionDetailsActions\Commands\AddTransactionDetail\" />
+    </ItemGroup>
+
 </Project>

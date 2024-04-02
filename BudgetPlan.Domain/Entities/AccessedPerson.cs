@@ -7,22 +7,17 @@ public class AccessedPerson : AuditableEntity
 {
     public string Email { get; private set; }
 
-    public Guid? AccessId { get; private set; }
-    public Access? Access { get; private set; }
+    public Guid? DataAccessId { get; private set; }
+    public DataAccess? DataAccess { get; private set; }
 
     private AccessedPerson()
     {
     }
 
-    public AccessedPerson(Guid accessId, string email)
+    public AccessedPerson(string email)
     {
-        if (accessId == Guid.Empty)
-            throw new AccessIdNullOrEmptyException();
-
         if (string.IsNullOrEmpty(email))
             throw new AccessEmailNullOrEmptyException();
-
-        AccessId = accessId;
         Email = email;
     }
 }

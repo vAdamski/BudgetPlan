@@ -6,8 +6,6 @@ public class CreateBudgetPlanCommandValidator : AbstractValidator<CreateBudgetPl
 {
     public CreateBudgetPlanCommandValidator()
     {
-        // RuleFor(v => v.Name)
-        //     .MaximumLength(200)
-        //     .NotEmpty();
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
     }
 }

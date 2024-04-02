@@ -27,13 +27,13 @@ public class BudgetPlanDbContext : DbContext, IBudgetPlanDbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
     
-    public DbSet<TransactionCategory> TransactionCategories { get; set; }
-    public DbSet<TransactionDetail> TransactionDetails { get; set; }
-    public DbSet<BudgetPlanDetails> BudgetPlanDetails { get; set; }
-    public DbSet<BudgetPlanBase> BudgetPlanBases { get; set; }
-    public DbSet<Access> Accesses { get; set; }
-    public DbSet<AccessedPerson> AccessedPersons { get; set; }
-    public DbSet<BudgetPlanEntity> BudgetPlanEntities { get; set; }
+    public virtual DbSet<TransactionCategory> TransactionCategories { get; set; }
+    public virtual DbSet<TransactionDetail> TransactionDetails { get; set; }
+    public virtual DbSet<BudgetPlanDetails> BudgetPlanDetails { get; set; }
+    public virtual DbSet<BudgetPlanBase> BudgetPlanBases { get; set; }
+    public virtual DbSet<DataAccess> DataAccesses { get; set; }
+    public virtual DbSet<AccessedPerson> AccessedPersons { get; set; }
+    public virtual DbSet<BudgetPlanEntity> BudgetPlanEntities { get; set; }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
