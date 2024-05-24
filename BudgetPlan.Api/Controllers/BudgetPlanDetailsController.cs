@@ -1,3 +1,4 @@
+using BudgetPlan.Application.Actions.BudgetPlanDetailsActions.Commands.UpdateBudgetPlanDetail;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +9,14 @@ namespace BudgetPlan.Api.Controllers;
 public class BudgetPlanDetailsController : BaseController
 {
     [HttpPut]
-    public async Task<IActionResult> UpdateBudgetPlanDetail(UpdateBudgetPlanDetailDto dto)
+    [Route("{id}")]
+    public async Task<IActionResult> UpdateBudgetPlanDetail(Guid id, UpdateBudgetPlanDetailDto dto)
     {
-        throw new NotImplementedException();
+        if (id != dto.Id)
+            return BadRequest();
+        
+        await Mediator.Send(new UpdateBudgetPlanDetailCommand(dto));
+
+        return NoContent();
     }
 }
