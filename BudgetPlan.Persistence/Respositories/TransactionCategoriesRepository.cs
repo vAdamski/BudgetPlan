@@ -11,6 +11,15 @@ public class TransactionCategoriesRepository(
 	ICurrentUserService currentUserService)
 	: ITransactionCategoriesRepository
 {
+	public async Task<TransactionCategory> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+	{
+		return await context.TransactionCategories
+			.Include(x => x.Access)
+			.ThenInclude(x => x.AccessedPersons)
+			.FirstOrDefaultAsync(x =>
+				x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email) && x.Id == id, cancellationToken);
+	}
+	
 	public async Task<List<TransactionCategory>> GetAllTransactionCategories(
 		CancellationToken cancellationToken = default)
 	{
