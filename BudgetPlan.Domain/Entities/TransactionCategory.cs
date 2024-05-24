@@ -62,16 +62,6 @@ public class TransactionCategory : AuditableEntity
         AccessId = accessId;
     }
 
-    public TransactionDetail AddTransactionDetail(double transactionValue, string description, DateTime transactionDate,
-        Guid dataAccessId)
-    {
-        var transactionDetail = new TransactionDetail(transactionValue, description, transactionDate, Id, dataAccessId);
-
-        _transactionDetails.Add(transactionDetail);
-
-        return transactionDetail;
-    }
-
     public static TransactionCategory CreateOverTransactionCategory(string transactionCategoryName,
         TransactionType transactionType, Guid dataAccessId)
     {
@@ -94,5 +84,14 @@ public class TransactionCategory : AuditableEntity
         _subTransactionCategories.Add(underTransactionCategory);
 
         return underTransactionCategory;
+    }
+
+    public TransactionDetail AddTransactionDetail(double value, string description, DateOnly date)
+    {
+        TransactionDetail transactionDetails = TransactionDetail.Create(value, description, date, Id, AccessId.Value);
+        
+        _transactionDetails.Add(transactionDetails);
+        
+        return transactionDetails;
     }
 }
