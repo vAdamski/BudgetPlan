@@ -1,5 +1,6 @@
 using BudgetPlan.Domain.Common;
 using BudgetPlan.Domain.Enums;
+using BudgetPlan.Domain.Exceptions;
 
 namespace BudgetPlan.Domain.Entities;
 
@@ -26,5 +27,13 @@ public class BudgetPlanDetails : AuditableEntity
         BudgetPlanBaseId = budgetPlanBaseId;
         TransactionCategoryId = transactionCategoryId;
         DataAccessId = dataAccessId;
+    }
+    
+    public void UpdateExpectedAmount(double expectedAmount)
+    {
+        if (expectedAmount < 0)
+            throw new ExpectedAmountCannotBeNegativeException();
+        
+	    ExpectedAmount = expectedAmount;
     }
 }
