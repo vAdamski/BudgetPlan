@@ -1,4 +1,5 @@
 using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Commands.CreateBudgetPlanBase;
+using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Queries.GetUserBudgetPlansList;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,9 @@ public class BudgetPlanBaseController : BaseController
     [Route("list")]
     public async Task<IActionResult> GetList()
     {
-        throw new NotImplementedException();
+        var response = await Mediator.Send(new GetUserBudgetPlansListQuery());
+
+        return Ok(response);
     }
     
     
