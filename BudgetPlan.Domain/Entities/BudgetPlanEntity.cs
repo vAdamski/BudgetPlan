@@ -44,14 +44,20 @@ public class BudgetPlanEntity : AuditableEntity
         
         var budgetPlanBase = new BudgetPlanBase(dateFrom, dateTo, Id, DataAccessId.Value);
 
-        var categories = _transactionCategories.Where(x => x.OverTransactionCategoryId == null && IsActive).ToList();
+        var subTransactionCategories = new List<TransactionCategory>();
 
-        foreach (var category in categories)
+        _transactionCategories.ForEach(x =>
+        {
+            subTransactionCategories.AddRange(x.SubTransactionCategories);
+        });
+
+        foreach (var category in subTransactionCategories)
         {
             budgetPlanBase.AddBudgetPlanDetail(category.Id);
         }
 
         _budgetPlanBases.Add(budgetPlanBase);
+        
         return budgetPlanBase;
     }
     
@@ -64,18 +70,5 @@ public class BudgetPlanEntity : AuditableEntity
         _transactionCategories.Add(transactionCategory);
 
         return transactionCategory;
-    }
-
-    public TransactionCategory AddTransactionCategory(Guid requestOverTransactionCategoryId, string requestName)
-    {
-        var overTransactionCategory =
-            _transactionCategories.FirstOrDefault(x => x.Id == requestOverTransactionCategoryId &&
-                                                       x.OverTransactionCategoryId == null &&
-                                                       x.IsActive);
-
-        if (overTransactionCategory == null)
-            throw new OverTransactionCategoryNotFoundException(requestOverTransactionCategoryId);
-        
-        return overTransactionCategory.AddSubTransactionCategory(requestName);
     }
 }

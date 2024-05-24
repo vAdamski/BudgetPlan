@@ -7,30 +7,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Application.Actions.BudgetPlanBaseActions.Commands.CreateBudgetPlanBase;
 
-public class CreateBudgetPlanBaseCommandHandler : IRequestHandler<CreateBudgetPlanBaseCommand, Guid>
+public class CreateBudgetPlanBaseCommandHandler(IBudgetPlanDbContext ctx, ICurrentUserService currentUserService)
+	: IRequestHandler<CreateBudgetPlanBaseCommand, Guid>
 {
-    private readonly IBudgetPlanDbContext _ctx;
-    private readonly ICurrentUserService _currentUserService;
+	public async Task<Guid> Handle(CreateBudgetPlanBaseCommand request, CancellationToken cancellationToken)
+	{
+		var budgetPlan = await ctx.BudgetPlanEntities
+			.Include(x => x.DataAccess)
+			.ThenInclude(x => x.AccessedPersons)
+			.Include(x => x.TransactionCategories)
+			.ThenInclude(x => x.SubTransactionCategories)
+			.FirstOrDefaultAsync(x => x.Id == request.BudgetPlanEntityId &&
+			                          x.DataAccess.AccessedPersons.Any(x => x.Email == currentUserService.Email),
+				cancellationToken);
 
-    public CreateBudgetPlanBaseCommandHandler(IBudgetPlanDbContext ctx, ICurrentUserService currentUserService)
-    {
-        _ctx = ctx;
-        _currentUserService = currentUserService;
-    }
+		if (budgetPlan == null)
+			throw new NotFoundException(nameof(BudgetPlanEntity), request.BudgetPlanEntityId);
 
-    public async Task<Guid> Handle(CreateBudgetPlanBaseCommand request, CancellationToken cancellationToken)
-    {
-        var budgetPlan = await _ctx.BudgetPlanEntities
-            .Where(x => x.Id == request.BudgetPlanEntityId)
-            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-        
-        if (budgetPlan == null)
-            throw new NotFoundException(nameof(BudgetPlanEntity), request.BudgetPlanEntityId);
-        
-        var budgetPlanBase = budgetPlan.AddBudgetPlanBase(request.DateFrom, request.DateTo);
-        
-        await _ctx.SaveChangesAsync(cancellationToken);
-        
-        return budgetPlanBase.Id;
-    }
+		var budgetPlanBase = budgetPlan.AddBudgetPlanBase(request.DateFrom, request.DateTo);
+
+		await ctx.SaveChangesAsync(cancellationToken);
+
+		return budgetPlanBase.Id;
+	}
 }
