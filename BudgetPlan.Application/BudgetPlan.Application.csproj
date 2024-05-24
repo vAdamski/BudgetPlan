@@ -24,7 +24,6 @@
 
     <ItemGroup>
       <Folder Include="Actions\BudgetPlanBaseActions\Queries\GetBudgetPlanView\" />
-      <Folder Include="Actions\BudgetPlanBaseActions\Queries\GetUserBudgetPlansList\" />
       <Folder Include="Actions\BudgetPlanDetailsActions\Commands\UpdateBudgetPlanDetail\" />
       <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategoryWithMigrationAction\" />
       <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategory\" />
