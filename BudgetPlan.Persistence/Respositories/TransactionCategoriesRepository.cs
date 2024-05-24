@@ -1,78 +1,49 @@
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
-using BudgetPlan.Common.Extension;
 using BudgetPlan.Domain.Entities;
 using BudgetPlan.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Persistence.Respositories;
 
-public class TransactionCategoriesRepository : ITransactionCategoriesRepository
+public class TransactionCategoriesRepository(
+	IBudgetPlanDbContext context,
+	ICurrentUserService currentUserService)
+	: ITransactionCategoriesRepository
 {
-    private readonly IBudgetPlanDbContext _context;
-    private readonly ICurrentUserService _currentUserService;
+	public async Task<List<TransactionCategory>> GetAllTransactionCategories(
+		CancellationToken cancellationToken = default)
+	{
+		return await context.TransactionCategories
+			.Include(tc => tc.SubTransactionCategories)
+			.Include(tc => tc.Access)
+			.ThenInclude(x => x.AccessedPersons)
+			.Where(x => x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
+			.ToListAsync(cancellationToken);
+	}
 
-    public TransactionCategoriesRepository(IBudgetPlanDbContext context,
-        ICurrentUserService currentUserService)
-    {
-        _context = context;
-        _currentUserService = currentUserService;
-    }
-    
-    public async Task<List<TransactionCategory>> GetTransactionCategoriesWithUnderTransactionCategoriesForCurrentUser(
-        CancellationToken cancellationToken = default)
-    {
-        var categoriesWithDetails = await _context
-            .TransactionCategories
-            .Where(x => x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email) &&
-                        x.OverTransactionCategoryId == null)
-            .IsActive()
-            .Include(x => x.SubTransactionCategories)
-            .ToListAsync(cancellationToken);
+	public async Task<TransactionCategory> GetOverTransactionCategoryAsync(Guid id,
+		CancellationToken cancellationToken = default)
+	{
+		var overTransactionCategory = await context
+			.TransactionCategories
+			.Include(x => x.SubTransactionCategories)
+			.Include(x => x.Access)
+			.ThenInclude(x => x.AccessedPersons)
+			.FirstOrDefaultAsync(x =>
+				x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email) &&
+				x.OverTransactionCategoryId == null, cancellationToken);
+		
+		if (overTransactionCategory == null)
+			throw new NotFoundException(nameof(TransactionCategory), id);
 
-        return categoriesWithDetails;
-    }
+		return overTransactionCategory;
+	}
 
-    public async Task DeleteAsync(Guid id, string userEmail, CancellationToken cancellationToken = default)
-    {
-        if (id == Guid.Empty)
-            throw new ArgumentNullException(nameof(id));
+	public async Task UpdateAsync(TransactionCategory otc, CancellationToken cancellationToken = default)
+	{
+		context.TransactionCategories.Update(otc);
 
-        if (string.IsNullOrEmpty(userEmail))
-            throw new ArgumentNullException(nameof(userEmail));
-
-        var transactionCategory = await _context.TransactionCategories.Where(x =>
-                x.Id == id &&
-                x.Access.AccessedPersons.Any(x => x.Email == _currentUserService.Email))
-            .IsActive()
-            .Include(x => x.SubTransactionCategories)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (transactionCategory == null)
-            throw new TransactionCategoryNotFoundException(id);
-
-        _context.TransactionCategories.Remove(transactionCategory);
-
-        await _context.SaveChangesAsync();
-    }
-    
-    public async Task<bool> IsTransactionCategoryUnderCategory(Guid transactionCategoryId)
-    {
-        var transactionCategory = await _context.TransactionCategories
-            .Where(x => x.Id == transactionCategoryId)
-            .IsActive()
-            .FirstOrDefaultAsync();
-
-        if (transactionCategory == null)
-            throw new TransactionCategoryNotFoundException(transactionCategoryId);
-
-        return transactionCategory.OverTransactionCategoryId != null;
-    }
-
-    public async Task<bool> IsTransactionCategoryInclude(Guid mainTransactionCategoryId, Guid transactionCategoryIdToCheck)
-    {
-        return await _context.TransactionCategories
-            .AnyAsync(x => x.Id == mainTransactionCategoryId &&
-                      x.SubTransactionCategories.Any(x => x.Id == transactionCategoryIdToCheck));
-    }
+		await context.SaveChangesAsync(cancellationToken);
+	}
 }

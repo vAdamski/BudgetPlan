@@ -4,14 +4,14 @@ namespace BudgetPlan.Application.Actions.BudgetPlanBaseActions.Commands.CreateBu
 
 public class CreateBudgetPlanBaseCommand : IRequest<Guid>
 {
-    public DateOnly DateFrom { get; }
-    public DateOnly DateTo { get; }
-    public Guid BudgetPlanEntityId { get; }
+	public DateOnly DateFrom { get; }
+	public DateOnly DateTo { get; }
+	public Guid BudgetPlanEntityId { get; }
 
-    public CreateBudgetPlanBaseCommand(DateOnly dateFrom, DateOnly dateTo, Guid budgetPlanEntityId)
-    {
-        DateFrom = dateFrom;
-        DateTo = dateTo;
-        BudgetPlanEntityId = budgetPlanEntityId;
-    }
+	public CreateBudgetPlanBaseCommand(DateOnly dateFrom, DateOnly dateTo, Guid budgetPlanEntityId)
+	{
+		DateFrom = dateFrom;
+		DateTo = dateTo;
+		BudgetPlanEntityId = budgetPlanEntityId;
+	}
 }

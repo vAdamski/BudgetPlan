@@ -84,8 +84,10 @@ namespace BudgetPlan.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BudgetPlanEntityId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DataAccessId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DateFrom = table.Column<DateOnly>(type: "date", nullable: false),
+                    DateTo = table.Column<DateOnly>(type: "date", nullable: false),
+                    BudgetPlanEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DataAccessId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -98,13 +100,13 @@ namespace BudgetPlan.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_BudgetPlanBases", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BudgetPlanBases_BudgetPlanEntities_BudgetPlanEntityId1",
-                        column: x => x.BudgetPlanEntityId1,
+                        name: "FK_BudgetPlanBases_BudgetPlanEntities_BudgetPlanEntityId",
+                        column: x => x.BudgetPlanEntityId,
                         principalTable: "BudgetPlanEntities",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_BudgetPlanBases_DataAccesses_DataAccessId1",
-                        column: x => x.DataAccessId1,
+                        name: "FK_BudgetPlanBases_DataAccesses_DataAccessId",
+                        column: x => x.DataAccessId,
                         principalTable: "DataAccesses",
                         principalColumn: "Id");
                 });
@@ -114,9 +116,11 @@ namespace BudgetPlan.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BudgetPlanEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DataAccessId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TransactionCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TransactionCategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TransactionType = table.Column<int>(type: "int", nullable: false),
+                    OverTransactionCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    BudgetPlanId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AccessId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -129,18 +133,18 @@ namespace BudgetPlan.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_TransactionCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TransactionCategories_BudgetPlanEntities_BudgetPlanEntityId",
-                        column: x => x.BudgetPlanEntityId,
+                        name: "FK_TransactionCategories_BudgetPlanEntities_BudgetPlanId",
+                        column: x => x.BudgetPlanId,
                         principalTable: "BudgetPlanEntities",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TransactionCategories_DataAccesses_DataAccessId",
-                        column: x => x.DataAccessId,
+                        name: "FK_TransactionCategories_DataAccesses_AccessId",
+                        column: x => x.AccessId,
                         principalTable: "DataAccesses",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TransactionCategories_TransactionCategories_TransactionCategoryId",
-                        column: x => x.TransactionCategoryId,
+                        name: "FK_TransactionCategories_TransactionCategories_OverTransactionCategoryId",
+                        column: x => x.OverTransactionCategoryId,
                         principalTable: "TransactionCategories",
                         principalColumn: "Id");
                 });
@@ -222,14 +226,14 @@ namespace BudgetPlan.Persistence.Migrations
                 column: "DataAccessId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BudgetPlanBases_BudgetPlanEntityId1",
+                name: "IX_BudgetPlanBases_BudgetPlanEntityId",
                 table: "BudgetPlanBases",
-                column: "BudgetPlanEntityId1");
+                column: "BudgetPlanEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BudgetPlanBases_DataAccessId1",
+                name: "IX_BudgetPlanBases_DataAccessId",
                 table: "BudgetPlanBases",
-                column: "DataAccessId1");
+                column: "DataAccessId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BudgetPlanDetails_BudgetPlanBaseId",
@@ -252,19 +256,19 @@ namespace BudgetPlan.Persistence.Migrations
                 column: "DataAccessId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransactionCategories_BudgetPlanEntityId",
+                name: "IX_TransactionCategories_AccessId",
                 table: "TransactionCategories",
-                column: "BudgetPlanEntityId");
+                column: "AccessId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransactionCategories_DataAccessId",
+                name: "IX_TransactionCategories_BudgetPlanId",
                 table: "TransactionCategories",
-                column: "DataAccessId");
+                column: "BudgetPlanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransactionCategories_TransactionCategoryId",
+                name: "IX_TransactionCategories_OverTransactionCategoryId",
                 table: "TransactionCategories",
-                column: "TransactionCategoryId");
+                column: "OverTransactionCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransactionDetails_AccessId",

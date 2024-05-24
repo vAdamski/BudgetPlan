@@ -28,7 +28,6 @@
       <Folder Include="Actions\BudgetPlanDetailsActions\Commands\UpdateBudgetPlanDetail\" />
       <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategoryWithMigrationAction\" />
       <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategory\" />
-      <Folder Include="Actions\TransactionCategoriesActions\Queries\GetListTransactionCategories\" />
       <Folder Include="Actions\TransactionDetailsActions\Commands\AddTransactionDetail\" />
     </ItemGroup>
 

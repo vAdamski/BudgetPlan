@@ -21,10 +21,10 @@ public class AddOverTransactionCategoryCommandHandler(IBudgetPlanDbContext ctx, 
         if (budgetPlan.DataAccess.IsAccessed(currentUserService.Email))
             throw new AccessDeniedException();
         
-        budgetPlan.AddOverTransactionCategory(request.Name, request.TransactionType);
+        var transactionCategory = budgetPlan.AddOverTransactionCategory(request.Name, request.TransactionType);
         
         await ctx.SaveChangesAsync(cancellationToken);
         
-        return budgetPlan.Id;
+        return transactionCategory.Id;
     }
 }

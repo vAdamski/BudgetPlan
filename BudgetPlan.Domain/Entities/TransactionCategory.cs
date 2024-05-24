@@ -6,17 +6,17 @@ namespace BudgetPlan.Domain.Entities;
 
 public class TransactionCategory : AuditableEntity
 {
-    public string TransactionCategoryName { get; }
-    public TransactionType TransactionType { get; }
+    public string TransactionCategoryName { get; private set; }
+    public TransactionType TransactionType { get; private set; }
 
-    public Guid? OverTransactionCategoryId { get; }
-    public TransactionCategory? OverTransactionCategory { get; }
+    public Guid? OverTransactionCategoryId { get; private set; }
+    public TransactionCategory? OverTransactionCategory { get; private set; }
 
-    public Guid? BudgetPlanId { get; }
-    public BudgetPlanEntity? BudgetPlan { get; }
+    public Guid? BudgetPlanId { get; private set; }
+    public BudgetPlanEntity? BudgetPlan { get; private set; }
 
-    public Guid? AccessId { get; }
-    public DataAccess? Access { get; }
+    public Guid? AccessId { get; private set; }
+    public DataAccess? Access { get; private set; }
 
     private List<BudgetPlanDetails> _budgetPlanDetails = new();
     private List<TransactionDetail> _transactionDetails = new();
@@ -30,18 +30,17 @@ public class TransactionCategory : AuditableEntity
     {
     }
 
-    private TransactionCategory(string transactionCategoryName, TransactionType transactionType, DataAccess dataAccess)
+    private TransactionCategory(string transactionCategoryName, TransactionType transactionType, Guid dataAccessId)
     {
         if (string.IsNullOrWhiteSpace(transactionCategoryName))
             throw new ArgumentException(nameof(transactionCategoryName), "Transaction category name cannot be empty.");
         
-        if (dataAccess == null)
-            throw new ArgumentException(nameof(dataAccess), "Data access cannot be empty.");
-        
+        if (dataAccessId == null)
+            throw new ArgumentException(nameof(dataAccessId), "DataAccess id cannot be empty.");
+
         TransactionCategoryName = transactionCategoryName;
         TransactionType = transactionType;
-        AccessId = dataAccess.Id;
-        Access = dataAccess;
+        AccessId = dataAccessId;
     }
 
     private TransactionCategory(string transactionCategoryName, TransactionType transactionType,
@@ -49,13 +48,14 @@ public class TransactionCategory : AuditableEntity
     {
         if (string.IsNullOrWhiteSpace(transactionCategoryName))
             throw new ArgumentException(nameof(transactionCategoryName), "Transaction category name cannot be empty.");
-        
+
         if (overTransactionCategoryId == null)
-            throw new ArgumentException(nameof(overTransactionCategoryId), "Over transaction category id cannot be empty.");
-        
+            throw new ArgumentException(nameof(overTransactionCategoryId),
+                "Over transaction category id cannot be empty.");
+
         if (accessId == null)
             throw new ArgumentException(nameof(accessId), "DataAccess id cannot be empty.");
-        
+
         TransactionCategoryName = transactionCategoryName;
         TransactionType = transactionType;
         OverTransactionCategoryId = overTransactionCategoryId;
@@ -63,9 +63,9 @@ public class TransactionCategory : AuditableEntity
     }
 
     public TransactionDetail AddTransactionDetail(double transactionValue, string description, DateTime transactionDate,
-        DataAccess dataAccess)
+        Guid dataAccessId)
     {
-        var transactionDetail = new TransactionDetail(transactionValue, description, transactionDate, Id, dataAccess);
+        var transactionDetail = new TransactionDetail(transactionValue, description, transactionDate, Id, dataAccessId);
 
         _transactionDetails.Add(transactionDetail);
 
@@ -73,9 +73,9 @@ public class TransactionCategory : AuditableEntity
     }
 
     public static TransactionCategory CreateOverTransactionCategory(string transactionCategoryName,
-        TransactionType transactionType, DataAccess access)
+        TransactionType transactionType, Guid dataAccessId)
     {
-        return new TransactionCategory(transactionCategoryName, transactionType, access);
+        return new TransactionCategory(transactionCategoryName, transactionType, dataAccessId);
     }
 
     public static TransactionCategory CreateUnderTransactionCategory(string transactionCategoryName,
@@ -84,11 +84,15 @@ public class TransactionCategory : AuditableEntity
         return new TransactionCategory(transactionCategoryName, transactionType, overTransactionCategoryId, accessId);
     }
 
-    public void AddSubTransactionCategory(TransactionCategory transactionCategory)
+    public TransactionCategory AddSubTransactionCategory(string name)
     {
         if (OverTransactionCategoryId != null)
             throw new CannotAddSubTransactionCategoryToSubTransactionCategoryException();
         
-        _subTransactionCategories.Add(transactionCategory);
+        var underTransactionCategory = CreateUnderTransactionCategory(name, TransactionType, Id, AccessId.Value);
+
+        _subTransactionCategories.Add(underTransactionCategory);
+
+        return underTransactionCategory;
     }
 }
