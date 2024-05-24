@@ -9,13 +9,13 @@ namespace BudgetPlan.Api.Controllers;
 public class BudgetPlanBaseController : BaseController
 {
 	[HttpGet]
+	[Route("{id}")]
 	public async Task<IActionResult> GetViewModel([FromQuery] Guid id)
 	{
 		throw new NotImplementedException();
 	}
 
 	[HttpGet]
-	[Route("list")]
 	public async Task<IActionResult> GetList()
 	{
 		var response = await Mediator.Send(new GetUserBudgetPlansListQuery());

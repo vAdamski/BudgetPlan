@@ -19,6 +19,7 @@ public static class DependencyInjection
         // Services
         services.AddTransient<ITransactionCategoryManager, TransactionCategoryManager>();
         services.AddTransient<IBudgetPlanManager, BudgetPlanManager>();
+        services.AddTransient<ITransactionDetailsManager, TransactionDetailsManager>();
         
         // Pipelines
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));

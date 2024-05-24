@@ -1,3 +1,5 @@
+using BudgetPlan.Application.Actions.TransactionDetailsActions.Commands.AddTransactionDetail;
+using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
@@ -6,8 +8,10 @@ namespace BudgetPlan.Api.Controllers;
 public class TransactionDetailsController : BaseController
 {
     [HttpPost]
-    public async Task<IActionResult> AddTransactionDetail()
+    public async Task<IActionResult> AddTransactionDetail([FromForm] AddTransactionDetailDto addTransactionDetailDto)
     {
-        throw new NotImplementedException();
+        var response = await Mediator.Send(new AddTransactionDetailCommand(addTransactionDetailDto));
+        
+        return Ok(response);
     }
 }
