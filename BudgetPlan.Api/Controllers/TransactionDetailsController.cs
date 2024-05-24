@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/transactionDetails")]
 public class TransactionDetailsController : BaseController
 {
     [HttpPost]
