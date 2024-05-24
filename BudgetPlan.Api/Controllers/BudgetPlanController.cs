@@ -5,25 +5,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/budgetPlans")]
 public class BudgetPlanController : BaseController
 {
-    [HttpGet]
-    [Route("getBudgetPlans")]
-    public async Task<IActionResult> GetBudgetPlans()
-    {
-        var response = await Mediator.Send(new GetListOfBudgetPlansQuery());
+	[HttpGet]
+	public async Task<IActionResult> GetBudgetPlans()
+	{
+		var response = await Mediator.Send(new GetListOfBudgetPlansQuery());
 
-        return Ok(response);
-    }
-    
-    [HttpPost]
-    [Route("create")]
-    public async Task<IActionResult> Create([FromForm]CreateBudgetPlanDto createBudgetPlan)
-    {
-        var command = new CreateBudgetPlanCommand(createBudgetPlan.Name);
-        var budgetPlanId = await Mediator.Send(command);
+		return Ok(response);
+	}
 
-        return Ok(budgetPlanId);
-    }
+	[HttpPost]
+	public async Task<IActionResult> Create([FromForm] CreateBudgetPlanDto createBudgetPlan)
+	{
+		var command = new CreateBudgetPlanCommand(createBudgetPlan.Name);
+		var budgetPlanId = await Mediator.Send(command);
+
+		return Ok(budgetPlanId);
+	}
 }

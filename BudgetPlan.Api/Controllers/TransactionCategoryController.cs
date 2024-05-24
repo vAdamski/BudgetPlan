@@ -6,11 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/transactionsCategories")]
 public class TransactionCategoryController : BaseController
 {
 	[HttpGet]
-	[Route("list")]
 	public async Task<IActionResult> GetListTransactionCategories()
 	{
 		var response = await Mediator.Send(new GetListTransactionCategoriesQuery());
@@ -19,7 +18,7 @@ public class TransactionCategoryController : BaseController
 	}
 
 	[HttpPost]
-	[Route("createOverCategory")]
+	[Route("overTransactionCategory")]
 	public async Task<IActionResult> AddOverTransactionCategory([FromForm] AddOverTransactionCategoryDto dto)
 	{
 		var response =
@@ -29,7 +28,7 @@ public class TransactionCategoryController : BaseController
 	}
 
 	[HttpPost]
-	[Route("createCategory")]
+	[Route("subTransactionCategory")]
 	public async Task<IActionResult> AddTransactionCategory(
 		[FromForm] AddTransactionCategoryDto addTransactionCategoryDto)
 	{
@@ -40,14 +39,6 @@ public class TransactionCategoryController : BaseController
 	}
 
 	[HttpDelete]
-	[Route("delete/utc/{id}")]
-	public async Task<IActionResult> DeleteTransactionCategory([FromQuery] Guid id)
-	{
-		throw new NotImplementedException();
-	}
-
-	[HttpDelete]
-	[Route("delete/utc/{id}/{migrationId}")]
 	public async Task<IActionResult> DeleteTransactionCategory([FromQuery] Guid id, Guid migrationId)
 	{
 		throw new NotImplementedException();

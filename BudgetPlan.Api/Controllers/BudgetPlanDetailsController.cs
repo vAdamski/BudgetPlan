@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BudgetPlan.Api.Controllers;
 
 
-[Route("api/[controller]")]
+[Route("api/budgetPlanDetails")]
 public class BudgetPlanDetailsController : BaseController
 {
     [HttpPut]

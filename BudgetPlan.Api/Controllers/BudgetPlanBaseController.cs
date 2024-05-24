@@ -5,30 +5,31 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/budgetPlanBases")]
 public class BudgetPlanBaseController : BaseController
 {
-    [HttpGet]
-    public async Task<IActionResult> GetViewModel(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-    
-    [HttpGet]
-    [Route("list")]
-    public async Task<IActionResult> GetList()
-    {
-        var response = await Mediator.Send(new GetUserBudgetPlansListQuery());
+	[HttpGet]
+	public async Task<IActionResult> GetViewModel([FromQuery] Guid id)
+	{
+		throw new NotImplementedException();
+	}
 
-        return Ok(response);
-    }
-    
-    
-    [HttpPost]
-    public async Task<IActionResult> Create([FromForm]CreateBudgetPlanBaseDto createBudgetPlanBase)
-    {
-        var response = await Mediator.Send(new CreateBudgetPlanBaseCommand(createBudgetPlanBase.DateFrom, createBudgetPlanBase.DateTo, createBudgetPlanBase.BudgetPlanEntityId));
-        
-        return Ok(response);
-    }
+	[HttpGet]
+	[Route("list")]
+	public async Task<IActionResult> GetList()
+	{
+		var response = await Mediator.Send(new GetUserBudgetPlansListQuery());
+
+		return Ok(response);
+	}
+
+
+	[HttpPost]
+	public async Task<IActionResult> Create([FromForm] CreateBudgetPlanBaseDto createBudgetPlanBase)
+	{
+		var response = await Mediator.Send(new CreateBudgetPlanBaseCommand(createBudgetPlanBase.DateFrom,
+			createBudgetPlanBase.DateTo, createBudgetPlanBase.BudgetPlanEntityId));
+
+		return Ok(response);
+	}
 }

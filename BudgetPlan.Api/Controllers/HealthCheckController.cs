@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BudgetPlan.Api.Controllers;
 
 [AllowAnonymous]
-[Route("api/[controller]")]
+[Route("api/healthCheck")]
 public class HealthCheckController : BaseController
 {
     [HttpGet]
