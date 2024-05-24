@@ -4,6 +4,12 @@ namespace BudgetPlan.Shared.Dtos;
 
 public class TransactionCategoryDto
 {
-    public Guid Id { get; set; }
-    public string TransactionCategoryName { get; set; }
+    public Guid Id { get; }
+    public string TransactionCategoryName { get; }
+
+    public TransactionCategoryDto(TransactionCategory transactionCategory)
+    {
+        Id = transactionCategory.Id;
+        TransactionCategoryName = transactionCategory.TransactionCategoryName;
+    }
 }

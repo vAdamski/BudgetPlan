@@ -7,14 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Persistence.Respositories;
 
-public class TransactionDetailsRepository : ITransactionDetailsRepository
+public class TransactionDetailsRepository(IBudgetPlanDbContext ctx) : ITransactionDetailsRepository
 {
-    private readonly IBudgetPlanDbContext _ctx;
-
-    public TransactionDetailsRepository(IBudgetPlanDbContext ctx)
-    {
-        _ctx = ctx;
-    }
-
-    
 }

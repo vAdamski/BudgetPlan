@@ -16,13 +16,12 @@ public class TransactionDetail : AuditableEntity
      
      private TransactionDetail() { }
  
-     public TransactionDetail(double value, string description, DateTime transactionDate, Guid transactionCategoryId, DataAccess dataAccess)
+     public TransactionDetail(double value, string description, DateTime transactionDate, Guid transactionCategoryId, Guid dataAccessId)
      {
          Value = value;
          Description = description;
          TransactionDate = transactionDate;
          TransactionCategoryId = transactionCategoryId;
-         AccessId = dataAccess.Id;
-         Access = dataAccess;
+         AccessId = dataAccessId;
      }
  }

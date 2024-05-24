@@ -5,33 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Persistence.Respositories;
 
-public class BudgetPlanDetailsRepository : IBudgetPlanDetailsRepository
+public class BudgetPlanDetailsRepository(
+    IBudgetPlanDbContext context,
+    ICurrentUserService currentUserService)
+    : IBudgetPlanDetailsRepository
 {
-    private readonly IBudgetPlanDbContext _context;
-    private readonly ICurrentUserService _currentUserService;
-
-    public BudgetPlanDetailsRepository(IBudgetPlanDbContext context,
-        ICurrentUserService currentUserService)
-    {
-        _context = context;
-        _currentUserService = currentUserService;
-    }
-
-    public async Task UpdateBudgetPlanDetail(Guid id, double expectedAmount)
-    {
-        throw new NotImplementedException();
-        // var budgetPlanDetail = await _context.BudgetPlanDetails.FirstOrDefaultAsync(x =>
-        //     x.Id == id &&
-        //     x.BudgetPlanBase.DataAccess.AccessedPersons.Any(y => y.Email == _currentUserService.Email) &&
-        //     x.IsActive);
-        //
-        // if (budgetPlanDetail == null)
-        // {
-        //     throw new BudgetPlanDetailNotFoundException(id);
-        // }
-        //
-        // budgetPlanDetail.ExpectedAmount = expectedAmount;
-        //
-        // await _context.SaveChangesAsync();
-    }
+    
 }

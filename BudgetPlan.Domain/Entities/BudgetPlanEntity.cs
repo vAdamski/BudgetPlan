@@ -59,14 +59,14 @@ public class BudgetPlanEntity : AuditableEntity
         TransactionType transactionType)
     {
         var transactionCategory =
-            TransactionCategory.CreateOverTransactionCategory(transactionCategoryName, transactionType, DataAccess);
+            TransactionCategory.CreateOverTransactionCategory(transactionCategoryName, transactionType, DataAccessId.Value);
 
         _transactionCategories.Add(transactionCategory);
 
         return transactionCategory;
     }
 
-    public void AddTransactionCategory(Guid requestOverTransactionCategoryId, string requestName)
+    public TransactionCategory AddTransactionCategory(Guid requestOverTransactionCategoryId, string requestName)
     {
         var overTransactionCategory =
             _transactionCategories.FirstOrDefault(x => x.Id == requestOverTransactionCategoryId &&
@@ -76,14 +76,6 @@ public class BudgetPlanEntity : AuditableEntity
         if (overTransactionCategory == null)
             throw new OverTransactionCategoryNotFoundException(requestOverTransactionCategoryId);
         
-        var transactionCategory = TransactionCategory.CreateUnderTransactionCategory(requestName,
-            overTransactionCategory.TransactionType, requestOverTransactionCategoryId, DataAccessId.Value);
-        
-        overTransactionCategory.AddSubTransactionCategory(transactionCategory);
-        
-        _budgetPlanBases.ForEach(x =>
-        {
-            x.AddBudgetPlanDetail(transactionCategory.Id);
-        });
+        return overTransactionCategory.AddSubTransactionCategory(requestName);
     }
 }
