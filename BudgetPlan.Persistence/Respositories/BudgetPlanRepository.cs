@@ -30,13 +30,14 @@ public class BudgetPlanRepository(IBudgetPlanDbContext ctx, ICurrentUserService 
             .Where(x => x.Id == id)
             .Include(x => x.DataAccess)
             .Include(x => x.TransactionCategories)
+            .ThenInclude(x => x.SubTransactionCategories)
             .Include(x => x.BudgetPlanBases)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (budgetPlan == null)
             throw new BudgetPlanNotFoundException(id);
         
-        if (budgetPlan.DataAccess.IsAccessed(currentUserService.Email))
+        if (!budgetPlan.DataAccess.IsAccessed(currentUserService.Email))
             throw new AccessDeniedException();
 
         return budgetPlan;

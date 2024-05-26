@@ -1,5 +1,7 @@
 using System.Reflection;
+using BudgetPlan.Application.Builders;
 using BudgetPlan.Application.Common.Behaviours;
+using BudgetPlan.Application.Common.Interfaces.Builders;
 using BudgetPlan.Application.Common.Interfaces.Managers;
 using BudgetPlan.Application.Managers;
 using FluentValidation;
@@ -21,6 +23,8 @@ public static class DependencyInjection
         services.AddTransient<IBudgetPlanManager, BudgetPlanManager>();
         services.AddTransient<ITransactionDetailsManager, TransactionDetailsManager>();
         services.AddTransient<IBudgetPlanDetailsManager, BudgetPlanDetailsManager>();
+        services.AddTransient<IBudgetPlanBaseViewModelBuilder, BudgetPlanBaseViewModelBuilder>();
+        services.AddTransient<IBudgetPlanBaseManager, BudgetPlanBaseManager>();
         
         // Pipelines
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
