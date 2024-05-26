@@ -23,7 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Actions\BudgetPlanBaseActions\Queries\GetBudgetPlanView\" />
       <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategoryWithMigrationAction\" />
       <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategory\" />
     </ItemGroup>
