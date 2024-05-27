@@ -1,7 +1,7 @@
 using BudgetPlan.Shared.ViewModels;
 using MediatR;
 
-namespace BudgetPlan.Application.Actions.DataAccessActions.GetDataAccessForBudgetPlan;
+namespace BudgetPlan.Application.Actions.DataAccessActions.Queries.GetDataAccessForBudgetPlan;
 
 public class GetDataAccessForBudgetPlanQuery : IRequest<DataAccessBudgetPlanViewModel>
 {
