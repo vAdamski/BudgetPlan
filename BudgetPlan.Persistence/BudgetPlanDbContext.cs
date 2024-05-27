@@ -26,7 +26,7 @@ public class BudgetPlanDbContext : DbContext, IBudgetPlanDbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
-    
+
     public virtual DbSet<TransactionCategory> TransactionCategories { get; set; }
     public virtual DbSet<TransactionDetail> TransactionDetails { get; set; }
     public virtual DbSet<BudgetPlanDetails> BudgetPlanDetails { get; set; }
