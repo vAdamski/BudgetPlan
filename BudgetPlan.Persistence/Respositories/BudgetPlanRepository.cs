@@ -29,6 +29,7 @@ public class BudgetPlanRepository(IBudgetPlanDbContext ctx, ICurrentUserService 
         var budgetPlan = await ctx.BudgetPlanEntities
             .Where(x => x.Id == id)
             .Include(x => x.DataAccess)
+            .ThenInclude(x => x.AccessedPersons)
             .Include(x => x.TransactionCategories)
             .ThenInclude(x => x.SubTransactionCategories)
             .Include(x => x.BudgetPlanBases)
