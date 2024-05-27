@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddTransient<IBudgetPlanDetailsManager, BudgetPlanDetailsManager>();
         services.AddTransient<IBudgetPlanBaseViewModelBuilder, BudgetPlanBaseViewModelBuilder>();
         services.AddTransient<IBudgetPlanBaseManager, BudgetPlanBaseManager>();
+        services.AddTransient<IDataAccessManager, DataAccessManager>();
         
         // Pipelines
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
