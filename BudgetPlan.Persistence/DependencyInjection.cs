@@ -18,6 +18,7 @@ public static class DependencyInjection
         services.AddTransient<ITransactionCategoriesRepository, TransactionCategoriesRepository>();
         services.AddTransient<IBudgetPlanDetailsRepository, BudgetPlanDetailsRepository>();
         services.AddTransient<IBudgetPlanRepository, BudgetPlanRepository>();
+        services.AddTransient<IDataAccessRepository, DataAccessRepository>();
         
         return services;
     }
