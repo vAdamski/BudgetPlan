@@ -5,22 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Persistence.Respositories;
 
-public class TransactionDetailsRepository : ITransactionDetailsRepository
+public class TransactionDetailsRepository(IBudgetPlanDbContext ctx) : ITransactionDetailsRepository
 {
-    private readonly IBudgetPlanDbContext _ctx;
-
-    public TransactionDetailsRepository(IBudgetPlanDbContext ctx)
-    {
-        _ctx = ctx;
-    }
-
-    public async Task<List<TransactionDetail>> GetTransactionsForUserBetweenDates(string userEmail, DateTime dateFrom,
-        DateTime dateTo)
-    {
-         return await _ctx.TransactionDetails.Where(x => x.CreatedBy == userEmail &&
-                                                 x.TransactionDate >= dateFrom &&
-                                                 x.TransactionDate <= dateTo &&
-                                                 x.StatusId == 1)
-            .ToListAsync();
-    }
+	public async Task<List<TransactionDetail>> GetTransactionsForCategoriesBetweenDaysAsync(List<Guid> subCategoryIds,
+		DateOnly dateFrom, DateOnly dateTo,
+		CancellationToken cancellationToken = default)
+	{
+		return await ctx.TransactionDetails.Where(x =>
+				subCategoryIds.Contains(x.TransactionCategoryId.Value) &&
+				x.TransactionDate >= dateFrom &&
+				x.TransactionDate <= dateTo)
+			.ToListAsync(cancellationToken);
+	}
 }

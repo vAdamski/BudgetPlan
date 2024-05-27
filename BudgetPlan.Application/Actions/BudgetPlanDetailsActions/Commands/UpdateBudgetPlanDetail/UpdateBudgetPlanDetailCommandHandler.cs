@@ -1,31 +1,14 @@
-using BudgetPlan.Application.Common.Interfaces.Repositories;
+using BudgetPlan.Application.Common.Interfaces.Managers;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace BudgetPlan.Application.Actions.BudgetPlanDetailsActions.Commands.UpdateBudgetPlanDetail;
 
-public class UpdateBudgetPlanDetailCommandHandler : IRequestHandler<UpdateBudgetPlanDetailCommand>
+public class UpdateBudgetPlanDetailCommandHandler(IBudgetPlanDetailsManager manager) : IRequestHandler<UpdateBudgetPlanDetailCommand, Unit>
 {
-    private readonly IBudgetPlanDetailsRepository _budgetPlanDetailsRepository;
-    private readonly ILogger<UpdateBudgetPlanDetailCommandHandler> _logger;
-
-    public UpdateBudgetPlanDetailCommandHandler(IBudgetPlanDetailsRepository budgetPlanDetailsRepository,
-        ILogger<UpdateBudgetPlanDetailCommandHandler> logger)
-    {
-        _budgetPlanDetailsRepository = budgetPlanDetailsRepository;
-        _logger = logger;
-    }
-    
-    public async Task Handle(UpdateBudgetPlanDetailCommand request, CancellationToken cancellationToken)
-    {
-        try
-        {
-            await _budgetPlanDetailsRepository.UpdateBudgetPlanDetail(request.Id, request.ExpectedAmount);
-        }
-        catch(Exception ex)
-        {
-            _logger.LogError(ex.Message, ex);
-            throw;
-        }
-    }
+	public async Task<Unit> Handle(UpdateBudgetPlanDetailCommand request, CancellationToken cancellationToken)
+	{
+		await manager.Update(request.Id, request.ExpectedAmount, cancellationToken);
+		
+		return Unit.Value;
+	}
 }

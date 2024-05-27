@@ -8,8 +8,8 @@ public class BudgetPlanListItemDto
     public BudgetPlanListItemDto(BudgetPlanBase budgetPlanBase)
     {
         Id = budgetPlanBase.Id;
-        From = budgetPlanBase.DateFrom.ToDateOnly();
-        To = budgetPlanBase.DateTo.ToDateOnly();
+        From = budgetPlanBase.DateFrom;
+        To = budgetPlanBase.DateTo;
     }
     
     public Guid Id { get; private set; }

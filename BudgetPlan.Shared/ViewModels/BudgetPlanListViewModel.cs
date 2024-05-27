@@ -1,18 +1,14 @@
+using BudgetPlan.Domain.Entities;
 using BudgetPlan.Shared.Dtos;
 
 namespace BudgetPlan.Shared.ViewModels;
 
 public class BudgetPlanListViewModel
 {
-    public BudgetPlanListViewModel(List<BudgetPlanListItemDto> budgetPlans)
-    {
-        if (budgetPlans is null)
-        {
-            BudgetPlans = new();
-        }
-        
-        BudgetPlans = budgetPlans;
-    }
-    
-    public List<BudgetPlanListItemDto> BudgetPlans { get; private set; }
+	public List<BudgetPlanDto> BudgetPlanDtos { get; } = new();
+
+	public BudgetPlanListViewModel(List<BudgetPlanEntity> budgetPlanBases)
+	{
+		BudgetPlanDtos = budgetPlanBases.Select(b => new BudgetPlanDto(b)).ToList();
+	}
 }

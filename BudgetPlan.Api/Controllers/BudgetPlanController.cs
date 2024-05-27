@@ -1,31 +1,27 @@
 using BudgetPlan.Application.Actions.BudgetPlanActions.Commands.CreateBudgetPlan;
-using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetBudgetPlanView;
-using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetUserBudgetPlansList;
+using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetListOfBudgetPlans;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/budgetPlans")]
 public class BudgetPlanController : BaseController
 {
-    [HttpGet]
-    public async Task<IActionResult> GetViewModel(Guid id)
-    {
-        return Ok(await Mediator.Send(new GetBudgetPlanViewCommand {BudgetPlanId = id}));
-    }
-    
-    [HttpGet]
-    [Route("list")]
-    public async Task<IActionResult> GetList()
-    {
-        return Ok(await Mediator.Send(new GetUserBudgetPlansListQuery()));
-    }
-    
-    
-    [HttpPost]
-    public async Task<IActionResult> Create([FromForm]CreateBudgetPlanDto createBudgetPlan)
-    {
-        return Ok(await Mediator.Send(new CreateBudgetPlanCommand(new DateTime(createBudgetPlan.Year, createBudgetPlan.Month, 1))));
-    }
+	[HttpGet]
+	public async Task<IActionResult> GetBudgetPlans()
+	{
+		var response = await Mediator.Send(new GetListOfBudgetPlansQuery());
+
+		return Ok(response);
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> Create([FromForm] CreateBudgetPlanDto createBudgetPlan)
+	{
+		var command = new CreateBudgetPlanCommand(createBudgetPlan.Name);
+		var budgetPlanId = await Mediator.Send(command);
+
+		return Ok(budgetPlanId);
+	}
 }

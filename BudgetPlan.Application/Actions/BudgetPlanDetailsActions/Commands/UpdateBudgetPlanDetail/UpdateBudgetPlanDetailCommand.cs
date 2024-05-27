@@ -3,19 +3,14 @@ using MediatR;
 
 namespace BudgetPlan.Application.Actions.BudgetPlanDetailsActions.Commands.UpdateBudgetPlanDetail;
 
-public class UpdateBudgetPlanDetailCommand : IRequest
+public class UpdateBudgetPlanDetailCommand : IRequest<Unit>
 {
-    public UpdateBudgetPlanDetailCommand()
-    {
-        
-    }
-    
-    public UpdateBudgetPlanDetailCommand(UpdateBudgetPlanDetailDto dto)
-    {
-        Id = dto.Id;
-        ExpectedAmount = dto.ExpectedAmount;
-    }
-    
-    public Guid Id { get; set; }
-    public double ExpectedAmount { get; set; }
+	public Guid Id { get; }
+	public double ExpectedAmount { get; }
+	
+	public UpdateBudgetPlanDetailCommand(UpdateBudgetPlanDetailDto dto)
+	{
+		Id = dto.Id;
+		ExpectedAmount = dto.ExpectedAmount;
+	}
 }

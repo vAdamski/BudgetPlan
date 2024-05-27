@@ -1,36 +1,35 @@
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
+using BudgetPlan.Domain.Entities;
 using BudgetPlan.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPlan.Persistence.Respositories;
 
-public class BudgetPlanDetailsRepository : IBudgetPlanDetailsRepository
+public class BudgetPlanDetailsRepository(
+    IBudgetPlanDbContext context,
+    ICurrentUserService currentUserService)
+    : IBudgetPlanDetailsRepository
 {
-    private readonly IBudgetPlanDbContext _context;
-    private readonly ICurrentUserService _currentUserService;
-
-    public BudgetPlanDetailsRepository(IBudgetPlanDbContext context,
-        ICurrentUserService currentUserService)
+    public async Task<BudgetPlanDetails> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        _context = context;
-        _currentUserService = currentUserService;
+        var data = await context.BudgetPlanDetails
+            .Include(x => x.DataAccess)
+            .ThenInclude(x => x.AccessedPersons)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        if (data == null)
+            throw new NotFoundException(nameof(BudgetPlanDetails), id);
+
+        if (!data.DataAccess.IsAccessed(currentUserService.Email))
+            throw new AccessDeniedException();
+
+        return data;
     }
 
-    public async Task UpdateBudgetPlanDetail(Guid id, double expectedAmount)
+    public async Task UpdateAsync(BudgetPlanDetails budgetPlanDetails, CancellationToken cancellationToken = default)
     {
-        var budgetPlanDetail = await _context.BudgetPlanDetails.FirstOrDefaultAsync(x =>
-            x.Id == id &&
-            x.BudgetPlanBase.CreatedBy == _currentUserService.Email &&
-            x.BudgetPlanBase.StatusId == 1);
-
-        if (budgetPlanDetail == null)
-        {
-            throw new BudgetPlanDetailNotFoundException(id);
-        }
-
-        budgetPlanDetail.ExpectedAmount = expectedAmount;
-
-        await _context.SaveChangesAsync();
+        context.BudgetPlanDetails.Update(budgetPlanDetails);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

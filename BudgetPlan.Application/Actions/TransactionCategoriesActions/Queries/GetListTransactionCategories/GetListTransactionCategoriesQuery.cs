@@ -5,5 +5,5 @@ namespace BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.Ge
 
 public class GetListTransactionCategoriesQuery : IRequest<TransactionCategoryListViewModel>
 {
-    
+	
 }

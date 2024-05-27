@@ -4,11 +4,7 @@ namespace BudgetPlan.Application.Common.Interfaces.Repositories;
 
 public interface IBudgetPlanBaseRepository
 {
-    Task<List<BudgetPlanBase>>  GetBudgetPlansForCurrentUser(CancellationToken cancellationToken = default);
-    Task<List<BudgetPlanBase>> GetBudgetPlansForUser(string userEmail, CancellationToken cancellationToken = default);
-    Task<BudgetPlanBase> GetById(Guid id, CancellationToken cancellationToken = default);
-    Task<BudgetPlanBase> GetByIdWithBudgetPlanDetailsList(Guid id, CancellationToken cancellationToken = default);
-    Task<List<BudgetPlanBase>> GetActiveBudgetPlansBasesForCurrentUser(CancellationToken cancellationToken = default);
-    Task DeleteAsync(BudgetPlanBase budgetPlanBase, CancellationToken cancellationToken = default);
-    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+	Task<BudgetPlanBase> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+	Task<BudgetPlanBase> GetWithBudgetPlanDetailsByIdAsync(Guid id, CancellationToken cancellationToken = default);
+	Task<List<BudgetPlanBase>> GetAllForUserAsync(CancellationToken cancellationToken = default);
 }

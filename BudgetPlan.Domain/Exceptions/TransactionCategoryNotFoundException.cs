@@ -1,10 +1,8 @@
 namespace BudgetPlan.Domain.Exceptions;
 
-public class TransactionCategoryNotFoundException : Exception
+public class TransactionCategoryNotFoundException : ExceptionBase
 {
-    public TransactionCategoryNotFoundException(Guid transactionCategoryId) 
-        : base($"Transaction category with Id = {transactionCategoryId} has not been found for this user!")
+    public TransactionCategoryNotFoundException(Guid id) : base($"Transaction category with Id = {id} has not been found!")
     {
-        
     }
 }
