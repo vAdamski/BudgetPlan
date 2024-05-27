@@ -1,5 +1,6 @@
 using BudgetPlan.Application.Actions.BudgetPlanActions.Commands.CreateBudgetPlan;
 using BudgetPlan.Application.Actions.BudgetPlanActions.Queries.GetListOfBudgetPlans;
+using BudgetPlan.Application.Actions.DataAccessActions.GetDataAccessForBudgetPlan;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,16 @@ public class BudgetPlanController : BaseController
 
 		return Ok(response);
 	}
+
+	[HttpGet]
+	[Route("{id}/access")]
+	public async Task<IActionResult> GetAccessForBudgetPlan(Guid id)
+	{
+		var response = await Mediator.Send(new GetDataAccessForBudgetPlanQuery(id));
+		
+		return Ok(response);
+	}
+
 
 	[HttpPost]
 	public async Task<IActionResult> Create([FromForm] CreateBudgetPlanDto createBudgetPlan)
