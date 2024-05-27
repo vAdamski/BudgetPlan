@@ -8,4 +8,7 @@ public interface IDataAccessManager
 
 	Task<DataAccessBudgetPlanViewModel> GetDataAccessForBudgetPlan(Guid budgetPlanId,
 		CancellationToken cancellationToken = default);
+
+	Task UpdateDataAccess(Guid requestId, UpdateDataAccessViewModel requestViewModel,
+		CancellationToken cancellationToken = default);
 }

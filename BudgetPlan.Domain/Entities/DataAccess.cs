@@ -43,16 +43,16 @@ public class DataAccess : AuditableEntity
     {
         return AccessedPersons.Any(p => p.Email == email);
     }
-
-    public static DataAccess Create()
-    {
-        return new DataAccess();
-    }
     
     public static DataAccess Create(string email)
     {
         var access = new DataAccess();
         access.AddPerson(email);
         return access;
+    }
+
+    public void OverrideAccessedPersons(List<AccessedPerson> accessedPersons)
+    {
+        AccessedPersons = accessedPersons;
     }
 }
