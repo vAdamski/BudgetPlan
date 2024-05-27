@@ -2,7 +2,7 @@ using BudgetPlan.Application.Common.Interfaces.Managers;
 using BudgetPlan.Shared.ViewModels;
 using MediatR;
 
-namespace BudgetPlan.Application.Actions.DataAccessActions.GetDataAccessForBudgetPlan;
+namespace BudgetPlan.Application.Actions.DataAccessActions.Queries.GetDataAccessForBudgetPlan;
 
 public class GetDataAccessForBudgetPlanQueryHandler(IDataAccessManager dataAccessManager)
 	: IRequestHandler<GetDataAccessForBudgetPlanQuery, DataAccessBudgetPlanViewModel>
