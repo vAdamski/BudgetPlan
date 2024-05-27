@@ -1,4 +1,5 @@
-using BudgetPlan.Application.Actions.DataAccessActions.GetListOfAccesses;
+using BudgetPlan.Application.Actions.DataAccessActions.Queries.GetListOfAccesses;
+using BudgetPlan.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetPlan.Api.Controllers;
@@ -16,7 +17,7 @@ public class AccessesController : BaseController
 
 	[HttpPut]
 	[Route("{id}")]
-	public async Task<IActionResult> UpdateAccess(Guid id)
+	public async Task<IActionResult> UpdateAccess(Guid id, UpdateDataAccessViewModel updateDataAccessViewModel)
 	{
 		return NoContent();
 	}
