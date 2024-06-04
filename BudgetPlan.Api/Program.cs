@@ -70,12 +70,8 @@ builder.Services.AddSwaggerGen(options =>
                 Scopes = new Dictionary<string, string>
                 {
                     { "api1", "Full access" },
-                    { "user", "User info" },
                     { "openid", "openid" },
-                    { "role", "User role" },
-                    { "IdentityServerApi" , "Identity Server Api DataAccess"},
-                    { "firstName", "First Name" },
-                    { "lastName", "Last Name" }
+                    { "profile", "User info" },
                 }
             }
         }
