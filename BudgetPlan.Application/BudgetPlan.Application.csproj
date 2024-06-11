@@ -24,8 +24,6 @@
 
     <ItemGroup>
       <Folder Include="Actions\DataAccessActions\Queries\" />
-      <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategoryWithMigrationAction\" />
-      <Folder Include="Actions\TransactionCategoriesActions\Commands\DeleteTransactionCategory\" />
     </ItemGroup>
 
 </Project>

@@ -73,5 +73,24 @@ public static class Config
 				AllowedCorsOrigins = { "https://localhost:6001", "https://localhost:5001" },
 				Enabled = true
 			},
+			new Client
+			{
+				ClientId = "react",
+				ClientName = "Client for React use",
+
+				AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+				ClientSecrets = { new Secret("secret".Sha256()) },
+				RequirePkce = true,
+				RequireClientSecret = false,
+				AllowedScopes =
+				{
+					"api1", 
+					"openid", 
+					"profile"
+				},
+				AllowedCorsOrigins = { "https://localhost:3000" },
+				RedirectUris = { "https://localhost:3000/authentication/login-callback" },
+				PostLogoutRedirectUris = { "https://localhost:3000/" }
+			},
 		};
 }

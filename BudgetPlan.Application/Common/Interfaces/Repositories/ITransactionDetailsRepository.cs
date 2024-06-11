@@ -10,4 +10,5 @@ public interface ITransactionDetailsRepository
 	Task<TransactionDetail> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 	Task UpdateAsync(TransactionDetail transactionDetail, CancellationToken cancellationToken = default);
 	Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+	Task UpdateRangeAsync(List<TransactionDetail> items, CancellationToken cancellationToken = default);
 }
