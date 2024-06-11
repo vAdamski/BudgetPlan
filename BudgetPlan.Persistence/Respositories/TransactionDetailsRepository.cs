@@ -51,4 +51,11 @@ public class TransactionDetailsRepository(IBudgetPlanDbContext context, ICurrent
 
 		await context.SaveChangesAsync(cancellationToken);
 	}
+
+	public Task UpdateRangeAsync(List<TransactionDetail> items, CancellationToken cancellationToken = default)
+	{
+		context.TransactionDetails.UpdateRange(items);
+
+		return context.SaveChangesAsync(cancellationToken);
+	}
 }

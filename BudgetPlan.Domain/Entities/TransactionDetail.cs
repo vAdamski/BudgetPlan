@@ -40,4 +40,9 @@ public class TransactionDetail : AuditableEntity
 		Description = description;
 		TransactionDate = transactionDate;
 	}
+
+	public void UpdateTransactionCategory(Guid transactionCategoryId)
+	{
+		TransactionCategoryId = transactionCategoryId;
+	}
 }

@@ -39,7 +39,8 @@ public class TransactionCategoryController : BaseController
 	}
 
 	[HttpDelete]
-	public async Task<IActionResult> DeleteTransactionCategory([FromQuery] Guid id, Guid migrationId)
+	[Route("{id}")]
+	public async Task<IActionResult> DeleteTransactionCategory([FromQuery] Guid id, Guid? migrationId = null)
 	{
 		throw new NotImplementedException();
 	}
