@@ -77,9 +77,7 @@ public static class Config
 			{
 				ClientId = "react",
 				ClientName = "Client for React use",
-
 				AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-				ClientSecrets = { new Secret("secret".Sha256()) },
 				RequirePkce = true,
 				RequireClientSecret = false,
 				AllowedScopes =
@@ -88,9 +86,9 @@ public static class Config
 					"openid", 
 					"profile"
 				},
-				AllowedCorsOrigins = { "https://localhost:3000" },
-				RedirectUris = { "https://localhost:3000/authentication/login-callback" },
-				PostLogoutRedirectUris = { "https://localhost:3000/" }
+				AllowedCorsOrigins = { "http://localhost:5173", "https://localhost:5001" },
+				RedirectUris = { "http://localhost:5173/authentication/login-callback" },
+				PostLogoutRedirectUris = { "http://localhost:5173/" }
 			},
 		};
 }
