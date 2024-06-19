@@ -86,7 +86,7 @@ public static class Config
 					"openid", 
 					"profile"
 				},
-				AllowedCorsOrigins = { "http://localhost:5173", "https://localhost:5001" },
+				AllowedCorsOrigins = { "http://localhost:5173", "https://localhost:5001", "https://localhost:6001" },
 				RedirectUris = { "http://localhost:5173/authentication/login-callback" },
 				PostLogoutRedirectUris = { "http://localhost:5173/" }
 			},

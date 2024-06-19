@@ -1,0 +1,24 @@
+.top-navbar {
+    width: 100%;
+}
+
+.bottom-navbar {
+    width: 100%;
+}
+
+.navbar-item{
+    height: 3rem;
+    text-align: center;
+    text-justify: auto;
+    line-height: 3rem;
+}
+
+.navbar-item-profile{
+    height: 3rem;
+    text-align: center;
+    line-height: 3rem;
+}
+
+.navbar-item:hover{
+    background: #333;
+}
