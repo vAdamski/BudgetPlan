@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import userManager from './AuthConfig';
+import userManager from './authConfig.jsx';
 
 const LoginCallback = () => {
     const navigate = useNavigate();
