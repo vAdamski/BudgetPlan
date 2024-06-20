@@ -6,7 +6,7 @@ const HomePage = () => {
     const {user,} = useContext(AuthContext);
 
     return (
-        <div>
+        <div className={''}>
             <h1>Home Page</h1>
             <h3>JWT Token</h3>
             <p style={{

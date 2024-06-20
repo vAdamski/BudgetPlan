@@ -1,24 +1,65 @@
-.top-navbar {
-    width: 100%;
-}
-
-.bottom-navbar {
-    width: 100%;
-}
-
-.navbar-item{
+.top-nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     height: 3rem;
-    text-align: center;
-    text-justify: auto;
-    line-height: 3rem;
+    background-color: #222831;
+    border-bottom: 1px solid #eeeeee;
+
 }
 
-.navbar-item-profile{
+.app-brand {
+    flex: 1;
+    text-align: center;
+}
+
+.app-brand a {
+    font-size: 2rem;
+}
+
+.nav-bar-toggle {
+
+}
+
+.nav-bar-toggle:hover {
+    cursor: pointer;
+    color: #76ABAE;
+}
+
+.nav-bar-toggle span {
+    font-size: 2rem;
+}
+
+.navbar-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
     height: 3rem;
-    text-align: center;
-    line-height: 3rem;
 }
 
-.navbar-item:hover{
-    background: #333;
+.navbar-item span {
+    padding-left: 1rem;
+}
+
+.navbar-item a {
+    padding-left: 1rem;
+}
+
+.navbar-item-profile {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 3rem;
+}
+
+.navbar-item-profile a {
+    padding-left: 1rem;
+}
+
+.navbar-item:hover {
+    cursor: pointer;
+    background: #76ABAE;
 }

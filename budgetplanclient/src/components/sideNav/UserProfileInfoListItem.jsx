@@ -9,7 +9,7 @@ function UserProfileInfoListItem() {
 
     return (
         <div className={'navbar-item-profile'}>
-            <a>Welcome {userName}</a>
+            <a>Welcome {userName}!</a>
         </div>
     );
 }

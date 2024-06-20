@@ -1,15 +1,28 @@
-.sideNavBar {
+.page {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    position: relative;
+}
+
+.sidebar {
+    background-color: #222831;
+    min-width: 240px;
     width: 240px;
-    background-color: #1a1a1a;
-    border-right: 1px solid black;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+main {
+    flex: 1;
+    max-width: calc(100vw - 240px);
 }
 
 .content {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-    border: 1px solid red;
-    width: calc(100vw - 240px);
+    padding-top: 1rem;
+}
+
+article {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
 }

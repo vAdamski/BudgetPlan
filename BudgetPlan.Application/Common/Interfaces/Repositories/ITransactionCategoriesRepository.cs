@@ -9,6 +9,7 @@ public interface ITransactionCategoriesRepository
 	Task<TransactionCategory> GetOverTransactionCategoryAsync(Guid id, CancellationToken cancellationToken = default);
 	Task<TransactionCategory> GetOverTransactionCategoryWithTransactionDetailsByIdAsync(Guid id,
 		CancellationToken cancellationToken = default);
+	Task<List<BudgetPlanEntity>> GetTransactionCategoriesForBudgetPlansAsync(CancellationToken cancellationToken = default);
 
 	Task<List<TransactionCategory>> GetAllTransactionCategoriesWithTransactionDetails(
 		CancellationToken cancellationToken = default);

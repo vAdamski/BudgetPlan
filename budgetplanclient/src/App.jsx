@@ -11,17 +11,20 @@ const App = () => {
     return (
         <AuthProvider>
             <Router>
-                <div className="container">
-                    <div className={'sideNavBar'}>
+                <div className="page">
+                    <div className={'sidebar'}>
                         <SideNavigationBar/>
                     </div>
-                    <div className={'content'}>
-                        <Routes>
-                            <Route path="/" element={<HomePage/>}/>
-                            <Route path="/TransactionCategory" element={<TransactionCategory/>}/>
-                            <Route path="/authentication/login-callback" element={<LoginCallback/>}></Route>
-                        </Routes>
-                    </div>
+
+                    <main>
+                        <article className={'content'}>
+                                <Routes>
+                                    <Route path="/" element={<HomePage/>}/>
+                                    <Route path="/TransactionCategory" element={<TransactionCategory/>}/>
+                                    <Route path="/authentication/login-callback" element={<LoginCallback/>}></Route>
+                                </Routes>
+                        </article>
+                    </main>
                 </div>
             </Router>
         </AuthProvider>
