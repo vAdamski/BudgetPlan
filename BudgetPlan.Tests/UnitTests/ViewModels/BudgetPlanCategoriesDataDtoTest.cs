@@ -2,11 +2,12 @@ using BudgetPlan.Shared.ViewModels;
 using JetBrains.Annotations;
 using BudgetPlan.Domain.Entities;
 using BudgetPlan.Domain.Enums;
+using BudgetPlan.Shared.Dtos;
 
 namespace BudgetPlan.Tests.UnitTests.ViewModels
 {
-    [TestSubject(typeof(TransactionCategoryListViewModel))]
-    public class TransactionCategoryListViewModelTest
+    [TestSubject(typeof(BudgetPlanCategoriesDataDto))]
+    public class BudgetPlanCategoriesDataDtoTest
     {
         [Fact]
         public void InitializeViewModel_ValueIsNotNull()
@@ -19,7 +20,7 @@ namespace BudgetPlan.Tests.UnitTests.ViewModels
                 new Guid("f29f240d-7961-4bc7-b45b-faa8fe7019a3")));
 
             // Act
-            var viewModel = new TransactionCategoryListViewModel(transactionCategories);
+            var viewModel = new BudgetPlanCategoriesDataDto(transactionCategories);
 
             // Assert
             viewModel.ShouldNotBeNull();
@@ -36,7 +37,7 @@ namespace BudgetPlan.Tests.UnitTests.ViewModels
                 new Guid("f29f240d-7961-4bc7-b45b-faa8fe7019a3")));
 
             // Act
-            var viewModel = new TransactionCategoryListViewModel(transactionCategories);
+            var viewModel = new BudgetPlanCategoriesDataDto(transactionCategories);
 
             // Assert
             viewModel.OverTransactionCategoryList.ShouldNotBeEmpty();
@@ -49,7 +50,7 @@ namespace BudgetPlan.Tests.UnitTests.ViewModels
             var transactionCategories = new List<TransactionCategory>();
 
             // Act
-            var viewModel = new TransactionCategoryListViewModel(transactionCategories);
+            var viewModel = new BudgetPlanCategoriesDataDto(transactionCategories);
 
             // Assert
             viewModel.OverTransactionCategoryList.ShouldBeEmpty();

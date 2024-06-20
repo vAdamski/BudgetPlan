@@ -13,6 +13,10 @@ const useTransactionCategoriesApi = () => {
     const addOverTransactionCategory = async (dto) => {
         return await authFetch(`${API_URL}/api/transactionsCategories/overTransactionCategory`, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
             body: JSON.stringify(dto),
         });
     };
@@ -20,6 +24,10 @@ const useTransactionCategoriesApi = () => {
     const addTransactionCategory = async (dto) => {
         return await authFetch(`${API_URL}/api/transactionsCategories/subTransactionCategory`, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
             body: JSON.stringify(dto),
         });
     };

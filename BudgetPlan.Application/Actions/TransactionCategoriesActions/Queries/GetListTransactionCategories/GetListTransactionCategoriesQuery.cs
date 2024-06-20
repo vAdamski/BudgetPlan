@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetListTransactionCategories;
 
-public class GetListTransactionCategoriesQuery : IRequest<TransactionCategoryListViewModel>
+public class GetListTransactionCategoriesQuery : IRequest<TransactionCategoriesForBudgetPlansViewModel>
 {
 	
 }

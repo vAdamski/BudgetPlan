@@ -1,14 +1,18 @@
 using BudgetPlan.Domain.Entities;
-using BudgetPlan.Shared.Dtos;
 
-namespace BudgetPlan.Shared.ViewModels;
+namespace BudgetPlan.Shared.Dtos;
 
-public class TransactionCategoryListViewModel
+public class BudgetPlanCategoriesDataDto
 {
+	public Guid BudgetPlanId { get; }
+	public string BudgetPlanName { get; }
 	public List<OverTransactionCategoryDto> OverTransactionCategoryList { get; } = new();
 
-	public TransactionCategoryListViewModel(List<TransactionCategory> transactionCategories)
+	public BudgetPlanCategoriesDataDto(Guid budgetPlanId, string budgetPlanName,
+		List<TransactionCategory> transactionCategories)
 	{
+		BudgetPlanId = budgetPlanId;
+		BudgetPlanName = budgetPlanName;
 		PopulateOverTransactionCategoryList(transactionCategories);
 	}
 

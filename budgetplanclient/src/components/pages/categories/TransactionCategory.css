@@ -1,0 +1,13 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 1rem;
+}
+
+.transaction-category-list {
+    border: 1px solid white;
+}
+
+.transaction-category-create {
+    border: 1px solid white;
+}
