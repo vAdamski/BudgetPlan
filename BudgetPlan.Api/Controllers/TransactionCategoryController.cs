@@ -19,7 +19,7 @@ public class TransactionCategoryController : BaseController
 
 	[HttpPost]
 	[Route("overTransactionCategory")]
-	public async Task<IActionResult> AddOverTransactionCategory([FromForm] AddOverTransactionCategoryDto dto)
+	public async Task<IActionResult> AddOverTransactionCategory(AddOverTransactionCategoryDto dto)
 	{
 		var response =
 			await Mediator.Send(new AddOverTransactionCategoryCommand(dto.BudgetPlanId, dto.Name, dto.TransactionType));
@@ -29,8 +29,7 @@ public class TransactionCategoryController : BaseController
 
 	[HttpPost]
 	[Route("subTransactionCategory")]
-	public async Task<IActionResult> AddTransactionCategory(
-		[FromForm] AddTransactionCategoryDto addTransactionCategoryDto)
+	public async Task<IActionResult> AddTransactionCategory(AddTransactionCategoryDto addTransactionCategoryDto)
 	{
 		var response = await Mediator.Send(new AddTransactionCategoryCommand(
 			addTransactionCategoryDto.OverTransactionCategoryId, addTransactionCategoryDto.CategoryName));

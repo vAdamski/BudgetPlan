@@ -1,19 +1,16 @@
-import './TransactionCategory.css'
+import './TransactionCategory.css';
+import { useEffect, useState } from 'react';
 import useTransactionCategoriesApi from "../../../services/api/transactionCategories.jsx";
-import {useEffect, useState} from "react";
+import CategoryList from './CategoryList';
 
 function TransactionCategory() {
-
     const {
         getListTransactionCategories,
         addOverTransactionCategory,
-        addTransactionCategory,
-        deleteTransactionCategory
+        addTransactionCategory
     } = useTransactionCategoriesApi();
 
     const [budgetPlansTransactionCategories, setBudgetPlansTransactionCategories] = useState([]);
-    const [newCategoryName, setNewCategoryName] = useState('');
-    const [newSubCategoryName, setNewSubCategoryName] = useState('');
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -21,7 +18,7 @@ function TransactionCategory() {
                 const data = await getListTransactionCategories();
                 setBudgetPlansTransactionCategories(data.budgetPlanTransactionCategoriesData || []);
             } catch (error) {
-                setBudgetPlansTransactionCategories([])
+                setBudgetPlansTransactionCategories([]);
                 console.error('Error fetching transaction categories:', error);
             }
         };
@@ -29,14 +26,13 @@ function TransactionCategory() {
         fetchCategories();
     }, []);
 
-    const handleAddCategory = async (budgetPlanId) => {
+    const handleAddCategory = async (budgetPlanId, categoryName) => {
         try {
             await addOverTransactionCategory({
                 BudgetPlanId: budgetPlanId,
-                Name: newCategoryName,
+                Name: categoryName,
                 TransactionType: 0 // Assuming 0 for Income
             });
-            setNewCategoryName(''); // Reset input
             // Refresh categories
             const data = await getListTransactionCategories();
             setBudgetPlansTransactionCategories(data.budgetPlanTransactionCategoriesData || []);
@@ -45,14 +41,12 @@ function TransactionCategory() {
         }
     };
 
-    const handleAddSubCategory = async (mainCategoryId) => {
+    const handleAddSubCategory = async (mainCategoryId, subCategoryName) => {
         try {
             await addTransactionCategory({
                 OverTransactionCategoryId: mainCategoryId,
-                CategoryName: newSubCategoryName,
+                CategoryName: subCategoryName,
             });
-            setNewSubCategoryName(''); // Reset input
-
             // Refresh categories
             const data = await getListTransactionCategories();
             setBudgetPlansTransactionCategories(data.budgetPlanTransactionCategoriesData || []);
@@ -61,53 +55,15 @@ function TransactionCategory() {
         }
     };
 
-
     return (
-        <div className={'grid-container'}>
-            <div className={'transaction-category-list'}>
+        <div className="grid-container">
+            <div className="transaction-category-list">
                 <h1>Transaction Categories</h1>
-                <ul>
-                    {budgetPlansTransactionCategories.map(budgetPlan => (
-                        <li key={budgetPlan.budgetPlanId}>
-                            {budgetPlan.budgetPlanName}
-                            <ul>
-                                {budgetPlan.overTransactionCategoryList.map(category => (
-                                    <li key={category.id}>
-                                        {category.transactionCategoryName}
-                                        <ul>
-                                            {category.transactionCategoryDtos.map(subCategory => (
-                                                <li key={subCategory.id}>
-                                                    {subCategory.transactionCategoryName}
-                                                </li>
-                                            ))}
-                                            <li>
-                                                <form onSubmit={(e) => {
-                                                    e.preventDefault();
-                                                    handleAddSubCategory(category.id);
-                                                }}>
-                                                    <input type={'text'} placeholder={'Add category'}
-                                                           value={newSubCategoryName}
-                                                           onChange={(e) => setNewSubCategoryName(e.target.value)}/>
-                                                    <button type='submit'>Add</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                ))}
-                                <li>
-                                    <form onSubmit={(e) => {
-                                        e.preventDefault();
-                                        handleAddCategory(budgetPlan.budgetPlanId);
-                                    }}>
-                                        <input type={'text'} placeholder={'Add category'} value={newCategoryName}
-                                               onChange={(e) => setNewCategoryName(e.target.value)}/>
-                                        <button type='submit'>Add</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    ))}
-                </ul>
+                <CategoryList
+                    categories={budgetPlansTransactionCategories}
+                    onAddCategory={handleAddCategory}
+                    onAddSubCategory={handleAddSubCategory}
+                />
             </div>
         </div>
     );
