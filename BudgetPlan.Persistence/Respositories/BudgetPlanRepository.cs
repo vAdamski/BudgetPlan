@@ -21,6 +21,19 @@ public class BudgetPlanRepository(IBudgetPlanDbContext ctx, ICurrentUserService 
         return budgetPlan;
     }
 
+    public async Task UpdateAsync(BudgetPlanEntity budgetPlan, CancellationToken cancellationToken = default)
+    {
+        if (budgetPlan == null)
+            throw new ArgumentNullException(nameof(budgetPlan));
+
+        if (!budgetPlan.DataAccess.IsAccessed(currentUserService.Email))
+            throw new AccessDeniedException();
+
+        ctx.BudgetPlanEntities.Update(budgetPlan);
+
+        await ctx.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task<BudgetPlanEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         if (id.IsNullOrEmpty())
@@ -33,6 +46,7 @@ public class BudgetPlanRepository(IBudgetPlanDbContext ctx, ICurrentUserService 
             .Include(x => x.TransactionCategories)
             .ThenInclude(x => x.SubTransactionCategories)
             .Include(x => x.BudgetPlanBases)
+            .ThenInclude(x => x.BudgetPlanDetailsList)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (budgetPlan == null)
