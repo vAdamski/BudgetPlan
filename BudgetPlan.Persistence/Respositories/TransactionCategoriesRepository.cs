@@ -67,7 +67,8 @@ public class TransactionCategoriesRepository(
 			.ThenInclude(x => x.AccessedPersons)
 			.FirstOrDefaultAsync(x =>
 				x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email) &&
-				x.OverTransactionCategoryId == null, cancellationToken);
+				x.OverTransactionCategoryId == null &&
+				x.Id == id, cancellationToken);
 
 		if (overTransactionCategory == null)
 			throw new NotFoundException(nameof(TransactionCategory), id);
