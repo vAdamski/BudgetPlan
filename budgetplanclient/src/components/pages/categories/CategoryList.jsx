@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import SubCategoryList from './SubCategoryList';
 import AddCategoryForm from './AddCategoryForm';
 
-const CategoryList = ({ categories, onAddCategory, onAddSubCategory }) => {
+const CategoryList = ({ categories, handleAction }) => {
     return (
         <ul>
             {categories.map(budgetPlan => (
@@ -14,13 +14,13 @@ const CategoryList = ({ categories, onAddCategory, onAddSubCategory }) => {
                                 {category.transactionCategoryName}
                                 <SubCategoryList
                                     subCategories={category.transactionCategoryDtos}
-                                    mainCategorxyId={category.id}
-                                    onAddSubCategory={onAddSubCategory}
+                                    mainCategoryId={category.id}
+                                    handleAction={handleAction}
                                 />
                             </li>
                         ))}
                         <li>
-                            <AddCategoryForm onAddCategory={(categoryName) => onAddCategory(budgetPlan.budgetPlanId, categoryName)} />
+                            <AddCategoryForm budgetPlanId={budgetPlan.budgetPlanId} handleAction={handleAction} />
                         </li>
                     </ul>
                 </li>
@@ -31,19 +31,18 @@ const CategoryList = ({ categories, onAddCategory, onAddSubCategory }) => {
 
 CategoryList.propTypes = {
     categories: PropTypes.arrayOf(PropTypes.shape({
-        budgetPlanId: PropTypes.number.isRequired,
+        budgetPlanId: PropTypes.string.isRequired,
         budgetPlanName: PropTypes.string.isRequired,
         overTransactionCategoryList: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.number.isRequired,
+            id: PropTypes.string.isRequired,
             transactionCategoryName: PropTypes.string.isRequired,
             transactionCategoryDtos: PropTypes.arrayOf(PropTypes.shape({
-                id: PropTypes.number.isRequired,
+                id: PropTypes.string.isRequired,
                 transactionCategoryName: PropTypes.string.isRequired
             })).isRequired
         })).isRequired
     })).isRequired,
-    onAddCategory: PropTypes.func.isRequired,
-    onAddSubCategory: PropTypes.func.isRequired,
+    handleAction: PropTypes.func.isRequired,
 };
 
 export default CategoryList;

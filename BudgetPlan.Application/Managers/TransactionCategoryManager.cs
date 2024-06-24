@@ -4,6 +4,8 @@ using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Common.Extension;
 using BudgetPlan.Domain.Entities;
 using BudgetPlan.Domain.Exceptions;
+using BudgetPlan.Shared.Dtos;
+using BudgetPlan.Shared.ViewModels;
 
 namespace BudgetPlan.Application.Managers;
 
@@ -15,17 +17,42 @@ public class TransactionCategoryManager(
 {
 	public async Task<Guid> AddTransactionCategoryAsync(Guid overTransactionCategoryId, string categoryName,
 		CancellationToken cancellationToken = default)
-	{ 
+	{
 		ValidateInputs(overTransactionCategoryId, categoryName);
 		var mainTransactionCategory =
 			await GetMainTransactionCategoryAsync(overTransactionCategoryId, cancellationToken);
 
 		var transactionCategory =
 			await AddSubTransactionCategoryAsync(mainTransactionCategory, categoryName, cancellationToken);
-		
+
 		await UpdateBudgetPlanAsync(mainTransactionCategory.BudgetPlanId.Value, transactionCategory, cancellationToken);
-		
+
 		return transactionCategory.Id;
+	}
+
+	public async Task<SubTransactionCategoriesViewModel> GetSubTransactionCategoriesForBudgetPlan(
+		Guid requestBudgetPlanId, CancellationToken cancellationToken = default)
+	{
+		var transactionCategories =
+			await transactionCategoriesRepository.GetSubTransactionCategoriesForBudgetPlanAsync(requestBudgetPlanId,
+				cancellationToken);
+
+		var subTransactionCategories = transactionCategories
+			.Select(transactionCategory => new TransactionCategoryDto(transactionCategory))
+			.ToList();
+
+		return new SubTransactionCategoriesViewModel(subTransactionCategories);
+	}
+
+	public async Task<TransactionCategoriesForBudgetPlanViewModel> GetTransactionCategoriesForBudgetPlan(
+		Guid requestBudgetPlanId, CancellationToken cancellationToken = default)
+	{
+		var data = await transactionCategoriesRepository
+				.GetOverTransactionCategoriesWithSubTransactionCategoriesForBudgetPlanAsync(requestBudgetPlanId, cancellationToken);
+		
+		TransactionCategoriesForBudgetPlanViewModel viewModel = new(data);
+
+		return viewModel;
 	}
 
 	public async Task DeleteTransactionCategoryAsync(Guid id, Guid? transactionCategoryItemsDestination = null,

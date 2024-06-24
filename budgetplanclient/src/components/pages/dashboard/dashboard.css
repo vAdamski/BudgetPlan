@@ -1,0 +1,23 @@
+.grid-container{
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: 1rem;
+}
+
+@media (max-width: 1200px){
+    .grid-container{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 770px){
+    .grid-container{
+        grid-template-columns: 1fr;
+    }
+}
+
+.grid-item{
+}
+

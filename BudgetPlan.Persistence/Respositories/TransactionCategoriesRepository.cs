@@ -13,13 +13,18 @@ public class TransactionCategoriesRepository(
 {
 	public async Task<TransactionCategory> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
 	{
-		return await context.TransactionCategories
+		var data = await context.TransactionCategories
 			.Include(x => x.Access)
 			.ThenInclude(x => x.AccessedPersons)
-			.FirstOrDefaultAsync(x =>
-					x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email) &&
-					x.Id == id,
+			.FirstOrDefaultAsync(x => x.Id == id &&
+			                          x.StatusId == 1 &&
+			                          x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email),
 				cancellationToken);
+		
+		if (data == null)
+			throw new NotFoundException(nameof(TransactionCategory), id);
+
+		return data;
 	}
 
 	public async Task<List<TransactionCategory>> GetAllTransactionCategories(
@@ -29,7 +34,8 @@ public class TransactionCategoriesRepository(
 			.Include(tc => tc.SubTransactionCategories)
 			.Include(tc => tc.Access)
 			.ThenInclude(x => x.AccessedPersons)
-			.Where(x => x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
+			.Where(x => x.StatusId == 1 &&
+			            x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
 			.ToListAsync(cancellationToken);
 	}
 
@@ -41,8 +47,23 @@ public class TransactionCategoriesRepository(
 			.ThenInclude(x => x.SubTransactionCategories)
 			.Include(x => x.DataAccess)
 			.ThenInclude(x => x.AccessedPersons)
-			.Where(x => x.DataAccess.AccessedPersons.Any(x => x.Email == currentUserService.Email))
+			.Where(x => x.StatusId == 1 &&
+			            x.DataAccess.AccessedPersons.Any(x => x.Email == currentUserService.Email))
 			.ToListAsync();
+	}
+	
+	public async Task<List<TransactionCategory>> GetOverTransactionCategoriesWithSubTransactionCategoriesForBudgetPlanAsync(
+		Guid budgetPlanId, CancellationToken cancellationToken = default)
+	{
+		return await context.TransactionCategories
+			.Include(x => x.SubTransactionCategories)
+			.Include(x => x.Access)
+			.ThenInclude(x => x.AccessedPersons)
+			.Where(x => x.StatusId == 1 &&
+			            x.BudgetPlanId == budgetPlanId &&
+			            x.OverTransactionCategoryId == null &&
+			            x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
+			.ToListAsync(cancellationToken);
 	}
 
 	public async Task<List<TransactionCategory>> GetAllTransactionCategoriesWithTransactionDetails(
@@ -53,7 +74,8 @@ public class TransactionCategoriesRepository(
 			.ThenInclude(stc => stc.TransactionDetails)
 			.Include(tc => tc.Access)
 			.ThenInclude(x => x.AccessedPersons)
-			.Where(x => x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
+			.Where(x => x.StatusId == 1 &&
+			            x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
 			.ToListAsync(cancellationToken);
 	}
 
@@ -65,10 +87,11 @@ public class TransactionCategoriesRepository(
 			.Include(x => x.SubTransactionCategories)
 			.Include(x => x.Access)
 			.ThenInclude(x => x.AccessedPersons)
-			.FirstOrDefaultAsync(x =>
-				x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email) &&
-				x.OverTransactionCategoryId == null &&
-				x.Id == id, cancellationToken);
+			.FirstOrDefaultAsync(x => x.Id == id &&
+			                          x.StatusId == 1 &&
+			                          x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email) &&
+			                          x.OverTransactionCategoryId == null
+				, cancellationToken);
 
 		if (overTransactionCategory == null)
 			throw new NotFoundException(nameof(TransactionCategory), id);
@@ -84,9 +107,9 @@ public class TransactionCategoriesRepository(
 			.Include(x => x.TransactionDetails)
 			.Include(x => x.Access)
 			.ThenInclude(x => x.AccessedPersons)
-			.FirstOrDefaultAsync(x =>
-				x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email) &&
-				x.OverTransactionCategoryId == null && x.Id == id, cancellationToken);
+			.FirstOrDefaultAsync(x => x.StatusId == 1 &&
+			                          x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email) &&
+			                          x.OverTransactionCategoryId == null && x.Id == id, cancellationToken);
 
 		if (data == null)
 			throw new NotFoundException(nameof(TransactionCategory), id);
@@ -122,9 +145,26 @@ public class TransactionCategoriesRepository(
 			transactionCategoryToDelete = await GetByIdAsync(id, cancellationToken);
 	}
 
+	public async Task<List<TransactionCategory>> GetSubTransactionCategoriesForBudgetPlanAsync(Guid budgetPlanId,
+		CancellationToken cancellationToken = default)
+	{
+		var data = await context.TransactionCategories
+			.Include(x => x.Access)
+			.ThenInclude(x => x.AccessedPersons)
+			.Where(x => x.StatusId == 1 &&
+			            x.BudgetPlanId == budgetPlanId &&
+			            x.OverTransactionCategoryId != null &&
+			            x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
+			.ToListAsync(cancellationToken);
+
+		return data;
+	}
+
 	private async Task<bool> IsOverTransactionCategory(Guid id, CancellationToken cancellationToken = default)
 	{
-		var transactionCategory = await context.TransactionCategories.FindAsync(id);
+		var transactionCategory = await context.TransactionCategories
+			.FirstOrDefaultAsync(x => x.Id == id &&
+			                          x.StatusId == 1);
 
 		if (transactionCategory == null)
 			throw new NotFoundException(nameof(TransactionCategory), id);

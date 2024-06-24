@@ -1,16 +1,33 @@
 import './SideNavigationBar.css';
-import {useNavigate} from "react-router-dom";
-import {useContext} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {AuthContext} from '../../services/authProvider.jsx';
 import UserProfileInfoListItem from "./UserProfileInfoListItem.jsx";
+import useBudgetPlansApi from "../../services/api/budgetPlans.jsx";
+import NavBarItem from "./NavBarItem.jsx";
+import BudgetPlanSideBarItems from "./BudgetPlanSideBarItems.jsx";
 
 function SideNavigationBar() {
     const {user, login, logout} = useContext(AuthContext);
-    const navigate = useNavigate();
+    const {getBudgetPlans} = useBudgetPlansApi();
 
-    function handleClick(path) {
-        navigate(path);
-    }
+    const [budgetPlans, setBudgetPlans] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (user) {
+                try {
+                    const data = await getBudgetPlans();
+                    setBudgetPlans(data.budgetPlanDtos);
+                } catch (error) {
+                    console.error("Failed to fetch budget plans:", error);
+                }
+            } else {
+                setBudgetPlans([]);
+            }
+        };
+
+        fetchData();
+    }, [user]);
 
     return (
         <>
@@ -27,14 +44,14 @@ function SideNavigationBar() {
                     {
                         user ? (
                             <>
-                                <div className={'navbar-item'} onClick={() => handleClick('/')}>
-                                    <span className="material-symbols-outlined">home</span>
-                                    <a>Pulpit</a>
-                                </div>
-                                <div className={'navbar-item'} onClick={() => handleClick('/TransactionCategory')}>
-                                    <span className="material-symbols-outlined">category</span>
-                                    <a>Kategorie</a>
-                                </div>
+                                <NavBarItem name={'Strona głowna'} iconName={'home'} path={'/'}/>
+
+                                {budgetPlans.map((budgetPlan) => (
+                                    <div key={budgetPlan.id}>
+                                        <BudgetPlanSideBarItems budgetPlanId={budgetPlan.id} budgetPlanName={budgetPlan.name}/>
+                                    </div>
+                                ))}
+
                                 <div className={'navbar-item'} onClick={logout}>
                                     <span className="material-symbols-outlined">logout</span>
                                     <a>Wyloguj</a>

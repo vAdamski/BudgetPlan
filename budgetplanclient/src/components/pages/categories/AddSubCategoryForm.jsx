@@ -1,17 +1,31 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import useTransactionCategoriesApi from "../../../services/api/transactionCategories.jsx";
 
-const AddSubCategoryForm = ({ onAddSubCategory }) => {
+const AddSubCategoryForm = ({ mainCategoryId, handleAction }) => {
+    const {addTransactionCategory} = useTransactionCategoriesApi();
+
     const [subCategoryName, setSubCategoryName] = useState('');
+    const thisMainCategoryId = mainCategoryId;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onAddSubCategory(subCategoryName);
-        setSubCategoryName(''); // Reset input
+    const handleAddSubCategory = async () => {
+        event.preventDefault();
+        try {
+            await addTransactionCategory({
+                OverTransactionCategoryId: thisMainCategoryId,
+                CategoryName: subCategoryName,
+            });
+            // Refresh categories
+            handleAction();
+            setSubCategoryName('');
+        } catch (error) {
+            console.error('Error adding transaction category:', error);
+        }
     };
 
+
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleAddSubCategory}>
             <input
                 type="text"
                 placeholder="Add subcategory"
@@ -24,7 +38,8 @@ const AddSubCategoryForm = ({ onAddSubCategory }) => {
 };
 
 AddSubCategoryForm.propTypes = {
-    onAddSubCategory: PropTypes.func.isRequired,
+    mainCategoryId: PropTypes.string.isRequired,
+    handleAction: PropTypes.func.isRequired,
 };
 
 export default AddSubCategoryForm;

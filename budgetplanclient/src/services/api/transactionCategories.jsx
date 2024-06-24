@@ -1,4 +1,3 @@
-// api/transactionCategories.js
 import {useContext} from 'react';
 import {API_URL} from './apiConfig.jsx';
 import {AuthContext} from "../authProvider.jsx";
@@ -9,6 +8,10 @@ const useTransactionCategoriesApi = () => {
     const getListTransactionCategories = async () => {
         return await authFetch(`${API_URL}/api/transactionsCategories`);
     };
+
+    const getSubTransactionCategoriesForBudget = async (budgetId) => {
+        return await authFetch(`${API_URL}/api/transactionsCategories/${budgetId}/subTransactionCategories`);
+    }
 
     const addOverTransactionCategory = async (dto) => {
         return await authFetch(`${API_URL}/api/transactionsCategories/overTransactionCategory`, {
@@ -41,6 +44,7 @@ const useTransactionCategoriesApi = () => {
 
     return {
         getListTransactionCategories,
+        getSubTransactionCategoriesForBudget,
         addOverTransactionCategory,
         addTransactionCategory,
         deleteTransactionCategory,

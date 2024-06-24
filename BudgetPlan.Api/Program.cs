@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using BudgetPlan.Api.Common.Settings;
 using BudgetPlan.Api.Services;
 using BudgetPlan.Application;
 using BudgetPlan.Application.Common.Interfaces;
@@ -105,7 +106,11 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
