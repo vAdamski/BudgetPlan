@@ -2,6 +2,7 @@ using BudgetPlan.Application.Actions.TransactionDetailsActions.Commands.AddTrans
 using BudgetPlan.Application.Common.Interfaces.Managers;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Domain.Entities;
+using BudgetPlan.Domain.Exceptions;
 using BudgetPlan.Shared.ViewModels;
 
 namespace BudgetPlan.Application.Managers;
@@ -15,7 +16,11 @@ public class TransactionDetailsManager(
 		CancellationToken cancellationToken = default)
 	{
 		var transactionCategory =
-			await transactionCategoriesRepository.GetByIdAsync(request.TransactionCategoryId, cancellationToken);
+			await transactionCategoriesRepository
+				.GetByIdAsync(request.TransactionCategoryId, cancellationToken);
+
+		if (transactionCategory == null)
+			throw new NotFoundException(nameof(TransactionCategory), request.TransactionCategoryId);
 
 		var transactionDetail =
 			transactionCategory.AddTransactionDetail(request.Value, request.Description, request.TransactionDate);
@@ -30,7 +35,7 @@ public class TransactionDetailsManager(
 	{
 		TransactionDetail transactionDetail =
 			await transactionDetailsRepository.GetByIdAsync(requestId, cancellationToken);
-		
+
 		transactionDetail.Update(requestViewModel.Value, requestViewModel.Description, requestViewModel.Date);
 
 		await transactionDetailsRepository.UpdateAsync(transactionDetail, cancellationToken);

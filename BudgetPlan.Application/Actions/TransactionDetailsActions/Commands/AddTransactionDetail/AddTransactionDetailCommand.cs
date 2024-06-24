@@ -13,9 +13,9 @@ public class AddTransactionDetailCommand : IRequest<Guid>
 
 	public AddTransactionDetailCommand(AddTransactionDetailDto transactionDetailDto)
 	{
+		TransactionCategoryId = transactionDetailDto.TransactionCategoryId;
 		Value = transactionDetailDto.Value;
 		Description = transactionDetailDto.Description;
-		TransactionCategoryId = transactionDetailDto.TransactionCategoryId;
 		TransactionDate = transactionDetailDto.TransactionDate;
 	}
 }

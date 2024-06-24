@@ -11,7 +11,7 @@ namespace BudgetPlan.Api.Controllers;
 public class TransactionDetailsController : BaseController
 {
     [HttpPost]
-    public async Task<IActionResult> AddTransactionDetail([FromForm] AddTransactionDetailDto addTransactionDetailDto)
+    public async Task<IActionResult> AddTransactionDetail(AddTransactionDetailDto addTransactionDetailDto)
     {
         var response = await Mediator.Send(new AddTransactionDetailCommand(addTransactionDetailDto));
         

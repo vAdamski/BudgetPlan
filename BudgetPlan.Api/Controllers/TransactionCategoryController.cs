@@ -1,5 +1,6 @@
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddOverTransactionCategory;
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddTransactionCategory;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetBudgetPlanSubTransactionCategories;
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetListTransactionCategories;
 using BudgetPlan.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,16 @@ public class TransactionCategoryController : BaseController
 
 		return Ok(response);
 	}
+	
+	[HttpGet]
+	[Route("{id}/subTransactionCategories")]
+	public async Task<IActionResult> GetListSubTransactionCategories(Guid id)
+	{
+		var response = await Mediator.Send(new GetBudgetPlanSubTransactionCategoriesQuery(id));
+
+		return Ok(response);
+	}
+	
 
 	[HttpPost]
 	[Route("overTransactionCategory")]

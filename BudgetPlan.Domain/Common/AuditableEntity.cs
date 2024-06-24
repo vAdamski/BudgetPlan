@@ -11,5 +11,5 @@ public class AuditableEntity
     public string InactivatedBy { get; set; } = "";
     public DateTime? Inactivated { get; set; }
     
-    public bool IsActive => StatusId == 1;
+    public bool IsDeleted => StatusId == 0;
 }

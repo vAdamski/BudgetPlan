@@ -1,69 +1,61 @@
 import './TransactionCategory.css';
 import { useEffect, useState } from 'react';
-import useTransactionCategoriesApi from "../../../services/api/transactionCategories.jsx";
-import CategoryList from './CategoryList';
+import {useParams} from "react-router-dom";
+import useBudgetPlansApi from "../../../services/api/budgetPlans.jsx";
+import SubCategoryList from "./SubCategoryList.jsx";
+import AddCategoryForm from "./AddCategoryForm.jsx";
 
 function TransactionCategory() {
-    const {
-        getListTransactionCategories,
-        addOverTransactionCategory,
-        addTransactionCategory
-    } = useTransactionCategoriesApi();
+    const {budgetPlanId} = useParams();
+    const {getTransactionCategoriesForBudget} = useBudgetPlansApi();
 
-    const [budgetPlansTransactionCategories, setBudgetPlansTransactionCategories] = useState([]);
+    const [budgetPlanTransactionCategories, setBudgetPlanTransactionCategories] = useState([]);
+    const [action, setAction] = useState(false);
+
+
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await getListTransactionCategories();
-                setBudgetPlansTransactionCategories(data.budgetPlanTransactionCategoriesData || []);
+                const data = await getTransactionCategoriesForBudget(budgetPlanId);
+                console.log(data);
+
+                setBudgetPlanTransactionCategories(data.transactionCategoryDtos || []);
             } catch (error) {
-                setBudgetPlansTransactionCategories([]);
+                setBudgetPlanTransactionCategories([]);
                 console.error('Error fetching transaction categories:', error);
             }
         };
 
         fetchCategories();
-    }, []);
 
-    const handleAddCategory = async (budgetPlanId, categoryName) => {
-        try {
-            await addOverTransactionCategory({
-                BudgetPlanId: budgetPlanId,
-                Name: categoryName,
-                TransactionType: 0 // Assuming 0 for Income
-            });
-            // Refresh categories
-            const data = await getListTransactionCategories();
-            setBudgetPlansTransactionCategories(data.budgetPlanTransactionCategoriesData || []);
-        } catch (error) {
-            console.error('Error adding transaction category:', error);
+        if (action) {
+            setAction(false);
         }
-    };
+    }, [action]);
 
-    const handleAddSubCategory = async (mainCategoryId, subCategoryName) => {
-        try {
-            await addTransactionCategory({
-                OverTransactionCategoryId: mainCategoryId,
-                CategoryName: subCategoryName,
-            });
-            // Refresh categories
-            const data = await getListTransactionCategories();
-            setBudgetPlansTransactionCategories(data.budgetPlanTransactionCategoriesData || []);
-        } catch (error) {
-            console.error('Error adding transaction category:', error);
-        }
+    const handleAction = () =>{
+        setAction(true);
     };
 
     return (
         <div className="grid-container">
             <div className="transaction-category-list">
-                <h1>Transaction Categories</h1>
-                <CategoryList
-                    categories={budgetPlansTransactionCategories}
-                    onAddCategory={handleAddCategory}
-                    onAddSubCategory={handleAddSubCategory}
-                />
+                <ul>
+                    {budgetPlanTransactionCategories.map(category => (
+                        <li key={category.id}>
+                            {category.transactionCategoryName}
+                            <SubCategoryList
+                                subCategories={category.transactionCategoryDtos}
+                                mainCategoryId={category.id}
+                                handleAction={handleAction}
+                            />
+                        </li>
+                    ))}
+                    <li>
+                        <AddCategoryForm budgetPlanId={budgetPlanId} handleAction={handleAction}/>
+                    </li>
+                </ul>
             </div>
         </div>
     );

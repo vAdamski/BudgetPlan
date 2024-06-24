@@ -4,7 +4,7 @@
     justify-content: space-between;
     align-items: center;
     height: 3rem;
-    background-color: #222831;
+    background-color: var(--color-secondary);
     border-bottom: 1px solid #eeeeee;
 
 }
@@ -24,7 +24,7 @@
 
 .nav-bar-toggle:hover {
     cursor: pointer;
-    color: #76ABAE;
+    color: var(--color-tertiary);
 }
 
 .nav-bar-toggle span {
@@ -55,11 +55,27 @@
     height: 3rem;
 }
 
+.navbar-item-budget-plan {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 3rem;
+}
+
+.navbar-item-budget-plan a {
+    padding-left: 1rem;
+}
+
+.navbar-item-budget-plan span {
+    padding-left: 1rem;
+}
+
 .navbar-item-profile a {
     padding-left: 1rem;
 }
 
 .navbar-item:hover {
     cursor: pointer;
-    background: #76ABAE;
+    background: var(--color-tertiary);
 }
