@@ -26,3 +26,32 @@ body{
 a {
     color: var(--color-quaternary);
 }
+
+.card{
+    background-color: rgba(118, 171, 174, 0.75);
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header{
+    padding: 0.5rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--color-quaternary);
+}
+
+.card-body{
+    padding: 0.5rem;
+}
+
+.text-bold{
+    font-weight: bold;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-left{
+    text-align: left;
+}

@@ -1,12 +1,42 @@
+import './plans.css';
 import {useParams} from "react-router-dom";
+import useBudgetPlansApi from "../../../services/api/budgetPlans.jsx";
+import PlansSelectList from "./PlansSelectList.jsx";
+import {useEffect, useState} from "react";
+import BudgetPlanBaseTableView from "./BudgetPlanBaseTableView.jsx";
 
-function Plans(){
+function Plans() {
     const {budgetPlanId} = useParams();
+    const {getBudgetPlanBasesForBudgetPlan} = useBudgetPlansApi();
+    const [budgetPlanBases, setBudgetPlanBases] = useState([]);
+    const [selectedBudgetPlanBaseId, setSelectedBudgetPlanBaseId] = useState('');
+
+    const handlePlanChange = (selectedId) => {
+        setSelectedBudgetPlanBaseId(selectedId);
+    };
+
+    useEffect(() => {
+        const fetchBudgetPlanBases = async () => {
+            const data = await getBudgetPlanBasesForBudgetPlan(budgetPlanId);
+            setBudgetPlanBases(data.budgetPlanBasesDtos || []);
+
+            if (data.budgetPlanBasesDtos.length > 0) {
+                setSelectedBudgetPlanBaseId(data.budgetPlanBasesDtos[0].id)
+            }
+        }
+
+        fetchBudgetPlanBases();
+    }, []);
 
     return (
         <div>
-            <h1>Plany</h1>
-            <p>Id planu budżetowego: {budgetPlanId}</p>
+            <div className={'top-bar'}>
+                <PlansSelectList budgetPlanBases={budgetPlanBases} handleChange={handlePlanChange}/>
+            </div>
+
+            <div className={'table-card'}>
+                <BudgetPlanBaseTableView budgetPlanBaseId={selectedBudgetPlanBaseId}/>
+            </div>
         </div>
     );
 }
