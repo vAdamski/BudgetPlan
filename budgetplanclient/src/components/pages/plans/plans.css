@@ -1,0 +1,40 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+}
+
+td.fitwidth {
+    width: 1px;
+    white-space: nowrap;
+}
+
+.width-4{
+    width: 4rem;
+}
+
+.category-td {
+    text-align: left;
+}
+
+.main-category{
+    font-weight: bold;
+}
+
+.top-bar
+{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    background-color: var(--color-tertiary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.table-card{
+    display: flex;
+    flex-direction: column;
+}
+
