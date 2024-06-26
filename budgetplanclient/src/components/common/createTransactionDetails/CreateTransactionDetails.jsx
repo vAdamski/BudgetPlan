@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import useBudgetPlansApi from "../../../services/api/budgetPlans.jsx";
 import useTransactionDetailsApi from "../../../services/api/transactionDetails.jsx";
-import {Card, Form} from "react-bootstrap";
+import {Card, Form, InputGroup} from "react-bootstrap";
 
 function CreateTransactionDetails({budgetPlanId}) {
     const thisBudgetPlanId = budgetPlanId;
@@ -36,7 +36,8 @@ function CreateTransactionDetails({budgetPlanId}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        createTransactionDetails({
+
+        await createTransactionDetails({
             TransactionCategoryId: transactionCategoryId,
             value: transactionValue,
             description: transactionDescription,
@@ -46,51 +47,42 @@ function CreateTransactionDetails({budgetPlanId}) {
 
     return (
         <Card>
-            <Card.Header>
-                <a>Transakcje</a>
+            <Card.Header className={'text-start'} style={{backgroundColor: '#111111'}}>
+                <a style={{color: '#ffffff'}}>Transakcje</a>
             </Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmit}>
-                    <label htmlFor={'value'}>Wartość:</label>
-                    <input id={'value'}
-                           value={transactionValue}
-                           onChange={e => setTransactionValue(e.target.value)}
-                           type={'number'}
-                           placeholder={'0.00'}
-                           required
-                    />
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text>Wartość:</InputGroup.Text>
+                        <Form.Control type="number" value={transactionValue} onChange={e => setTransactionValue(e.target.value)} id={''}/>
+                    </InputGroup>
 
-                    <label>Kategoria:</label>
-                    <select value={transactionCategoryId}
-                            onChange={e => setTransactionCategoryId(e.target.value)}
-                            required
-                    >
-                        {subTransactionCategories.map(category => (
-                            <optgroup key={category.id} label={category.transactionCategoryName}>
-                                {category.transactionCategoryDtos.map(subCategory => (
-                                    <option key={subCategory.id}
-                                            value={subCategory.id}>{subCategory.transactionCategoryName}</option>
-                                ))}
-                            </optgroup>
-                        ))}
-                    </select>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text>Kategoria:</InputGroup.Text>
+                        <Form.Select variant="outline-secondary" title="Kategoria" id={'categoryType'} value={transactionCategoryId}
+                                     onChange={e => setTransactionCategoryId(e.target.value)}>
+                            {subTransactionCategories.map(category => (
+                                <optgroup key={category.id} label={category.transactionCategoryName}>
+                                    {category.transactionCategoryDtos.map(subCategory => (
+                                        <option key={subCategory.id}
+                                                value={subCategory.id}>{subCategory.transactionCategoryName}</option>
+                                    ))}
+                                </optgroup>
+                            ))}
+                        </Form.Select>
+                    </InputGroup>
 
-                    <label htmlFor={'description'}>Opis:</label>
-                    <input id={'description'}
-                           value={transactionDescription}
-                           onChange={e => setTransactionDescription(e.target.value)}
-                           type={'text'}
-                           placeholder={'Opis'}
-                    />
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text>Opis:</InputGroup.Text>
+                        <Form.Control type="number" value={transactionDescription} onChange={e => setTransactionDescription(e.target.value)} id={''}/>
+                    </InputGroup>
 
-                    <label>Data:</label>
-                    <input value={transactionDate}
-                           onChange={e => setTransactionDate(e.target.value)}
-                           type={'date'}
-                           required
-                    />
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text>Data:</InputGroup.Text>
+                        <Form.Control type="date" value={transactionDate} onChange={e => setTransactionDate(e.target.value)} id={''}/>
+                    </InputGroup>
 
-                    <input type="submit" value="Submit"/>
+                    <input className={'btn btn-success'} type="submit" value="Dodaj"/>
                 </Form>
             </Card.Body>
         </Card>
