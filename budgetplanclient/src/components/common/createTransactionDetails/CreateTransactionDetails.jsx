@@ -1,8 +1,8 @@
-import './createTransactionDetails.css'
 import {useEffect, useState} from 'react';
 import PropTypes from "prop-types";
 import useBudgetPlansApi from "../../../services/api/budgetPlans.jsx";
 import useTransactionDetailsApi from "../../../services/api/transactionDetails.jsx";
+import {Card, Form} from "react-bootstrap";
 
 function CreateTransactionDetails({budgetPlanId}) {
     const thisBudgetPlanId = budgetPlanId;
@@ -45,12 +45,12 @@ function CreateTransactionDetails({budgetPlanId}) {
     };
 
     return (
-        <div className={'card'}>
-            <div className={'card-header'}>
+        <Card>
+            <Card.Header>
                 <a>Transakcje</a>
-            </div>
-            <div className={'card-body'}>
-                <form onSubmit={handleSubmit}>
+            </Card.Header>
+            <Card.Body>
+                <Form onSubmit={handleSubmit}>
                     <label htmlFor={'value'}>Wartość:</label>
                     <input id={'value'}
                            value={transactionValue}
@@ -91,9 +91,9 @@ function CreateTransactionDetails({budgetPlanId}) {
                     />
 
                     <input type="submit" value="Submit"/>
-                </form>
-            </div>
-        </div>
+                </Form>
+            </Card.Body>
+        </Card>
     );
 }
 
