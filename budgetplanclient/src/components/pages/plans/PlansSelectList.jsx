@@ -1,4 +1,3 @@
-import './plans.css';
 import PropTypes from "prop-types";
 
 function PlansSelectList({budgetPlanBases, handleChange}) {
