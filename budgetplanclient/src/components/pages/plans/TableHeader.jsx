@@ -1,4 +1,3 @@
-import './plans.css';
 import PropTypes from "prop-types";
 
 const TableHeader = ({ dateFrom, dateTo }) => {
@@ -30,10 +29,7 @@ const TableHeader = ({ dateFrom, dateTo }) => {
             <th>Oczekiwane</th>
             <th>Aktualne</th>
             <th>Bilans</th>
-            <th className={'disable-top-border disable-bottom-border'}>
-                <p className={'width-4'}>
-                </p>
-            </th>
+            <th></th>
             {dates.map((date, index) => (
                 <th key={index}>{formatDate(date)}</th>
             ))}

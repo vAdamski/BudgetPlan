@@ -16,8 +16,27 @@ const useTransactionDetailsApi = () => {
         });
     }
 
+    const putTransactionDetails = async (id, dto) => {
+        return await authFetch(`${API_URL}/api/transactionDetails/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(dto),
+        });
+    }
+
+    const deleteTransactionDetails = async (id) => {
+        return await authFetch(`${API_URL}/api/transactionDetails/${id}`, {
+            method: 'DELETE',
+        });
+    }
+
     return ({
-        createTransactionDetails
+        createTransactionDetails,
+        putTransactionDetails,
+        deleteTransactionDetails,
     });
 }
 
