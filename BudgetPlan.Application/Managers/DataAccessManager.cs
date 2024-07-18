@@ -16,7 +16,7 @@ public class DataAccessManager(
 {
 	public async Task<AccessesListViewModel> GetDataAccessesList(CancellationToken cancellationToken = default)
 	{
-		var budgetPlans = await budgetPlanRepository.GetBudgetPlans(cancellationToken);
+		var budgetPlans = await budgetPlanRepository.GetBudgetPlansAsync(cancellationToken);
 
 		AccessesListViewModel vm = new AccessesListViewModel(budgetPlans);
 

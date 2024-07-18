@@ -8,6 +8,6 @@ public class GetListOfBudgetPlansQueryHandler(IBudgetPlanManager budgetPlanManag
 {
 	public async Task<BudgetPlanListViewModel> Handle(GetListOfBudgetPlansQuery request, CancellationToken cancellationToken)
 	{
-		return await budgetPlanManager.GetBudgetPlanListViewModel(cancellationToken);
+		return await budgetPlanManager.GetBudgetPlanListViewModelAsync(cancellationToken);
 	}
 }

@@ -4,5 +4,5 @@ namespace BudgetPlan.Application.Common.Interfaces.Managers;
 
 public interface IBudgetPlanManager
 {
-	Task<BudgetPlanListViewModel> GetBudgetPlanListViewModel(CancellationToken cancellationToken = default);
+	Task<BudgetPlanListViewModel> GetBudgetPlanListViewModelAsync(CancellationToken cancellationToken = default);
 }

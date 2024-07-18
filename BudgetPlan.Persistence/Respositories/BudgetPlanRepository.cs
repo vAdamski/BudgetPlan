@@ -58,7 +58,7 @@ public class BudgetPlanRepository(IBudgetPlanDbContext ctx, ICurrentUserService 
         return budgetPlan;
     }
 
-    public async Task<List<BudgetPlanEntity>> GetBudgetPlans(CancellationToken cancellationToken = default)
+    public async Task<List<BudgetPlanEntity>> GetBudgetPlansAsync(CancellationToken cancellationToken = default)
     {
         return await ctx.BudgetPlanEntities
             .Include(x => x.DataAccess)

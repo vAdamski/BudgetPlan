@@ -6,9 +6,9 @@ namespace BudgetPlan.Application.Managers;
 
 public class BudgetPlanManager(IBudgetPlanRepository budgetPlanRepository) : IBudgetPlanManager
 {
-	public async Task<BudgetPlanListViewModel> GetBudgetPlanListViewModel(CancellationToken cancellationToken = default)
+	public async Task<BudgetPlanListViewModel> GetBudgetPlanListViewModelAsync(CancellationToken cancellationToken = default)
 	{
-		var budgetPlans = await budgetPlanRepository.GetBudgetPlans(cancellationToken);
+		var budgetPlans = await budgetPlanRepository.GetBudgetPlansAsync(cancellationToken);
 
 		return new BudgetPlanListViewModel(budgetPlans);
 	}
