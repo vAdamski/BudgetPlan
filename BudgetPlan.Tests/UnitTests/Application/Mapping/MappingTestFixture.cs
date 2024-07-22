@@ -1,7 +1,7 @@
 using AutoMapper;
 using BudgetPlan.Application.Common.Mapping;
 
-namespace BudgetPlan.Tests.UnitTests.Mapping;
+namespace BudgetPlan.Tests.UnitTests.Application.Mapping;
 
 public class MappingTestFixture
 {

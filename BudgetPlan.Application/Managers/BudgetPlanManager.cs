@@ -8,7 +8,7 @@ public class BudgetPlanManager(IBudgetPlanRepository budgetPlanRepository) : IBu
 {
 	public async Task<BudgetPlanListViewModel> GetBudgetPlanListViewModelAsync(CancellationToken cancellationToken = default)
 	{
-		var budgetPlans = await budgetPlanRepository.GetBudgetPlansAsync(cancellationToken);
+		var budgetPlans = await budgetPlanRepository.GetBudgetPlansForCurrentUserAsync(cancellationToken);
 
 		return new BudgetPlanListViewModel(budgetPlans);
 	}

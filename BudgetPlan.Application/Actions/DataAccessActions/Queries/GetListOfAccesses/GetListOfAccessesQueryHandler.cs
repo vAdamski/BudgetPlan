@@ -9,6 +9,6 @@ public class GetListOfAccessesQueryHandler(IDataAccessManager dataAccessManager)
 {
 	public async Task<AccessesListViewModel> Handle(GetListOfAccessesQuery request, CancellationToken cancellationToken)
 	{
-		return await dataAccessManager.GetDataAccessesList(cancellationToken);
+		return await dataAccessManager.GetDataAccessesListForCurrentUserAsync(cancellationToken);
 	}
 }

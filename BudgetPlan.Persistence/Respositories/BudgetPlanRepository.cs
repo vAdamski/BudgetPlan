@@ -50,7 +50,7 @@ public class BudgetPlanRepository(IBudgetPlanDbContext ctx, ICurrentUserService 
             .FirstOrDefaultAsync(cancellationToken);
 
         if (budgetPlan == null)
-            throw new BudgetPlanNotFoundException(id);
+            throw new NotFoundException(nameof(BudgetPlanEntity), id);
         
         if (!budgetPlan.DataAccess.IsAccessed(currentUserService.Email))
             throw new AccessDeniedException();
@@ -58,7 +58,7 @@ public class BudgetPlanRepository(IBudgetPlanDbContext ctx, ICurrentUserService 
         return budgetPlan;
     }
 
-    public async Task<List<BudgetPlanEntity>> GetBudgetPlansAsync(CancellationToken cancellationToken = default)
+    public async Task<List<BudgetPlanEntity>> GetBudgetPlansForCurrentUserAsync(CancellationToken cancellationToken = default)
     {
         return await ctx.BudgetPlanEntities
             .Include(x => x.DataAccess)

@@ -10,13 +10,12 @@ namespace BudgetPlan.Application.Managers;
 
 public class DataAccessManager(
 	IBudgetPlanRepository budgetPlanRepository,
-	IDataAccessRepository dataAccessRepository,
-	ICurrentUserService currentUserService)
+	IDataAccessRepository dataAccessRepository)
 	: IDataAccessManager
 {
-	public async Task<AccessesListViewModel> GetDataAccessesList(CancellationToken cancellationToken = default)
+	public async Task<AccessesListViewModel> GetDataAccessesListForCurrentUserAsync(CancellationToken cancellationToken = default)
 	{
-		var budgetPlans = await budgetPlanRepository.GetBudgetPlansAsync(cancellationToken);
+		var budgetPlans = await budgetPlanRepository.GetBudgetPlansForCurrentUserAsync(cancellationToken);
 
 		AccessesListViewModel vm = new AccessesListViewModel(budgetPlans);
 
