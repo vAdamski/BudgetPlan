@@ -3,6 +3,7 @@ using BudgetPlan.Application.Common.Interfaces.Managers;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Common.Extension;
 using BudgetPlan.Domain.Entities;
+using BudgetPlan.Domain.Enums;
 using BudgetPlan.Domain.Exceptions;
 using BudgetPlan.Shared.Dtos;
 using BudgetPlan.Shared.ViewModels;
@@ -11,10 +12,22 @@ namespace BudgetPlan.Application.Managers;
 
 public class TransactionCategoryManager(
 	ITransactionCategoriesRepository transactionCategoriesRepository,
-	ITransactionDetailsRepository transactionDetailsRepository,
 	IBudgetPlanRepository budgetPlanRepository)
 	: ITransactionCategoryManager
 {
+	public async Task<Guid> AddOverTransactionCategoryAsync(Guid budgetPlanId, string name,
+		TransactionType transactionType,
+		CancellationToken cancellationToken = default)
+	{
+		var budgetPlan = await budgetPlanRepository.GetByIdAsync(budgetPlanId, cancellationToken);
+		
+		var transactionCategory = budgetPlan.AddOverTransactionCategory(name, transactionType);
+		
+		await budgetPlanRepository.UpdateAsync(budgetPlan, cancellationToken);
+
+		return transactionCategory.Id;
+	}
+
 	public async Task<Guid> AddTransactionCategoryAsync(Guid overTransactionCategoryId, string categoryName,
 		CancellationToken cancellationToken = default)
 	{
@@ -48,8 +61,9 @@ public class TransactionCategoryManager(
 		Guid requestBudgetPlanId, CancellationToken cancellationToken = default)
 	{
 		var data = await transactionCategoriesRepository
-				.GetOverTransactionCategoriesWithSubTransactionCategoriesForBudgetPlanAsync(requestBudgetPlanId, cancellationToken);
-		
+			.GetOverTransactionCategoriesWithSubTransactionCategoriesForBudgetPlanAsync(requestBudgetPlanId,
+				cancellationToken);
+
 		TransactionCategoriesForBudgetPlanViewModel viewModel = new(data);
 
 		return viewModel;
