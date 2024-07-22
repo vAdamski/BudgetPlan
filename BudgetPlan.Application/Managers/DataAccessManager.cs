@@ -2,6 +2,7 @@ using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Common.Interfaces.Managers;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Common.Extension;
+using BudgetPlan.Common.Validators;
 using BudgetPlan.Domain.Entities;
 using BudgetPlan.Domain.Exceptions;
 using BudgetPlan.Shared.ViewModels;
@@ -37,6 +38,12 @@ public class DataAccessManager(
 	{
 		if (requestId.IsNullOrEmpty())
 			throw new IdIsNullOrEmptyException();
+		
+		foreach (var accessPersonDto in requestViewModel.AccessPersonDtos)
+		{
+			if (!EmailValidator.IsValid(accessPersonDto.Email))
+			    throw new InvalidEmailException(accessPersonDto.Email);
+		}
 
 		DataAccess dataAccess = await dataAccessRepository.GetById(requestId, cancellationToken);
 
