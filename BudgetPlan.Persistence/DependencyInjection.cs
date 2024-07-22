@@ -13,6 +13,8 @@ public static class DependencyInjection
     {
         services.AddDbContext<BudgetPlanDbContext>(options => options.UseSqlServer(configuration.GetConnectionString()));
         services.AddScoped<IBudgetPlanDbContext, BudgetPlanDbContext>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
         services.AddTransient<IBudgetPlanBaseRepository, BudgetPlanBaseRepository>();
         services.AddTransient<ITransactionDetailsRepository, TransactionDetailsRepository>();
         services.AddTransient<ITransactionCategoriesRepository, TransactionCategoriesRepository>();
