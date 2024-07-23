@@ -4,6 +4,7 @@ using BudgetPlan.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPlan.Persistence.Migrations
 {
     [DbContext(typeof(BudgetPlanDbContext))]
-    partial class BudgetPlanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240723205316_TransactionCategory_Id_ManualGeneration")]
+    partial class TransactionCategory_Id_ManualGeneration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
