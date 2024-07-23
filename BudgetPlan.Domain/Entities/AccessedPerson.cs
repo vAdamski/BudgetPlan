@@ -7,7 +7,7 @@ public class AccessedPerson : AuditableEntity
 {
     public string Email { get; private set; }
 
-    public Guid? DataAccessId { get; private set; }
+    public Guid DataAccessId { get; private set; }
     public DataAccess? DataAccess { get; private set; }
 
     private AccessedPerson()

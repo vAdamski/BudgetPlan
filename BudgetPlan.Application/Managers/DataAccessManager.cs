@@ -49,7 +49,7 @@ public class DataAccessManager(
 
 		var accessedPersons = requestViewModel
 			.AccessPersonDtos
-			.Select(ap => new AccessedPerson(ap.Email))
+			.Select(ap => new AccessedPerson(ap.Email, dataAccess.Id))
 			.ToList();
 
 		dataAccess.OverrideAccessedPersons(accessedPersons);

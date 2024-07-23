@@ -13,5 +13,6 @@ public class AccessedPersonConfiguration : IBaseConfiguration<AccessedPerson>
         builder.Property(x => x.Id).ValueGeneratedNever();
         
         builder.Property(x => x.Email).IsRequired();
+        builder.Property(x => x.DataAccessId).IsRequired();
     }
 }

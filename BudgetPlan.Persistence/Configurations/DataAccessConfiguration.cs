@@ -13,6 +13,8 @@ public class DataAccessConfiguration : IBaseConfiguration<DataAccess>
 
         builder.HasMany(x => x.AccessedPersons)
             .WithOne(y => y.DataAccess)
-            .HasForeignKey(x => x.DataAccessId);
+            .IsRequired()
+            .HasForeignKey(x => x.DataAccessId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

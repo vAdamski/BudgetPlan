@@ -11,7 +11,7 @@ public class BudgetPlanEntity : AuditableEntity
 
     public string Name { get; private set; }
 
-    public Guid? DataAccessId { get; private set; }
+    public Guid DataAccessId { get; private set; }
     public DataAccess? DataAccess { get; private set; }
 
     public IReadOnlyCollection<BudgetPlanBase> BudgetPlanBases => _budgetPlanBases.AsReadOnly();
@@ -43,7 +43,7 @@ public class BudgetPlanEntity : AuditableEntity
         if (DataAccessId == null)
             throw new AccessIdNullOrEmptyException();
         
-        var budgetPlanBase = new BudgetPlanBase(dateFrom, dateTo, Id, DataAccessId.Value);
+        var budgetPlanBase = new BudgetPlanBase(dateFrom, dateTo, Id, DataAccessId);
 
         var subTransactionCategories = new List<TransactionCategory>();
 
@@ -66,7 +66,7 @@ public class BudgetPlanEntity : AuditableEntity
         TransactionType transactionType)
     {
         var transactionCategory =
-            TransactionCategory.CreateOverTransactionCategory(transactionCategoryName, Id, transactionType, DataAccessId.Value);
+            TransactionCategory.CreateOverTransactionCategory(transactionCategoryName, Id, transactionType, DataAccessId);
 
         _transactionCategories.Add(transactionCategory);
 

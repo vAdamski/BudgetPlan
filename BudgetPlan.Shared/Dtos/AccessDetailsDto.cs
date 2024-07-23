@@ -19,7 +19,7 @@ public class AccessDetailsDto
 		if (budgetPlanEntity.DataAccess.AccessedPersons == null || !budgetPlanEntity.DataAccess.AccessedPersons.Any())
 			throw new ArgumentException("Cannot be null!", nameof(AccessedPerson));
 		
-		AccessId = budgetPlanEntity.DataAccessId.Value;
+		AccessId = budgetPlanEntity.DataAccessId;
 		BudgetPlanName = budgetPlanEntity.Name;
 		AccessedItems = budgetPlanEntity.DataAccess.AccessedPersons.Select(x => new AccessDetailItemDto(x)).ToList();
 	}
