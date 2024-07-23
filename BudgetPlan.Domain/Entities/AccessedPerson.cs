@@ -14,10 +14,11 @@ public class AccessedPerson : AuditableEntity
     {
     }
 
-    public AccessedPerson(string email)
+    public AccessedPerson(string email, Guid dataAccessId)
     {
         if (string.IsNullOrEmpty(email))
             throw new AccessEmailNullOrEmptyException();
         Email = email;
+        DataAccessId = dataAccessId;
     }
 }

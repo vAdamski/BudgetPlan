@@ -32,6 +32,7 @@ public class BudgetPlanEntity : AuditableEntity
         {
             Name = name,
             DataAccess = access,
+            DataAccessId = access.Id
         };
 
         return budgetPlan;

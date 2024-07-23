@@ -23,7 +23,7 @@ public class DataAccess : AuditableEntity
         if (IsAccessed(email))
             throw new CurrentEmailIsAlreadyAccessedException(email);
 
-        AccessedPersons.Add(new AccessedPerson(email));
+        AccessedPersons.Add(new AccessedPerson(email, Id));
     }
 
     public void RemovePerson(string email)
