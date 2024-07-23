@@ -9,6 +9,9 @@ public class TransactionCategoryConfiguration : IBaseConfiguration<TransactionCa
     public void Configure(EntityTypeBuilder<TransactionCategory> builder)
     {
         builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id).ValueGeneratedNever();
+        
         builder.Property(x => x.TransactionCategoryName).IsRequired();
         builder.Property(x => x.TransactionType).IsRequired();
         builder.Property(x => x.OverTransactionCategoryId).IsRequired(false);

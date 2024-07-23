@@ -39,7 +39,8 @@ public class TransactionCategory : AuditableEntity
 
 		if (dataAccessId == null)
 			throw new ArgumentException(nameof(dataAccessId), "DataAccess id cannot be empty.");
-
+		
+		Id = Guid.NewGuid();
 		TransactionCategoryName = transactionCategoryName;
 		TransactionType = transactionType;
 		AccessId = dataAccessId;
