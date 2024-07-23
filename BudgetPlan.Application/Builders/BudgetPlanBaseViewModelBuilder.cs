@@ -96,7 +96,7 @@ public class BudgetPlanBaseViewModelBuilder(
 	private async Task<BudgetPlanEntity> GetBudgetPlan(CancellationToken cancellationToken,
 		BudgetPlanBase budgetPlanBase)
 	{
-		return await budgetPlanRepository.GetByIdAsync(budgetPlanBase.BudgetPlanEntityId.Value, cancellationToken);
+		return await budgetPlanRepository.GetByIdAsync(budgetPlanBase.BudgetPlanEntityId, cancellationToken);
 	}
 
 	private async Task<BudgetPlanBase> GetBudgetPlanBase(Guid budgetPlanBaseId, CancellationToken cancellationToken)

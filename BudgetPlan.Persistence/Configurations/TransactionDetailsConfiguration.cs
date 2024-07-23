@@ -14,6 +14,7 @@ public class TransactionDetailsConfiguration : IBaseConfiguration<TransactionDet
         builder.Property(x => x.Description).IsRequired(false);
         builder.Property(x => x.TransactionDate).IsRequired();
         builder.Property(x => x.TransactionCategoryId).IsRequired();
+        builder.Property(x => x.AccessId).IsRequired();
         
         builder.HasOne(x => x.TransactionCategory)
             .WithMany(y => y.TransactionDetails)

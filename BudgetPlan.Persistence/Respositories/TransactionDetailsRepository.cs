@@ -14,7 +14,7 @@ public class TransactionDetailsRepository(IBudgetPlanDbContext context, ICurrent
 		CancellationToken cancellationToken = default)
 	{
 		return await context.TransactionDetails.Where(x =>
-				subCategoryIds.Contains(x.TransactionCategoryId.Value) &&
+				subCategoryIds.Contains(x.TransactionCategoryId) &&
 				x.TransactionDate >= dateFrom &&
 				x.TransactionDate <= dateTo)
 			.ToListAsync(cancellationToken);

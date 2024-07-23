@@ -8,10 +8,10 @@ public class TransactionDetail : AuditableEntity
 	public string Description { get; private set; } = "";
 	public DateOnly TransactionDate { get; private set; }
 
-	public Guid? TransactionCategoryId { get; private set; }
+	public Guid TransactionCategoryId { get; private set; }
 	public TransactionCategory? TransactionCategory { get; private set; }
 
-	public Guid? AccessId { get; private set; }
+	public Guid AccessId { get; private set; }
 	public DataAccess? Access { get; private set; }
 
 	private TransactionDetail()

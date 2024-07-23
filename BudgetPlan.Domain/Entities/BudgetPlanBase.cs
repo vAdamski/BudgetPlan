@@ -11,10 +11,10 @@ public class BudgetPlanBase : AuditableEntity
     public DateOnly DateFrom { get; private set; }
     public DateOnly DateTo { get; private set; }
 
-    public Guid? BudgetPlanEntityId { get; private set; }
+    public Guid BudgetPlanEntityId { get; private set; }
     public BudgetPlanEntity? BudgetPlanEntity { get; private set; }
 
-    public Guid? DataAccessId { get; private set; }
+    public Guid DataAccessId { get; private set; }
     public DataAccess? DataAccess { get; private set; }
 
     public IReadOnlyCollection<BudgetPlanDetails> BudgetPlanDetailsList => _budgetPlanDetailsList.AsReadOnly();
@@ -41,7 +41,7 @@ public class BudgetPlanBase : AuditableEntity
         if (DataAccessId == null)
             throw new AccessIdNullOrEmptyException();
 
-        var budgetPlanDetail = new BudgetPlanDetails(0, BudgetPlanType.Monthly, Id, categoryId, DataAccessId.Value);
+        var budgetPlanDetail = new BudgetPlanDetails(0, BudgetPlanType.Monthly, Id, categoryId, DataAccessId);
 
         _budgetPlanDetailsList.Add(budgetPlanDetail);
     }

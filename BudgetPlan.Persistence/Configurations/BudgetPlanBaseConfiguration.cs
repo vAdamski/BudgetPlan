@@ -15,6 +15,9 @@ public class BudgetPlanBaseConfiguration : IBaseConfiguration<BudgetPlanBase>
         builder.Property(x => x.DateFrom).IsRequired();
         builder.Property(x => x.DateTo).IsRequired();
         
+        builder.Property(x => x.BudgetPlanEntityId).IsRequired();
+        builder.Property(x => x.DataAccessId).IsRequired();
+        
         builder.HasOne(x => x.DataAccess)
             .WithMany(y => y.BudgetPlanBases)
             .HasForeignKey(x => x.DataAccessId)

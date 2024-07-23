@@ -12,6 +12,10 @@ public class BudgetPlanDetailsConfiguration : IBaseConfiguration<BudgetPlanDetai
         builder.Property(x => x.Id).ValueGeneratedNever();
         builder.Property(x => x.ExpectedAmount).HasDefaultValue(0f).IsRequired();
         builder.Property(x => x.BudgetPlanType).IsRequired();
+        
+        builder.Property(x => x.BudgetPlanBaseId).IsRequired();
+        builder.Property(x => x.TransactionCategoryId).IsRequired();
+        builder.Property(x => x.DataAccessId).IsRequired();
 
         builder.HasOne(x => x.BudgetPlanBase)
             .WithMany(y => y.BudgetPlanDetailsList)
