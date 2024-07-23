@@ -48,7 +48,7 @@ public class TransactionCategory : AuditableEntity
 		BudgetPlanId = budgetPlanId;
 	}
 
-	private TransactionCategory(string transactionCategoryName, TransactionType transactionType,
+	private TransactionCategory(string transactionCategoryName, Guid budgetPlanId, TransactionType transactionType,
 		Guid overTransactionCategoryId, Guid accessId)
 	{
 		if (string.IsNullOrWhiteSpace(transactionCategoryName))
@@ -61,8 +61,10 @@ public class TransactionCategory : AuditableEntity
 		if (accessId == null)
 			throw new ArgumentException(nameof(accessId), "DataAccess id cannot be empty.");
 
+		Id = Guid.NewGuid();
 		TransactionCategoryName = transactionCategoryName;
 		TransactionType = transactionType;
+		BudgetPlanId = budgetPlanId;
 		OverTransactionCategoryId = overTransactionCategoryId;
 		AccessId = accessId;
 	}
@@ -73,10 +75,10 @@ public class TransactionCategory : AuditableEntity
 		return new TransactionCategory(transactionCategoryName, budgetPlanId, transactionType, dataAccessId);
 	}
 
-	public static TransactionCategory CreateUnderTransactionCategory(string transactionCategoryName,
+	public static TransactionCategory CreateUnderTransactionCategory(string transactionCategoryName, Guid budgetPlanId,
 		TransactionType transactionType, Guid overTransactionCategoryId, Guid accessId)
 	{
-		return new TransactionCategory(transactionCategoryName, transactionType, overTransactionCategoryId, accessId);
+		return new TransactionCategory(transactionCategoryName, budgetPlanId, transactionType, overTransactionCategoryId, accessId);
 	}
 
 	public TransactionCategory AddSubTransactionCategory(string name)
@@ -84,7 +86,7 @@ public class TransactionCategory : AuditableEntity
 		if (OverTransactionCategoryId != null)
 			throw new CannotAddSubTransactionCategoryToSubTransactionCategoryException();
 
-		var underTransactionCategory = CreateUnderTransactionCategory(name, TransactionType, Id, AccessId.Value);
+		var underTransactionCategory = CreateUnderTransactionCategory(name, BudgetPlanId, TransactionType, Id, AccessId.Value);
 
 		_subTransactionCategories.Add(underTransactionCategory);
 
