@@ -9,6 +9,7 @@ public class DataAccessConfiguration : IBaseConfiguration<DataAccess>
     public void Configure(EntityTypeBuilder<DataAccess> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedNever();
 
         builder.HasMany(x => x.AccessedPersons)
             .WithOne(y => y.DataAccess)

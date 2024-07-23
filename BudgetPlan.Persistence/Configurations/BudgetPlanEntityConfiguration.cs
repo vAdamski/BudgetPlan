@@ -9,6 +9,7 @@ public class BudgetPlanEntityConfiguration : IBaseConfiguration<BudgetPlanEntity
     public void Configure(EntityTypeBuilder<BudgetPlanEntity> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedNever();
 
         builder.HasOne(x => x.DataAccess)
             .WithMany(y => y.BudgetPlanEntities)

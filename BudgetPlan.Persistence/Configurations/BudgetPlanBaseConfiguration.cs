@@ -10,6 +10,8 @@ public class BudgetPlanBaseConfiguration : IBaseConfiguration<BudgetPlanBase>
     {
         builder.HasKey(x => x.Id);
         
+        builder.Property(x => x.Id).ValueGeneratedNever();
+        
         builder.Property(x => x.DateFrom).IsRequired();
         builder.Property(x => x.DateTo).IsRequired();
         

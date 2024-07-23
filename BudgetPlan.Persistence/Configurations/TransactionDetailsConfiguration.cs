@@ -9,6 +9,7 @@ public class TransactionDetailsConfiguration : IBaseConfiguration<TransactionDet
     public void Configure(EntityTypeBuilder<TransactionDetail> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedNever();
         builder.Property(x => x.Value).IsRequired();
         builder.Property(x => x.Description).IsRequired(false);
         builder.Property(x => x.TransactionDate).IsRequired();
