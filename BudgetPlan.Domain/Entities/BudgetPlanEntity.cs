@@ -65,7 +65,7 @@ public class BudgetPlanEntity : AuditableEntity
         TransactionType transactionType)
     {
         var transactionCategory =
-            TransactionCategory.CreateOverTransactionCategory(transactionCategoryName, transactionType, DataAccessId.Value);
+            TransactionCategory.CreateOverTransactionCategory(transactionCategoryName, Id, transactionType, DataAccessId.Value);
 
         _transactionCategories.Add(transactionCategory);
 

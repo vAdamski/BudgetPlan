@@ -12,8 +12,8 @@ public class TransactionCategory : AuditableEntity
 	public Guid? OverTransactionCategoryId { get; private set; }
 	public TransactionCategory? OverTransactionCategory { get; private set; }
 
-	public Guid? BudgetPlanId { get; private set; }
-	public BudgetPlanEntity? BudgetPlan { get; private set; }
+	public Guid BudgetPlanId { get; private set; }
+	public BudgetPlanEntity BudgetPlan { get; private set; }
 
 	public Guid? AccessId { get; private set; }
 	public DataAccess? Access { get; private set; }
@@ -32,18 +32,20 @@ public class TransactionCategory : AuditableEntity
 	{
 	}
 
-	private TransactionCategory(string transactionCategoryName, TransactionType transactionType, Guid dataAccessId)
+	private TransactionCategory(string transactionCategoryName, Guid budgetPlanId, TransactionType
+		transactionType, Guid dataAccessId)
 	{
 		if (string.IsNullOrWhiteSpace(transactionCategoryName))
 			throw new ArgumentException(nameof(transactionCategoryName), "Transaction category name cannot be empty.");
 
 		if (dataAccessId == null)
 			throw new ArgumentException(nameof(dataAccessId), "DataAccess id cannot be empty.");
-		
+
 		Id = Guid.NewGuid();
 		TransactionCategoryName = transactionCategoryName;
 		TransactionType = transactionType;
 		AccessId = dataAccessId;
+		BudgetPlanId = budgetPlanId;
 	}
 
 	private TransactionCategory(string transactionCategoryName, TransactionType transactionType,
@@ -65,10 +67,10 @@ public class TransactionCategory : AuditableEntity
 		AccessId = accessId;
 	}
 
-	public static TransactionCategory CreateOverTransactionCategory(string transactionCategoryName,
+	public static TransactionCategory CreateOverTransactionCategory(string transactionCategoryName, Guid budgetPlanId,
 		TransactionType transactionType, Guid dataAccessId)
 	{
-		return new TransactionCategory(transactionCategoryName, transactionType, dataAccessId);
+		return new TransactionCategory(transactionCategoryName, budgetPlanId, transactionType, dataAccessId);
 	}
 
 	public static TransactionCategory CreateUnderTransactionCategory(string transactionCategoryName,

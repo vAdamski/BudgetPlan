@@ -38,7 +38,7 @@ public class TransactionCategoryManager(
 		var transactionCategory =
 			await AddSubTransactionCategoryAsync(mainTransactionCategory, categoryName, cancellationToken);
 
-		await UpdateBudgetPlanAsync(mainTransactionCategory.BudgetPlanId.Value, transactionCategory, cancellationToken);
+		await UpdateBudgetPlanAsync(mainTransactionCategory.BudgetPlanId, transactionCategory, cancellationToken);
 
 		return transactionCategory.Id;
 	}
