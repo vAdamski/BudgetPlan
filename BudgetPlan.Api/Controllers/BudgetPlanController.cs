@@ -47,7 +47,8 @@ public class BudgetPlanController : BaseController
 	}
 	
 	[HttpPost]
-	public async Task<IActionResult> Create([FromForm] CreateBudgetPlanDto createBudgetPlan)
+	public async Task<IActionResult> Create(
+		CreateBudgetPlanDto createBudgetPlan)
 	{
 		var command = new CreateBudgetPlanCommand(createBudgetPlan.Name);
 		var budgetPlanId = await Mediator.Send(command);
