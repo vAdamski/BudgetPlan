@@ -1,10 +1,11 @@
-import {useState} from "react";
+import { useState } from "react";
 import TransactionOffcanvas from "./TransactionOffcanvas";
 import './MainCategoryRow.css';
 import useBudgetPlanDetailsApi from "../../../services/api/budgetPlanDetails.jsx";
+import {formatNumber} from "../../../services/helpers/utils.jsx";
 
-function MainCategoryRow({mainCategory, handleUpdateBudgetPlanBase}) {
-    const {updateBudgetPlanDetailAllocatedAmount} = useBudgetPlanDetailsApi();
+function MainCategoryRow({ mainCategory, handleUpdateBudgetPlanBase }) {
+    const { updateBudgetPlanDetailAllocatedAmount } = useBudgetPlanDetailsApi();
 
     const [show, setShow] = useState(false);
     const [selectedDay, setSelectedDay] = useState(null);
@@ -54,13 +55,13 @@ function MainCategoryRow({mainCategory, handleUpdateBudgetPlanBase}) {
                     {mainCategory.transactionCategoryName}
                 </td>
                 <td className={'text-center fixed-width'}>
-                    {mainCategory.plannedAmount}
+                    {formatNumber(mainCategory.plannedAmount)}
                 </td>
                 <td className={'text-center fixed-width'}>
-                    {mainCategory.realAmount}
+                    {formatNumber(mainCategory.realAmount)}
                 </td>
                 <td className={'text-center fixed-width'}>
-                    {mainCategory.difference}
+                    {formatNumber(mainCategory.difference)}
                 </td>
             </tr>
             {mainCategory.subTransactionCategoryDetailsViewDtos.map(subCategory => (
@@ -82,21 +83,21 @@ function MainCategoryRow({mainCategory, handleUpdateBudgetPlanBase}) {
                                 autoFocus
                             />
                         ) : (
-                            subCategory.budgetPlanDetailsDto.amountAllocated
+                            formatNumber(subCategory.budgetPlanDetailsDto.amountAllocated)
                         )}
                     </td>
                     <td className={'text-center fixed-width'}>
-                        {subCategory.budgetPlanDetailsDto.sumAmountOfAllDay}
+                        {formatNumber(subCategory.budgetPlanDetailsDto.sumAmountOfAllDay)}
                     </td>
                     <td className={'text-center fixed-width'}>
-                        {subCategory.budgetPlanDetailsDto.difference}
+                        {formatNumber(subCategory.budgetPlanDetailsDto.difference)}
                     </td>
                     <td>
                     </td>
                     {subCategory.budgetPlanDetailsDto.transactionItemsForDaysDtos.map(day => (
                         <td key={day.date} className={'fixed-width'}>
-                            <div style={{cursor: 'pointer'}} className={'text-center'} onClick={() => handleShow(day, subCategory.subCategoryId)}>
-                                {day.sumAmountOfTheDay}
+                            <div style={{ cursor: 'pointer' }} className={'text-center'} onClick={() => handleShow(day, subCategory.subCategoryId)}>
+                                {formatNumber(day.sumAmountOfTheDay)}
                             </div>
                         </td>
                     ))}
