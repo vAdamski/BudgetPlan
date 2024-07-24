@@ -1,14 +1,23 @@
 import PropTypes from 'prop-types';
 import AddSubCategoryForm from './AddSubCategoryForm';
 
-const SubCategoryList = ({ subCategories, mainCategoryId, handleAction }) => {
+const SubCategoryList = ({subCategories, mainCategoryId, handleAction}) => {
     return (
         <ul>
             {subCategories.map(subCategory => (
-                <li key={subCategory.id}>{subCategory.transactionCategoryName}</li>
+                <li key={subCategory.id}>
+                    <div className="d-flex align-items-center justify-content-between mb-1">
+                        {subCategory.transactionCategoryName}
+                        <span className="material-symbols-outlined" style={{
+                            'font-size': '1.5rem',
+                            'color': 'red',
+                            'cursor': 'pointer',
+                        }}>delete_forever</span>
+                    </div>
+                </li>
             ))}
             <li>
-                <AddSubCategoryForm mainCategoryId={mainCategoryId} handleAction={handleAction} />
+                <AddSubCategoryForm mainCategoryId={mainCategoryId} handleAction={handleAction}/>
             </li>
         </ul>
     );

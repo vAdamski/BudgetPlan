@@ -26,15 +26,13 @@ const AddSubCategoryForm = ({ mainCategoryId, handleAction }) => {
 
     return (
         <form onSubmit={handleAddSubCategory}>
-            <input
-                type="text"
-                placeholder="Add subcategory"
-                value={subCategoryName}
-                onChange={(e) => setSubCategoryName(e.target.value)}
-            />
-            <button type="submit">Add</button>
+            <div className={'input-group input-group-sm'}>
+                <input type="text" className="form-control" value={subCategoryName}
+                       onChange={(e) => setSubCategoryName(e.target.value)}/>
+                <button className="btn btn-outline-success" type="submit">+</button>
+            </div>
         </form>
-    );
+);
 };
 
 AddSubCategoryForm.propTypes = {
