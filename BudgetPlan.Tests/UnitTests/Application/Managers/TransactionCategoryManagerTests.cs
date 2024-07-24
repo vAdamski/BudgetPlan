@@ -29,7 +29,7 @@ public class TransactionCategoryManagerTests
 
 		// Assert
 		mockBudgetPlanRepository.Verify(x => x.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Once);
-		mockTransactionCategoriesRepository.Verify(x => x.UpdateAsync(It.IsAny<TransactionCategory>(), It.IsAny<CancellationToken>()), Times.Once);
+		mockBudgetPlanRepository.Verify(x => x.UpdateAsync(It.IsAny<BudgetPlanEntity>(), It.IsAny<CancellationToken>()), Times.Once);
 		result.ShouldNotBe(Guid.Empty);
 	}
 }
