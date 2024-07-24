@@ -1,7 +1,7 @@
-import {Button, Form} from "react-bootstrap";
-import {useState, useEffect} from "react";
+import { Button, Form } from "react-bootstrap";
+import { useState, useEffect } from "react";
 
-function TransactionForm({ transaction, date, onSave }) {
+function TransactionForm({ transaction, date, onSave, onCancel }) {  // Add onCancel to the props
     const [formData, setFormData] = useState({ id: "", value: 0, description: "", date: date });
 
     useEffect(() => {
@@ -20,8 +20,9 @@ function TransactionForm({ transaction, date, onSave }) {
         onSave(formData);
     };
 
-    const handleCancel = () => {
-        setFormData({ id: "", value: 0, description: "", date: date});
+    const handleCancelClick = () => {
+        setFormData({ id: "", value: 0, description: "", date: date });
+        onCancel();  // Call the onCancel function to reset the state in the parent component
     };
 
     return (
@@ -58,7 +59,7 @@ function TransactionForm({ transaction, date, onSave }) {
                     {formData.id ? "Aktualizuj" : "Dodaj"}
                 </Button>
                 {formData.id && (
-                    <Button variant="secondary" onClick={handleCancel}>
+                    <Button variant="secondary" onClick={handleCancelClick}>
                         Anuluj
                     </Button>
                 )}

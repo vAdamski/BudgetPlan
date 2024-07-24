@@ -14,7 +14,7 @@ const App = () => {
     const [isExpanded, setIsExpanded] = useState(true);
 
     const toggleSideNav = () => {
-        setIsExpanded(!isExpanded);
+        // setIsExpanded(!isExpanded);
     }
 
     const sideNavClass = isExpanded ? 'expand' : '';

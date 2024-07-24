@@ -1,16 +1,16 @@
-import {Offcanvas} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import { Offcanvas } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import TransactionTable from './TransactionTable';
 import TransactionForm from './TransactionForm';
 import useTransactionDetailsApi from "../../../services/api/transactionDetails.jsx";
 
-function TransactionOffcanvas({show, handleClose, transactionCategoryId, selectedDay}) {
-    const [transaction, setTransaction] = useState({id: "", value: 0, description: "", date: selectedDay?.date || ""});
+function TransactionOffcanvas({ show, handleClose, transactionCategoryId, selectedDay }) {
+    const [transaction, setTransaction] = useState({ id: "", value: 0, description: "", date: selectedDay?.date || "" });
 
-    const {createTransactionDetails, putTransactionDetails, deleteTransactionDetails} = useTransactionDetailsApi();
+    const { createTransactionDetails, putTransactionDetails, deleteTransactionDetails } = useTransactionDetailsApi();
 
     useEffect(() => {
-        setTransaction({id: "", value: 0, description: "", date: selectedDay?.date || ""});
+        setTransaction({ id: "", value: 0, description: "", date: selectedDay?.date || "" });
     }, [selectedDay]);
 
     const handleEdit = (trans) => {
@@ -18,7 +18,7 @@ function TransactionOffcanvas({show, handleClose, transactionCategoryId, selecte
     };
 
     const handleSave = async (trans) => {
-        const {id, value, description, date} = trans; // Dekonstrukcja trans na poszczególne pola
+        const { id, value, description, date } = trans;
 
         if (id) {
             await putTransactionDetails(id, {
@@ -35,11 +35,15 @@ function TransactionOffcanvas({show, handleClose, transactionCategoryId, selecte
                 transactionDate: date,
             });
         }
-        setTransaction({id: "", value: 0, description: "", date: selectedDay?.date || ""}); // Resetowanie stanu formularza
+        setTransaction({ id: "", value: 0, description: "", date: selectedDay?.date || "" });
     };
 
     const handleDelete = async (id) => {
         await deleteTransactionDetails(id);
+    };
+
+    const handleCancel = () => {
+        setTransaction({ id: "", value: 0, description: "", date: selectedDay?.date || "" });
     };
 
     return (
@@ -60,6 +64,7 @@ function TransactionOffcanvas({show, handleClose, transactionCategoryId, selecte
                             transaction={transaction}
                             date={selectedDay?.date || ""}
                             onSave={handleSave}
+                            onCancel={handleCancel}  // Pass the handleCancel to the form
                         />
                     </>
                 )}

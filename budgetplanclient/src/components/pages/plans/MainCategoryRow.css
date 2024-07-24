@@ -1,0 +1,13 @@
+.fixed-width {
+    width: 100px; /* Adjust the width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fixed-width-input {
+    width: 100%;  /* Ensure the input matches the cell width */
+    box-sizing: border-box;
+    border: none;  /* Remove input border for better alignment */
+    text-align: center; /* Center the text to match the cell content */
+}

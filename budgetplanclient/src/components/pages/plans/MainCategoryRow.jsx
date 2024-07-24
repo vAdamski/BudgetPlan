@@ -1,10 +1,17 @@
 import {useState} from "react";
 import TransactionOffcanvas from "./TransactionOffcanvas";
+import './MainCategoryRow.css';
+import useBudgetPlanDetailsApi from "../../../services/api/budgetPlanDetails.jsx";
 
-function MainCategoryRow({mainCategory}) {
+function MainCategoryRow({mainCategory, handleUpdateBudgetPlanBase}) {
+    const {updateBudgetPlanDetailAllocatedAmount} = useBudgetPlanDetailsApi();
+
     const [show, setShow] = useState(false);
     const [selectedDay, setSelectedDay] = useState(null);
     const [transactionCategoryId, setTransactionCategoryId] = useState(null);
+    const [editingSubCategoryId, setEditingSubCategoryId] = useState(null);
+    const [editedAmount, setEditedAmount] = useState(null);
+    const [editingBudgetPlanId, setEditingBudgetPlanId] = useState(null);
 
     const handleClose = () => setShow(false);
     const handleShow = (day, transactionCategoryId) => {
@@ -13,40 +20,81 @@ function MainCategoryRow({mainCategory}) {
         setShow(true);
     };
 
+    const handleAmountClick = (subCategoryId, amount, budgetPlanId) => {
+        setEditingSubCategoryId(subCategoryId);
+        setEditedAmount(amount);
+        setEditingBudgetPlanId(budgetPlanId);
+    };
+
+    const handleAmountChange = (event) => {
+        setEditedAmount(event.target.value);
+    };
+
+    const handleAmountBlur = async (subCategoryId) => {
+        setEditingSubCategoryId(null);
+
+        const dto = {
+            id: subCategoryId,
+            expectedAmount: editedAmount
+        };
+
+        try {
+            await updateBudgetPlanDetailAllocatedAmount(dto);
+            handleUpdateBudgetPlanBase();
+        } catch (error) {
+            console.error('Error updating budget plan detail:', error);
+            // Handle the error appropriately (e.g., show a notification to the user)
+        }
+    };
+
     return (
         <>
             <tr>
-                <td className={'text-left text-bold'}>
+                <td className={'text-left text-bold fixed-width'}>
                     {mainCategory.transactionCategoryName}
                 </td>
-                <td className={'text-center'}>
+                <td className={'text-center fixed-width'}>
                     {mainCategory.plannedAmount}
                 </td>
-                <td className={'text-center'}>
+                <td className={'text-center fixed-width'}>
                     {mainCategory.realAmount}
                 </td>
-                <td className={'text-center'}>
+                <td className={'text-center fixed-width'}>
                     {mainCategory.difference}
                 </td>
             </tr>
             {mainCategory.subTransactionCategoryDetailsViewDtos.map(subCategory => (
                 <tr key={subCategory.subCategoryId}>
-                    <td className={'text-left'}>
+                    <td className={'text-left fixed-width'}>
                         {subCategory.subCategoryName || ''}
                     </td>
-                    <td className={'text-center'}>
-                        {subCategory.budgetPlanDetailsDto.amountAllocated}
+                    <td
+                        className={'text-center fixed-width'}
+                        onClick={() => handleAmountClick(subCategory.subCategoryId, subCategory.budgetPlanDetailsDto.amountAllocated, subCategory.budgetPlanDetailsDto.id)}
+                    >
+                        {editingSubCategoryId === subCategory.subCategoryId ? (
+                            <input
+                                type="number"
+                                value={editedAmount}
+                                onChange={handleAmountChange}
+                                onBlur={() => handleAmountBlur(subCategory.budgetPlanDetailsDto.id)}
+                                className="fixed-width-input"  // Apply CSS class to the input
+                                autoFocus
+                            />
+                        ) : (
+                            subCategory.budgetPlanDetailsDto.amountAllocated
+                        )}
                     </td>
-                    <td className={'text-center'}>
+                    <td className={'text-center fixed-width'}>
                         {subCategory.budgetPlanDetailsDto.sumAmountOfAllDay}
                     </td>
-                    <td className={'text-center'}>
+                    <td className={'text-center fixed-width'}>
                         {subCategory.budgetPlanDetailsDto.difference}
                     </td>
                     <td>
                     </td>
                     {subCategory.budgetPlanDetailsDto.transactionItemsForDaysDtos.map(day => (
-                        <td key={day.date}>
+                        <td key={day.date} className={'fixed-width'}>
                             <div style={{cursor: 'pointer'}} className={'text-center'} onClick={() => handleShow(day, subCategory.subCategoryId)}>
                                 {day.sumAmountOfTheDay}
                             </div>
@@ -57,7 +105,7 @@ function MainCategoryRow({mainCategory}) {
             <TransactionOffcanvas
                 show={show}
                 handleClose={handleClose}
-                transactionCategoryId = {transactionCategoryId}
+                transactionCategoryId={transactionCategoryId}
                 selectedDay={selectedDay}
             />
         </>

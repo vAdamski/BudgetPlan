@@ -69,7 +69,19 @@ export const AuthProvider = ({children}) => {
             throw new Error('Network response was not ok');
         }
 
-        return response.json();
+        // Read the raw response text
+        const responseText = await response.text();
+
+        // Log the raw response for debugging
+        console.log(`Raw response from ${url}:`, responseText);
+
+        // Attempt to parse the JSON, if applicable
+        try {
+            return responseText ? JSON.parse(responseText) : {};
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            throw new Error('Failed to parse JSON response');
+        }
     };
 
     const fetchWithoutAuth = async (url, options = {}) => {
