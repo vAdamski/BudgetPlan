@@ -1,4 +1,3 @@
-using BudgetPlan.Application.Common.Interfaces.Managers;
 using BudgetPlan.Shared.ViewModels;
 using MediatR;
 
@@ -13,13 +12,5 @@ public class UpdateDataAccessForBudgetPlanCommand : IRequest
 	{
 		Id = id;
 		ViewModel = viewModel;
-	}
-}
-
-public class UpdateDataAccessForBudgetPlanCommandHandler(IDataAccessManager manager) : IRequestHandler<UpdateDataAccessForBudgetPlanCommand>
-{
-	public async Task Handle(UpdateDataAccessForBudgetPlanCommand request, CancellationToken cancellationToken)
-	{
-		await manager.UpdateDataAccess(request.Id, request.ViewModel, cancellationToken);
 	}
 }

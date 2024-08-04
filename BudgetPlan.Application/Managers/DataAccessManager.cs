@@ -56,4 +56,40 @@ public class DataAccessManager(
 
 		await dataAccessRepository.UpdateAsync(dataAccess, cancellationToken);
 	}
+
+	public async Task AddUserToAccess(Guid dataAccessId, string email, CancellationToken cancellationToken = default)
+	{
+		if (dataAccessId.IsNullOrEmpty())
+			throw new IdIsNullOrEmptyException();
+		
+		if (!EmailValidator.IsValid(email))
+			throw new InvalidEmailException(email);
+		
+		DataAccess? dataAccess = await dataAccessRepository.GetById(dataAccessId, cancellationToken);
+		
+		if (dataAccess is null)
+			throw new NotFoundException(nameof(DataAccess), dataAccessId);
+		
+		dataAccess.AddPerson(email);
+
+		await dataAccessRepository.UpdateAsync(dataAccess, cancellationToken);
+	}
+
+	public async Task RemoveUserFromAccess(Guid dataAccessId, string email, CancellationToken cancellationToken = default)
+	{
+		if (dataAccessId.IsNullOrEmpty())
+			throw new IdIsNullOrEmptyException();
+		
+		if (!EmailValidator.IsValid(email))
+			throw new InvalidEmailException(email);
+		
+		DataAccess? dataAccess = await dataAccessRepository.GetById(dataAccessId, cancellationToken);
+		
+		if (dataAccess is null)
+			throw new NotFoundException(nameof(DataAccess), dataAccessId);
+		
+		dataAccess.RemovePerson(email);
+		
+		await dataAccessRepository.UpdateAsync(dataAccess, cancellationToken);
+	}
 }

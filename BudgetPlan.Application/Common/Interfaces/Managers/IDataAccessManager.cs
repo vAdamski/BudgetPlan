@@ -11,4 +11,8 @@ public interface IDataAccessManager
 
 	Task UpdateDataAccess(Guid requestId, UpdateDataAccessViewModel requestViewModel,
 		CancellationToken cancellationToken = default);
+
+	Task AddUserToAccess(Guid dataAccessId, string email, CancellationToken cancellationToken = default);
+	
+	Task RemoveUserFromAccess(Guid dataAccessId, string email, CancellationToken cancellationToken = default);
 }
