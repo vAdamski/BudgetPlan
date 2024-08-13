@@ -23,9 +23,16 @@ const useBudgetPlanBasesApi = () => {
         });
     }
 
+    const deleteBudgetPlanBase = async (budgetPlanBaseId) => {
+        return await authFetch(`${API_URL}/api/budgetPlanBases/${budgetPlanBaseId}`, {
+            method: 'DELETE'
+        });
+    }
+
     return {
         getBudgetPlanBasesForBudgetPlan,
-        createBudgetPlanBase
+        createBudgetPlanBase,
+        deleteBudgetPlanBase
     };
 }
 

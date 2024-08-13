@@ -1,4 +1,5 @@
 using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Commands.CreateBudgetPlanBase;
+using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Commands.DeleteBudgetPlanBase;
 using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Queries.GetBudgetPlanView;
 using BudgetPlan.Application.Actions.BudgetPlanBaseActions.Queries.GetUserBudgetPlansList;
 using BudgetPlan.Shared.Dtos;
@@ -34,5 +35,14 @@ public class BudgetPlanBaseController : BaseController
 			createBudgetPlanBase.DateTo, createBudgetPlanBase.BudgetPlanEntityId));
 
 		return Ok(response);
+	}
+
+	[HttpDelete]
+	[Route("{id}")]
+	public async Task<IActionResult> Delete(Guid id)
+	{
+		await Mediator.Send(new DeleteBudgetPlanBaseCommand(id));
+
+		return NoContent();
 	}
 }
