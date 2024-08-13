@@ -28,7 +28,7 @@ public class BudgetPlanBaseController : BaseController
 
 
 	[HttpPost]
-	public async Task<IActionResult> Create([FromForm] CreateBudgetPlanBaseDto createBudgetPlanBase)
+	public async Task<IActionResult> Create(CreateBudgetPlanBaseDto createBudgetPlanBase)
 	{
 		var response = await Mediator.Send(new CreateBudgetPlanBaseCommand(createBudgetPlanBase.DateFrom,
 			createBudgetPlanBase.DateTo, createBudgetPlanBase.BudgetPlanEntityId));

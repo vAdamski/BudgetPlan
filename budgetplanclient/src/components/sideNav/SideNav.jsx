@@ -7,16 +7,31 @@ import SidebarFooter from './SidebarFooter';
 import useBudgetPlansApi from '../../services/api/budgetPlans';
 import {AuthContext} from '../../services/authProvider';
 import {useNavigate} from "react-router-dom";
+import BudgetPlanCreateModal from "./BudgetPlanCreateModal.jsx";
 
 function SideNav({handleToggleSideNav}) {
     const {user} = useContext(AuthContext);
-    const {getBudgetPlans} = useBudgetPlansApi();
+    const {getBudgetPlans, createBudgetPlan} = useBudgetPlansApi();
     const [budgetPlans, setBudgetPlans] = useState([]);
+    const [show, setShow] = useState(false);
+    const [handleUpdate, setHandleUpdate] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const navigate = useNavigate();
 
     function handleClick(path) {
         navigate(path);
+    }
+
+    const createBudgetPlanFunc = async (budgetPlanDto) => {
+        try {
+            await createBudgetPlan(budgetPlanDto);
+            setHandleUpdate(!handleUpdate);
+        } catch (error) {
+            console.error('Error creating budget plan:', error);
+        }
     }
 
     useEffect(() => {
@@ -34,7 +49,7 @@ function SideNav({handleToggleSideNav}) {
         };
 
         fetchData();
-    }, [user]);
+    }, [user, handleUpdate]);
 
     return (
         <>
@@ -60,6 +75,7 @@ function SideNav({handleToggleSideNav}) {
                                 <SidebarItem onClick={() => handleClick(`/${budgetPlan.id}/BudgetPlanSettings`)}>Ustawienia</SidebarItem>
                             </SidebarDropdown>
                         ))}
+                        <SidebarItem onClick={handleShow} icon="lni-plus">Utwórz Plan</SidebarItem>
                         <SidebarItem onClick={() => handleClick("/Settings")} icon="lni-cog">Ustawienia</SidebarItem>
                     </>
                 ) : (
@@ -67,6 +83,7 @@ function SideNav({handleToggleSideNav}) {
                     </>
                 )}
             </ul>
+            <BudgetPlanCreateModal show={show} handleClose={handleClose} createBudgetPlan={createBudgetPlanFunc}/>
             <SidebarFooter/>
         </>
     );

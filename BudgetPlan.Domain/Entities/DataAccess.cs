@@ -26,22 +26,9 @@ public class DataAccess : AuditableEntity
         AccessedPersons.Add(new AccessedPerson(email, Id));
     }
 
-    public void RemovePerson(string email)
-    {
-        if (string.IsNullOrEmpty(email))
-            throw new AccessEmailNullOrEmptyException();
-
-        var person = AccessedPersons.FirstOrDefault(p => p.Email == email);
-        
-        if (person is null)
-            throw new CurrentEmailIsAlreadyAccessedException(email);
-
-        AccessedPersons.Remove(person);
-    }
-
     public bool IsAccessed(string email)
     {
-        return AccessedPersons.Any(p => p.Email == email);
+        return AccessedPersons.Any(p => p.Email == email && p.StatusId == 1);
     }
     
     public static DataAccess Create(string email)

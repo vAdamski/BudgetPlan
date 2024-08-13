@@ -29,7 +29,7 @@ public class AccessesController : BaseController
 	}
 	
 	[HttpDelete]
-	[Route("{id/users}")]
+	[Route("{id}/users")]
 	public async Task<IActionResult> RemoveUserFromAccess(Guid id, RemoveUserFromAccessDto removeUserFromAccessDto)
 	{
 		await Mediator.Send(new RemoveUserFromAccessCommand(id, removeUserFromAccessDto));

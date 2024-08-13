@@ -11,7 +11,8 @@ namespace BudgetPlan.Application.Managers;
 
 public class DataAccessManager(
 	IBudgetPlanRepository budgetPlanRepository,
-	IDataAccessRepository dataAccessRepository)
+	IDataAccessRepository dataAccessRepository,
+	IAccessedPersonsRepository accessedPersonsRepository)
 	: IDataAccessManager
 {
 	public async Task<AccessesListViewModel> GetDataAccessesListForCurrentUserAsync(CancellationToken cancellationToken = default)
@@ -83,13 +84,22 @@ public class DataAccessManager(
 		if (!EmailValidator.IsValid(email))
 			throw new InvalidEmailException(email);
 		
-		DataAccess? dataAccess = await dataAccessRepository.GetById(dataAccessId, cancellationToken);
+		var dataAccess = await dataAccessRepository.GetById(dataAccessId, cancellationToken);
 		
 		if (dataAccess is null)
 			throw new NotFoundException(nameof(DataAccess), dataAccessId);
 		
-		dataAccess.RemovePerson(email);
+		var userToRemove = dataAccess
+			.AccessedPersons
+			.FirstOrDefault(ap => ap.Email == email && 
+			                      ap.StatusId == 1);
 		
-		await dataAccessRepository.UpdateAsync(dataAccess, cancellationToken);
+		if (userToRemove is null)
+			throw new NotFoundException(nameof(AccessedPerson), email);
+		
+		if (userToRemove.CreatedBy == email)
+			throw new CannotRemoveYourselfException();
+		
+		await accessedPersonsRepository.RemoveAccessedPersonAsync(userToRemove, cancellationToken);
 	}
 }

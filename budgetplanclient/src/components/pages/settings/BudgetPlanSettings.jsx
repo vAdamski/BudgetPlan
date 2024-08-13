@@ -1,12 +1,19 @@
 import {useParams} from "react-router-dom";
+import AccessedUsersCard from "./AccessedUsersCard.jsx";
 
 function BudgetPlanSettings() {
     const {budgetPlanId} = useParams();
 
     return (
-        <div>
-            <h1>Ustawienia planu budżetowego</h1>
-            <p>Id planu budżetowego: {budgetPlanId}</p>
+        <div className={'container-fluid'}>
+            <h2>
+                Ustawienia planu budżetowego
+            </h2>
+            <div className={'row'}>
+                <div className={'col-4'}>
+                    <AccessedUsersCard budgetPlanId={budgetPlanId}/>
+                </div>
+            </div>
         </div>
     );
 }

@@ -72,9 +72,6 @@ export const AuthProvider = ({children}) => {
         // Read the raw response text
         const responseText = await response.text();
 
-        // Log the raw response for debugging
-        console.log(`Raw response from ${url}:`, responseText);
-
         // Attempt to parse the JSON, if applicable
         try {
             return responseText ? JSON.parse(responseText) : {};

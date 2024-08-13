@@ -17,10 +17,26 @@ const useBudgetPlansApi = () => {
         return await authFetch(`${API_URL}/api/budgetPlans/${budgetPlanId}/budgetPlanBases`);
     }
 
+    const getBudgetPlanAccessesForBudgetPlan = async (budgetPlanId) => {
+        return await authFetch(`${API_URL}/api/budgetPlans/${budgetPlanId}/access`);
+    }
+
+    const createBudgetPlan = async (budgetPlan) => {
+        return await authFetch(`${API_URL}/api/budgetPlans`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(budgetPlan)
+        });
+    }
+
     return {
         getBudgetPlans,
         getTransactionCategoriesForBudget,
-        getBudgetPlanBasesForBudgetPlan
+        getBudgetPlanBasesForBudgetPlan,
+        getBudgetPlanAccessesForBudgetPlan,
+        createBudgetPlan
     };
 }
 

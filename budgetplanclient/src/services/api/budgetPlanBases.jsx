@@ -9,8 +9,23 @@ const useBudgetPlanBasesApi = () => {
         return await authFetch(`${API_URL}/api/budgetPlanBases/${budgetPlanId}`);
     }
 
+    const createBudgetPlanBase = async (dateFrom, dateTo, budgetPlanId) => {
+        return await authFetch(`${API_URL}/api/budgetPlanBases`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                dateFom: dateFrom,
+                dateTo: dateTo,
+                budgetPlanEntityId: budgetPlanId
+            })
+        });
+    }
+
     return {
-        getBudgetPlanBasesForBudgetPlan
+        getBudgetPlanBasesForBudgetPlan,
+        createBudgetPlanBase
     };
 }
 
