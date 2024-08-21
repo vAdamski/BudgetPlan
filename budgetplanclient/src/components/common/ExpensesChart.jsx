@@ -1,13 +1,35 @@
 import PieChart from "./PieChart.jsx";
+import {useEffect, useState} from "react";
+import useDataSummaryApi from "../../services/api/dataSummaryDataApi.jsx";
+import SingleColumnChart from "./SingleColumnChart.jsx";
 
-function ExpensesChart(){
-    const values = [50,50];
-    const labels = ['A', 'B'];
+function ExpensesChart({budgetPlanId, budgetPlanBaseId}) {
+    const {fetchExpenseSummary} = useDataSummaryApi();
+    const [values, setValues] = useState([]);
+    const [labels, setLabels] = useState([]);
+
+
+    useEffect(() => {
+        const fetchPieChartData = async () => {
+
+            const data = await fetchExpenseSummary(budgetPlanId, budgetPlanBaseId, false);
+
+            setValues(data.values || []);
+            setLabels(data.labels || []);
+
+            console.log(data);
+        };
+
+        fetchPieChartData().then();
+    }, [budgetPlanId, budgetPlanBaseId]);
 
     return (
         <div>
             <h5>Wydatki</h5>
-            <PieChart values={values} labels={labels} valuesPosition={'bottom'}/>
+            <SingleColumnChart
+                labels={labels}
+                values={values}
+            />
         </div>
     );
 }
