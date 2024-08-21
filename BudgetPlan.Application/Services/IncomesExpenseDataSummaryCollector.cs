@@ -11,6 +11,36 @@ namespace BudgetPlan.Application.Services;
 
 public class IncomesExpenseDataSummaryCollector(IBudgetPlanDbContext ctx) : IIncomesExpenseDataSummaryCollector
 {
+	public async Task<PieChartDataDoubleViewModel> GetIncomeSummary(Guid budgetPlanId, Guid? budgetPlanBaseId,
+		bool percents, CancellationToken cancellationToken = default)
+	{
+		var data = await GetDataForEntirePeriod(budgetPlanId, cancellationToken);
+
+		var labels = new List<string>() { "Planowane przychody", "Rzeczywiste przychody" };
+		
+		var expectedIncomes = data.BudgetPlanBases
+			.Where(x => !IsBudgetPlanBaseIdGiven(budgetPlanBaseId) || x.Id == budgetPlanBaseId)
+			.SelectMany(x => x.BudgetPlanDetailsList)
+			.Where(x => x.StatusId == 1 && x.TransactionCategory.TransactionType == TransactionType.Income && x.TransactionCategory.StatusId == 1)
+			.Sum(x => x.ExpectedAmount);
+		
+		var realIncomes = data.BudgetPlanBases
+			.Where(x => !IsBudgetPlanBaseIdGiven(budgetPlanBaseId) || x.Id == budgetPlanBaseId)
+			.SelectMany(x => x.BudgetPlanDetailsList)
+			.Where(x => x.StatusId == 1 && x.TransactionCategory.TransactionType == TransactionType.Income && x.TransactionCategory.StatusId == 1)
+			.Sum(x => x.TransactionCategory.TransactionDetails.Where(x => x.StatusId == 1).Sum(y => y.Value));
+		
+		var values = new List<double>() { expectedIncomes, realIncomes };
+		
+		if (percents)
+		{
+			var percentsValues = PercentTransformer.CalculatePercentsDoubles(values);
+			return new PieChartDataDoubleViewModel(labels, percentsValues);
+		}
+		
+		return new PieChartDataDoubleViewModel(labels, values);
+	}
+	
 	public async Task<PieChartDataDoubleViewModel> GetExpensesSummary(Guid budgetPlanId, Guid? budgetPlanBaseId,
 		bool percents, CancellationToken cancellationToken = default)
 	{
