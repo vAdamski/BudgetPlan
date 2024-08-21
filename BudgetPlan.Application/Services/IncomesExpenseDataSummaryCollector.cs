@@ -14,18 +14,18 @@ public class IncomesExpenseDataSummaryCollector(IBudgetPlanDbContext ctx) : IInc
 	public async Task<PieChartDataDoubleViewModel> GetExpensesSummary(Guid budgetPlanId, Guid? budgetPlanBaseId,
 		bool percents, CancellationToken cancellationToken = default)
 	{
-		var data = IsBudgetPlanBaseIdGiven(budgetPlanBaseId)
-			? await GetDataForBudgetPlanBasePeriod(budgetPlanId, budgetPlanBaseId.Value, cancellationToken)
-			: await GetDataForEntirePeriod(budgetPlanId, cancellationToken);
+		var data = await GetDataForEntirePeriod(budgetPlanId, cancellationToken);
 
 		var labels = new List<string>() { "Planoweane wydatki", "Rzeczywiste wydatki" };
 		
-		var expectedExpenses =  data.BudgetPlanBases
+		var expectedExpenses = data.BudgetPlanBases
+			.Where(x => !IsBudgetPlanBaseIdGiven(budgetPlanBaseId) || x.Id == budgetPlanBaseId)
 			.SelectMany(x => x.BudgetPlanDetailsList)
 			.Where(x => x.StatusId == 1 && x.TransactionCategory.TransactionType == TransactionType.Expense && x.TransactionCategory.StatusId == 1)
 			.Sum(x => x.ExpectedAmount);
 		
 		var realExpenses = data.BudgetPlanBases
+			.Where(x => !IsBudgetPlanBaseIdGiven(budgetPlanBaseId) || x.Id == budgetPlanBaseId)
 			.SelectMany(x => x.BudgetPlanDetailsList)
 			.Where(x => x.StatusId == 1 && x.TransactionCategory.TransactionType == TransactionType.Expense && x.TransactionCategory.StatusId == 1)
 			.Sum(x => x.TransactionCategory.TransactionDetails.Where(x => x.StatusId == 1).Sum(y => y.Value));
@@ -55,26 +55,6 @@ public class IncomesExpenseDataSummaryCollector(IBudgetPlanDbContext ctx) : IInc
 
 		if (budgetPlan == null)
 			throw new NotFoundException(nameof(BudgetPlanEntity), budgetPlanId);
-
-		return budgetPlan;
-	}
-
-	public async Task<BudgetPlanEntity> GetDataForBudgetPlanBasePeriod(Guid budgetPlanId, Guid budgetPlanBaseId,
-		CancellationToken cancellationToken = default)
-	{
-		var budgetPlan = await ctx.BudgetPlanEntities
-			.Include(x => x.TransactionCategories)
-			.ThenInclude(x => x.TransactionDetails)
-			.Include(x => x.BudgetPlanBases)
-			.ThenInclude(x => x.BudgetPlanDetailsList)
-			.Where(x => x.Id == budgetPlanId &&
-			            x.StatusId == 1 &&
-			            x.BudgetPlanBases.Any(x => x.Id == budgetPlanBaseId))
-			.FirstOrDefaultAsync(cancellationToken);
-
-		if (budgetPlan == null)
-			if (budgetPlan == null)
-				throw new NotFoundException(nameof(BudgetPlanEntity), budgetPlanId);
 
 		return budgetPlan;
 	}
