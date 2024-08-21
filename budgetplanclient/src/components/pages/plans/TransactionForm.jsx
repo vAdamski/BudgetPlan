@@ -48,6 +48,7 @@ function TransactionForm({ transaction, date, onSave, onCancel }) {  // Add onCa
             <Form.Group className="mb-3">
                 <Form.Label>Data</Form.Label>
                 <Form.Control
+                    disabled
                     type="date"
                     name="date"
                     value={formData.date}
