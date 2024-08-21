@@ -11,10 +11,10 @@ function SummaryCharts({budgetPlanId, budgetPlanBaseId}) {
               <CategoriesSummaryChart budgetPlanId={budgetPlanId} budgetPlanBaseId={budgetPlanBaseId}/>
           </div>
           <div className={'left-money-summary-chart'}>
-              <LeftMoneySummaryChart/>
+              <LeftMoneySummaryChart budgetPlanId={budgetPlanId} budgetPlanBaseId={budgetPlanBaseId}/>
           </div>
           <div className={'expenses-summary-chart'}>
-              <IncomesChart/>
+              <IncomesChart budgetPlanId={budgetPlanId} budgetPlanBaseId={budgetPlanBaseId}/>
           </div>
           <div className={'incomes-summary-chart'}>
               <ExpensesChart budgetPlanId={budgetPlanId} budgetPlanBaseId={budgetPlanBaseId}/>

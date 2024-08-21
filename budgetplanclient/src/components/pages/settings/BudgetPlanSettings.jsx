@@ -6,7 +6,7 @@ function BudgetPlanSettings() {
 
     return (
         <div className={'container-fluid'}>
-            <h2>
+            <h2 className={'text-center'}>
                 Ustawienia planu budżetowego
             </h2>
             <div className={'row'}>

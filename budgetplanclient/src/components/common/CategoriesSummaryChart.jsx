@@ -26,9 +26,9 @@ function CategoriesSummaryChart({budgetPlanId, budgetPlanBaseId}) {
 
 
     return (
-        <div>
+        <div className={'text-center'}>
             <h5>Wydatki w kategoriach</h5>
-            <PieChart values={values} labels={labels} percentage={true} valuesPosition={'right'}/>
+            <PieChart values={values} labels={labels} percentage={true} valuesPosition={'bottom'}/>
         </div>
     );
 }

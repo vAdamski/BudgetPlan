@@ -24,7 +24,7 @@ function ExpensesChart({budgetPlanId, budgetPlanBaseId}) {
     }, [budgetPlanId, budgetPlanBaseId]);
 
     return (
-        <div>
+        <div className={'text-center'}>
             <h5>Wydatki</h5>
             <SingleColumnChart
                 labels={labels}

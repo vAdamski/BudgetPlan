@@ -37,7 +37,7 @@ function PieChart({ values, labels, percentage, valuesPosition, showLegend = tru
                 options={options}
                 series={series}
                 type="donut"
-                width="400" // You can adjust the width as needed
+                width="90%"
             />
         </div>
     );

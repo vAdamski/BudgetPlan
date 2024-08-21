@@ -1,13 +1,27 @@
-import PieChart from "./PieChart.jsx";
+import './SummaryCharts.css';
+import {useEffect, useState} from "react";
+import useDataSummaryApi from "../../services/api/dataSummaryDataApi.jsx";
 
-function LeftMoneySummaryChart() {
-    const values = [50,50];
-    const labels = ['A', 'B'];
+function LeftMoneySummaryChart({budgetPlanId, budgetPlanBaseId}) {
+    const {fetchLeftMoneySummary} = useDataSummaryApi();
+
+    const [leftMoney, setLeftMoney] = useState(0);
+
+    useEffect(() => {
+        const fetchPieChartData = async () => {
+
+            const value = await fetchLeftMoneySummary(budgetPlanId, budgetPlanBaseId);
+
+            setLeftMoney(value);
+        };
+
+        fetchPieChartData().then();
+    }, [budgetPlanId, budgetPlanBaseId]);
 
     return (
-        <div>
-            <h5>Pozostało do wydania</h5>
-            <PieChart values={values} labels={labels} valuesPosition={'bottom'}/>
+        <div className="left-money-summary-chart text-center">
+            <h5>Pozostało środków</h5>
+            <h2>{leftMoney} zł</h2>
         </div>
     );
 }
