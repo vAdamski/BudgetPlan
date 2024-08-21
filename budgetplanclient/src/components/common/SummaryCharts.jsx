@@ -17,7 +17,7 @@ function SummaryCharts({budgetPlanId, budgetPlanBaseId}) {
               <IncomesChart/>
           </div>
           <div className={'incomes-summary-chart'}>
-              <ExpensesChart/>
+              <ExpensesChart budgetPlanId={budgetPlanId} budgetPlanBaseId={budgetPlanBaseId}/>
           </div>
       </div>
   );
