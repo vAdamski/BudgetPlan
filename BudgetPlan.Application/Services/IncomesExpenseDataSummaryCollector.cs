@@ -80,7 +80,7 @@ public class IncomesExpenseDataSummaryCollector(IBudgetPlanDbContext ctx) : IInc
 		return new PieChartDataDoubleViewModel(labels, values);
 	}
 
-	public async Task<BudgetPlanEntity> GetDataForEntirePeriod(Guid budgetPlanId,
+	private async Task<BudgetPlanEntity> GetDataForEntirePeriod(Guid budgetPlanId,
 		CancellationToken cancellationToken = default)
 	{
 		var budgetPlan = await ctx.BudgetPlanEntities
