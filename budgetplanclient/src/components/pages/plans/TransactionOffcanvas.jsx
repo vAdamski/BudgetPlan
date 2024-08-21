@@ -4,7 +4,7 @@ import TransactionTable from './TransactionTable';
 import TransactionForm from './TransactionForm';
 import useTransactionDetailsApi from "../../../services/api/transactionDetails.jsx";
 
-function TransactionOffcanvas({ show, handleClose, transactionCategoryId, selectedDay }) {
+function TransactionOffcanvas({ show, handleClose, transactionCategoryId, selectedDay, handleUpdate }) {
     const [transaction, setTransaction] = useState({ id: "", value: 0, description: "", date: selectedDay?.date || "" });
 
     const { createTransactionDetails, putTransactionDetails, deleteTransactionDetails } = useTransactionDetailsApi();
@@ -36,6 +36,8 @@ function TransactionOffcanvas({ show, handleClose, transactionCategoryId, select
             });
         }
         setTransaction({ id: "", value: 0, description: "", date: selectedDay?.date || "" });
+
+        handleUpdate();
     };
 
     const handleDelete = async (id) => {

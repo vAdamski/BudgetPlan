@@ -44,7 +44,6 @@ function MainCategoryRow({ mainCategory, handleUpdateBudgetPlanBase }) {
             handleUpdateBudgetPlanBase();
         } catch (error) {
             console.error('Error updating budget plan detail:', error);
-            // Handle the error appropriately (e.g., show a notification to the user)
         }
     };
 
@@ -108,6 +107,7 @@ function MainCategoryRow({ mainCategory, handleUpdateBudgetPlanBase }) {
                 handleClose={handleClose}
                 transactionCategoryId={transactionCategoryId}
                 selectedDay={selectedDay}
+                handleUpdate={handleUpdateBudgetPlanBase}
             />
         </>
     );
