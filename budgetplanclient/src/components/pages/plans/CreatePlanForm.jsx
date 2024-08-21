@@ -20,8 +20,6 @@ function CreatePlanForm({budgetPlanId, handleUpdate}) {
         const dateFrom = toDateString(startDate);
         const dateTo = toDateString(endDate);
 
-        console.log(dateFrom, dateTo);
-
         await createBudgetPlanBase(dateFrom, dateTo, budgetPlanId);
 
         handleUpdate();
