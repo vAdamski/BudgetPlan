@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   sqlserver:
-    image: mcr.microsoft.com/azure-sql-edge
+    image: mcr.microsoft.com/azure-sql-edge:latest
     container_name: budgetplan-database
     environment:
       - ACCEPT_EULA=1

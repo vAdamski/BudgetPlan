@@ -23,7 +23,7 @@ public class BudgetPlanBaseViewModelBuilder(
 
 		vm.BudgetPlanBaseId = budgetPlanBase.Id;
 
-		var categories = budgetPlan.TransactionCategories;
+		var categories = budgetPlan.TransactionCategories.Where(x => x.IsOverCategory).ToList();
 
 		var subCategoryIds = categories.SelectMany(x => x.SubTransactionCategories.Select(x => x.Id)).ToList();
 
@@ -31,7 +31,7 @@ public class BudgetPlanBaseViewModelBuilder(
 
 		List<TransactionDetail> transactionDetails =
 			await transactionDetailsRepository.GetTransactionsForCategoriesBetweenDaysAsync(subCategoryIds,
-				budgetPlanBase.DateFrom, budgetPlanBase.DateTo);
+				budgetPlanBase.DateFrom, budgetPlanBase.DateTo, cancellationToken);
 
 		foreach (var category in categories)
 		{

@@ -11,7 +11,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<BudgetPlanDbContext>(options => options.UseSqlServer(configuration.GetConnectionString()));
+        services.AddDbContext<BudgetPlanDbContext>(options => options.UseSqlServer(configuration.GetConnectionString()).EnableSensitiveDataLogging(false));
         services.AddScoped<IBudgetPlanDbContext, BudgetPlanDbContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         

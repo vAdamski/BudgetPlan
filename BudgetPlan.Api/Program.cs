@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using BudgetPlan.Api.Common.Settings;
+using BudgetPlan.Api.Middlewares;
 using BudgetPlan.Api.Services;
 using BudgetPlan.Application;
 using BudgetPlan.Application.Common.Interfaces;
@@ -25,6 +26,7 @@ builder.Services.AddInfrastructure();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.TryAddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
+builder.Services.AddTransient<IncomingRequestLoggerMiddleware>();
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -124,6 +126,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 }
+
+app.UseMiddleware<IncomingRequestLoggerMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>

@@ -46,7 +46,9 @@ function CreateTransactionDetails({budgetPlanId}) {
     };
 
     return (
-        <Card>
+        <Card style={{
+            'height': '100%',
+        }}>
             <Card.Header className={'text-start'} style={{backgroundColor: '#111111'}}>
                 <a style={{color: '#ffffff'}}>Transakcje</a>
             </Card.Header>

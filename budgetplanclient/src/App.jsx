@@ -9,6 +9,7 @@ import Plans from "./components/pages/plans/Plans";
 import BudgetPlanSettings from "./components/pages/settings/BudgetPlanSettings";
 import SideNav from "./components/sideNav/SideNav";
 import { useState } from 'react';
+import ProtectedRoute from "./services/ProtectedRoute.jsx";
 
 const App = () => {
     const [isExpanded, setIsExpanded] = useState(true);
@@ -31,11 +32,11 @@ const App = () => {
 
                     <div className={contentClasses}>
                         <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/:budgetPlanId/Dashboard" element={<Dashboard />} />
-                            <Route path="/:budgetPlanId/TransactionCategory" element={<TransactionCategory />} />
-                            <Route path="/:budgetPlanId/Plans" element={<Plans />} />
-                            <Route path="/:budgetPlanId/BudgetPlanSettings" element={<BudgetPlanSettings />} />
+                            <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+                            <Route path="/:budgetPlanId/Dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                            <Route path="/:budgetPlanId/TransactionCategory" element={<ProtectedRoute><TransactionCategory /></ProtectedRoute>} />
+                            <Route path="/:budgetPlanId/Plans" element={<ProtectedRoute><Plans /></ProtectedRoute>} />
+                            <Route path="/:budgetPlanId/BudgetPlanSettings" element={<ProtectedRoute><BudgetPlanSettings /></ProtectedRoute>} />
                             <Route path="/authentication/login-callback" element={<LoginCallback />} />
                         </Routes>
                     </div>

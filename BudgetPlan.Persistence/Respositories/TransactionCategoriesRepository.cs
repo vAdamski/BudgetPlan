@@ -20,23 +20,11 @@ public class TransactionCategoriesRepository(
 			                          x.StatusId == 1 &&
 			                          x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email),
 				cancellationToken);
-		
+
 		if (data == null)
 			throw new NotFoundException(nameof(TransactionCategory), id);
 
 		return data;
-	}
-
-	public async Task<List<TransactionCategory>> GetAllTransactionCategories(
-		CancellationToken cancellationToken = default)
-	{
-		return await context.TransactionCategories
-			.Include(tc => tc.SubTransactionCategories)
-			.Include(tc => tc.Access)
-			.ThenInclude(x => x.AccessedPersons)
-			.Where(x => x.StatusId == 1 &&
-			            x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
-			.ToListAsync(cancellationToken);
 	}
 
 	public async Task<List<BudgetPlanEntity>> GetTransactionCategoriesForBudgetPlansAsync(
@@ -44,16 +32,17 @@ public class TransactionCategoriesRepository(
 	{
 		return await context.BudgetPlanEntities
 			.Include(x => x.TransactionCategories)
-			.ThenInclude(x => x.SubTransactionCategories)
+			.ThenInclude(x => x.SubTransactionCategories.Where(sub => sub.StatusId == 1))
 			.Include(x => x.DataAccess)
 			.ThenInclude(x => x.AccessedPersons)
 			.Where(x => x.StatusId == 1 &&
 			            x.DataAccess.AccessedPersons.Any(x => x.Email == currentUserService.Email))
-			.ToListAsync();
+			.ToListAsync(cancellationToken);
 	}
-	
-	public async Task<List<TransactionCategory>> GetOverTransactionCategoriesWithSubTransactionCategoriesForBudgetPlanAsync(
-		Guid budgetPlanId, CancellationToken cancellationToken = default)
+
+	public async Task<List<TransactionCategory>>
+		GetOverTransactionCategoriesWithSubTransactionCategoriesForBudgetPlanAsync(
+			Guid budgetPlanId, CancellationToken cancellationToken = default)
 	{
 		return await context.TransactionCategories
 			.Include(x => x.SubTransactionCategories)
@@ -66,17 +55,25 @@ public class TransactionCategoriesRepository(
 			.ToListAsync(cancellationToken);
 	}
 
-	public async Task<List<TransactionCategory>> GetAllTransactionCategoriesWithTransactionDetails(
+	public async Task<bool> IsOverTransactionCategoryAsync(Guid transactionCategoryId,
+		CancellationToken cancellationToken = default)
+	{
+		var data = await GetByIdAsync(transactionCategoryId, cancellationToken);
+
+		return data.IsOverCategory;
+	}
+
+	public async Task<TransactionCategory> GetSubTransactionWithTransactionDetailsByIdAsync(Guid transactionCategoryId,
 		CancellationToken cancellationToken = default)
 	{
 		return await context.TransactionCategories
-			.Include(tc => tc.SubTransactionCategories)
-			.ThenInclude(stc => stc.TransactionDetails)
-			.Include(tc => tc.Access)
+			.Include(x => x.Access)
 			.ThenInclude(x => x.AccessedPersons)
-			.Where(x => x.StatusId == 1 &&
-			            x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email))
-			.ToListAsync(cancellationToken);
+			.Include(x => x.TransactionDetails)
+			.FirstOrDefaultAsync(x => x.Id == transactionCategoryId &&
+			                          x.StatusId == 1 &&
+			                          x.Access.AccessedPersons.Any(x => x.Email == currentUserService.Email),
+				cancellationToken);
 	}
 
 	public async Task<TransactionCategory> GetOverTransactionCategoryAsync(Guid id,
@@ -125,24 +122,11 @@ public class TransactionCategoriesRepository(
 		await context.SaveChangesAsync(cancellationToken);
 	}
 
-	public async Task UpdateRangeAsync(List<TransactionCategory> transactionCategories,
-		CancellationToken cancellationToken = default)
+	public async Task DeleteAsync(TransactionCategory transactionCategory, CancellationToken cancellationToken = default)
 	{
-		context.TransactionCategories.UpdateRange(transactionCategories);
+		context.TransactionCategories.Remove(transactionCategory);
 
 		await context.SaveChangesAsync(cancellationToken);
-	}
-
-	public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
-	{
-		var isOverTransactionCategory = await IsOverTransactionCategory(id, cancellationToken);
-
-		TransactionCategory transactionCategoryToDelete;
-
-		if (isOverTransactionCategory)
-			transactionCategoryToDelete = await GetOverTransactionCategoryAsync(id, cancellationToken);
-		else
-			transactionCategoryToDelete = await GetByIdAsync(id, cancellationToken);
 	}
 
 	public async Task<List<TransactionCategory>> GetSubTransactionCategoriesForBudgetPlanAsync(Guid budgetPlanId,
@@ -158,17 +142,5 @@ public class TransactionCategoriesRepository(
 			.ToListAsync(cancellationToken);
 
 		return data;
-	}
-
-	private async Task<bool> IsOverTransactionCategory(Guid id, CancellationToken cancellationToken = default)
-	{
-		var transactionCategory = await context.TransactionCategories
-			.FirstOrDefaultAsync(x => x.Id == id &&
-			                          x.StatusId == 1);
-
-		if (transactionCategory == null)
-			throw new NotFoundException(nameof(TransactionCategory), id);
-
-		return transactionCategory.IsOverCategory;
 	}
 }

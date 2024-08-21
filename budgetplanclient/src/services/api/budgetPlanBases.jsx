@@ -10,16 +10,20 @@ const useBudgetPlanBasesApi = () => {
     }
 
     const createBudgetPlanBase = async (dateFrom, dateTo, budgetPlanId) => {
+        const dto = {
+            dateFrom: dateFrom,
+            dateTo: dateTo,
+            budgetPlanEntityId: budgetPlanId
+        }
+
+        console.log(dto);
+
         return await authFetch(`${API_URL}/api/budgetPlanBases`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                dateFom: dateFrom,
-                dateTo: dateTo,
-                budgetPlanEntityId: budgetPlanId
-            })
+            body: JSON.stringify(dto)
         });
     }
 

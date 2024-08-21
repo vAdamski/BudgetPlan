@@ -14,9 +14,13 @@ function CreatePlanForm({budgetPlanId, handleUpdate}) {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date(new Date().setMonth(new Date().getMonth() + 1)));
 
-    const handleCreate = async () => {
+    const handleCreate = async (event) => {
+        event.preventDefault();
+
         const dateFrom = toDateString(startDate);
         const dateTo = toDateString(endDate);
+
+        console.log(dateFrom, dateTo);
 
         await createBudgetPlanBase(dateFrom, dateTo, budgetPlanId);
 

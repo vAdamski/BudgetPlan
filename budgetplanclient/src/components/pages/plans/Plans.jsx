@@ -44,7 +44,8 @@ function Plans() {
                                 <Row className={'mb-3'}>
                                     <Col className={'d-flex justify-content-end'}>
                                         <ButtonGroup>
-                                            {/*<Button variant="primary" onClick={handleUpdate}>Odśwież</Button>*/}
+                                            <Button variant="primary" onClick={handleUpdate}>Odśwież</Button>
+                                            <Button variant="warning" >Edytuj</Button>
                                             <Button variant="danger" onClick={() => handleDelete(budgetPlanBase.id)}>Usuń</Button>
                                         </ButtonGroup>
                                     </Col>

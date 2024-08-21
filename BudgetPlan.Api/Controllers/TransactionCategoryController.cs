@@ -1,5 +1,6 @@
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddOverTransactionCategory;
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.AddTransactionCategory;
+using BudgetPlan.Application.Actions.TransactionCategoriesActions.Commands.DeleteTransactionCategory;
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetBudgetPlanSubTransactionCategories;
 using BudgetPlan.Application.Actions.TransactionCategoriesActions.Queries.GetListTransactionCategories;
 using BudgetPlan.Shared.Dtos;
@@ -50,8 +51,10 @@ public class TransactionCategoryController : BaseController
 
 	[HttpDelete]
 	[Route("{id}")]
-	public async Task<IActionResult> DeleteTransactionCategory([FromQuery] Guid id, Guid? migrationId = null)
+	public async Task<IActionResult> DeleteTransactionCategory(Guid id, Guid? migrationId = null)
 	{
-		throw new NotImplementedException();
+		await Mediator.Send(new DeleteTransactionCategoryCommand(id, migrationId));
+
+		return NoContent();
 	}
 }

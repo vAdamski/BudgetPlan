@@ -1,4 +1,3 @@
-using BudgetPlan.Application.Common.Helpers;
 using BudgetPlan.Application.Common.Interfaces.Managers;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
 using BudgetPlan.Common.Extension;
@@ -67,21 +66,6 @@ public class TransactionCategoryManager(
 		TransactionCategoriesForBudgetPlanViewModel viewModel = new(data);
 
 		return viewModel;
-	}
-
-	public async Task DeleteTransactionCategoryAsync(Guid id, Guid? transactionCategoryItemsDestination = null,
-		CancellationToken cancellationToken = default)
-	{
-		var transactionCategories =
-			await transactionCategoriesRepository.GetAllTransactionCategoriesWithTransactionDetails(cancellationToken);
-
-		if (transactionCategoryItemsDestination != null)
-			TransactionDetailsMigrationProcess.MigrateTransactionDetails(transactionCategories, id,
-				transactionCategoryItemsDestination.Value);
-
-		await transactionCategoriesRepository.UpdateRangeAsync(transactionCategories, cancellationToken);
-
-		await transactionCategoriesRepository.DeleteAsync(id, cancellationToken);
 	}
 
 	private void ValidateInputs(Guid overTransactionCategoryId, string categoryName)

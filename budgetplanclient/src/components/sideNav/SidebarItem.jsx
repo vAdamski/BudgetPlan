@@ -12,7 +12,7 @@ function SidebarItem({link, icon, children, className, ...props}) {
         <li className={`sidebar-item ${className || ''}`}>
             <a className="sidebar-link" onClick={handleClick} {...props}>
                 <i className={`lni ${icon}`}></i>
-                <span>{children}</span>
+                <span className={''}>{children}</span>
             </a>
         </li>
     );

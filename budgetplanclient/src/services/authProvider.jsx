@@ -1,19 +1,42 @@
-import {createContext, useEffect, useState} from 'react';
+import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import userManager from './authConfig.jsx';
 
 export const AuthContext = createContext(null);
 
-export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
 
     useEffect(() => {
-        userManager.getUser().then((loadedUser) => {
-            if (loadedUser) {
-                setUser(loadedUser);
-            }
-        });
+        const checkUserToken = async () => {
+            try {
+                let currentUser = await userManager.getUser();
 
+                if (currentUser && currentUser.expired) {
+                    currentUser = await userManager.signinSilent();
+                    setUser(currentUser);
+                } else if (currentUser) {
+                    setUser(currentUser);
+                } else {
+                    console.log('User is not logged in');
+                }
+
+                if (currentUser) {
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+                }
+            } catch (error) {
+                console.error('Failed to renew token', error);
+                userManager.signinRedirect();
+            }
+        };
+
+        checkUserToken();
+    }, []);
+
+    useEffect(() => {
         const onUserLoaded = (loadedUser) => {
             setUser(loadedUser);
         };
@@ -48,36 +71,62 @@ export const AuthProvider = ({children}) => {
     };
 
     const authFetch = async (url, options = {}) => {
-        const user = await userManager.getUser();
-
-        if (!user || !user.access_token) {
-            throw new Error("User is not authenticated");
-        }
-
-        const headers = {
-            ...options.headers,
-            Authorization: `Bearer ${user.access_token}`,
-            'Content-Type': 'application/json'
-        };
-
-        const response = await fetch(url, {
-            ...options,
-            headers
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        // Read the raw response text
-        const responseText = await response.text();
-
-        // Attempt to parse the JSON, if applicable
         try {
-            return responseText ? JSON.parse(responseText) : {};
+            let currentUser = await userManager.getUser();
+
+            if (!currentUser || !currentUser.access_token) {
+                throw new Error("User is not authenticated");
+            }
+
+            const headers = {
+                ...options.headers,
+                Authorization: `Bearer ${currentUser.access_token}`,
+                'Content-Type': 'application/json'
+            };
+
+            const response = await fetch(url, {
+                ...options,
+                headers
+            });
+
+            if (response.status === 401) { // If unauthorized, try to renew the token
+                currentUser = await userManager.signinSilent(); // Renew the token
+                setUser(currentUser); // Update the user state
+
+                const retryHeaders = {
+                    ...options.headers,
+                    Authorization: `Bearer ${currentUser.access_token}`,
+                    'Content-Type': 'application/json'
+                };
+
+                const retryResponse = await fetch(url, {
+                    ...options,
+                    headers: retryHeaders
+                });
+
+                if (!retryResponse.ok) {
+                    throw new Error('Network response was not ok after retry');
+                }
+
+                return handleResponse(retryResponse);
+            }
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            return handleResponse(response);
         } catch (error) {
-            console.error('Error parsing JSON:', error);
-            throw new Error('Failed to parse JSON response');
+            throw new Error(`authFetch failed: ${error.message}`);
+        }
+    };
+
+    const handleResponse = async (response) => {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return response.json();
+        } else {
+            return response;
         }
     };
 
@@ -99,9 +148,8 @@ export const AuthProvider = ({children}) => {
         return response.json();
     };
 
-
     return (
-        <AuthContext.Provider value={{user, login, logout, authFetch, fetchWithoutAuth}}>
+        <AuthContext.Provider value={{ user, login, logout, authFetch, fetchWithoutAuth }}>
             {children}
         </AuthContext.Provider>
     );
