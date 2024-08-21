@@ -1,6 +1,6 @@
 import ApexCharts from 'react-apexcharts';
 
-function PieChart({ values, labels, percentage, valuesPosition, showLegend = true}) {
+function PieChart({ values, labels, percentage, valuesPosition, showLegend = true }) {
     const options = {
         chart: {
             type: 'pie',
@@ -9,12 +9,22 @@ function PieChart({ values, labels, percentage, valuesPosition, showLegend = tru
         labels: labels,
         tooltip: {
             y: {
-                formatter: (value) => `${value} ${percentage ? '%' : ''}`
+                formatter: (value) => `${value}${percentage ? ' %' : ''}` // Tooltip formatting
             }
         },
         legend: {
             show: showLegend,
-            position: valuesPosition || 'bottom'
+            position: valuesPosition || 'bottom',
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val, opts) {
+                if (percentage) {
+                    return `${val.toFixed(2)} %`; // Show percentage if true
+                } else {
+                    return `${opts.w.config.series[opts.seriesIndex]}`; // Show raw value if false
+                }
+            }
         }
     };
 
@@ -26,7 +36,7 @@ function PieChart({ values, labels, percentage, valuesPosition, showLegend = tru
             <ApexCharts
                 options={options}
                 series={series}
-                type="pie"
+                type="donut"
                 width="400" // You can adjust the width as needed
             />
         </div>
