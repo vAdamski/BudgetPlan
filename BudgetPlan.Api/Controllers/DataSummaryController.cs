@@ -34,9 +34,9 @@ public class DataSummaryController : BaseController
 	}
 	
 	[HttpGet("{budgetPlanId}/incomeExpenseSummary")]
-	public async Task<IActionResult> GetIncomeExpenseSummary(Guid budgetPlanId, Guid? budgetPlanBaseId = null, bool percent = false)
+	public async Task<IActionResult> GetIncomeExpenseSummary(Guid budgetPlanId, Guid? budgetPlanBaseId = null)
 	{
-		var response = await Mediator.Send(new GetIncomeExpenseSummaryQuery(budgetPlanId, budgetPlanBaseId, percent));
+		var response = await Mediator.Send(new GetIncomeExpenseSummaryQuery(budgetPlanId, budgetPlanBaseId));
 
 		return Ok(response);
 	}
