@@ -23,7 +23,7 @@ const TableHeader = ({ dateFrom, dateTo }) => {
     const dates = generateDateRange(dateFrom, dateTo);
 
     return (
-        <thead>
+        <thead className={'text-center'}>
         <tr>
             <th className={'category-td'}>Kategoria</th>
             <th>Oczekiwane</th>
