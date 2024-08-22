@@ -30,6 +30,7 @@ services:
       - sqlserver
     volumes:
       - ${HOME}/.aspnet/https:/https/
+      - ${HOME}/.keys:/app/keys
 
   budgetplan-api:
     image: budgetplan-api
