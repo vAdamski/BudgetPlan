@@ -36,25 +36,6 @@ public static class Config
 		{
 			new Client
 			{
-				ClientId = "blazor",
-				ClientName = "Client for Blazor use",
-
-				AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-				ClientSecrets = { new Secret("secret".Sha256()) },
-				RequirePkce = true,
-				RequireClientSecret = false,
-				AllowedScopes =
-				{
-					"api1", 
-					"openid", 
-					"profile"
-				},
-				AllowedCorsOrigins = { "https://localhost:7001", "https://localhost:5001" },
-				RedirectUris = { "https://localhost:7001/authentication/login-callback" },
-				PostLogoutRedirectUris = { "https://localhost:7001/" }
-			},
-			new Client
-			{
 				ClientId = "swagger",
 				ClientName = "Client for Swagger use",
 
@@ -69,8 +50,17 @@ public static class Config
 				AlwaysSendClientClaims = true,
 				AlwaysIncludeUserClaimsInIdToken = true,
 				AllowAccessTokensViaBrowser = true,
-				RedirectUris = { "https://localhost:6001/swagger/oauth2-redirect.html" },
-				AllowedCorsOrigins = { "https://localhost:6001", "https://localhost:5001" },
+				RedirectUris =
+				{
+					"https://localhost:6001/swagger/oauth2-redirect.html",
+					$"{Environment.GetEnvironmentVariable("API_URL")}/swagger/oauth2-redirect.html"
+				},
+				AllowedCorsOrigins =
+				{
+					"https://localhost:6001", 
+					"https://localhost:5001",
+					$"{Environment.GetEnvironmentVariable("API_URL")}"
+				},
 				Enabled = true
 			},
 			new Client
@@ -82,8 +72,8 @@ public static class Config
 				RequireClientSecret = false,
 				AllowedScopes =
 				{
-					"api1", 
-					"openid", 
+					"api1",
+					"openid",
 					"profile"
 				},
 				AllowedCorsOrigins = { "http://localhost:5173", "https://localhost:5001", "https://localhost:6001" },

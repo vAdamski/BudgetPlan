@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   sqlserver:
     image: mcr.microsoft.com/azure-sql-edge:latest
@@ -9,3 +8,48 @@ services:
       - MSSQL_SA_PASSWORD=Pass1234$
     ports:
       - 1433:1433
+
+  budgetplan-ids:
+    image: budgetplan-ids
+    container_name: budgetplan-ids
+    build:
+      context: .
+      dockerfile: ./DuendeIdentityServer/Dockerfile
+    ports:
+      - 15000:80
+      - 15001:443
+    environment:
+      - ASPNETCORE_URLS=https://+;http://+
+      - ASPNETCORE_HTTPS_PORT=15001
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Pass123$
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/budgetplan-ids.pfx
+      - DB_CONNECTION_STRING=Server=host.docker.internal,1433;Initial Catalog=BudgetPlanIDSDatabase;Persist Security Info=False;User ID=sa;Password=Pass1234$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;
+      - API_URL=https://localhost:16001
+    depends_on:
+      - sqlserver
+    volumes:
+      - ${HOME}/.aspnet/https:/https/
+
+  budgetplan-api:
+    image: budgetplan-api
+    container_name: budgetplan-api
+    build:
+      context: .
+      dockerfile: ./BudgetPlan.Api/Dockerfile
+    ports:
+      - 16000:80
+      - 16001:443
+    environment:
+      - ASPNETCORE_URLS=https://+;http://+
+      - ASPNETCORE_HTTPS_PORT=16001
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Pass123$
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/budgetplan-api.pfx
+      - DB_CONNECTION_STRING=Server=host.docker.internal,1433;Initial Catalog=BudgetPlanDatabase;Persist Security Info=False;User ID=sa;Password=Pass1234$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;
+      - AUTHORITY=https://localhost:15001
+    depends_on:
+      - sqlserver
+      - budgetplan-ids
+    volumes:
+      - ${HOME}/.aspnet/https:/https/

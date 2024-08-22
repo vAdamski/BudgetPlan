@@ -4,6 +4,7 @@ using BudgetPlan.Api.Middlewares;
 using BudgetPlan.Api.Services;
 using BudgetPlan.Application;
 using BudgetPlan.Application.Common.Interfaces;
+using BudgetPlan.Common.Helpers;
 using BudgetPlan.Infrastructure;
 using BudgetPlan.Persistence;
 using IdentityModel;
@@ -30,11 +31,14 @@ builder.Services.AddTransient<IncomingRequestLoggerMiddleware>();
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
+var authority = EnvironmentVariables.GetEnvironmentVariable("AUTHORITY");
+
+authority = string.IsNullOrEmpty(authority) ? "https://localhost:5001" : authority;
+
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        
-        options.Authority = "https://localhost:5001";
+        options.Authority = authority;
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -68,8 +72,8 @@ builder.Services.AddSwaggerGen(options =>
         {
             AuthorizationCode = new OpenApiOAuthFlow
             {
-                AuthorizationUrl = new Uri("https://localhost:5001/connect/authorize"),
-                TokenUrl = new Uri("https://localhost:5001/connect/token"),
+                AuthorizationUrl = new Uri($"{authority}/connect/authorize"),
+                TokenUrl = new Uri($"{authority}/connect/token"),
                 Scopes = new Dictionary<string, string>
                 {
                     { "api1", "Full access" },

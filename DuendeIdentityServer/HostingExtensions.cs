@@ -11,84 +11,90 @@ namespace DuendeIdentityServer;
 
 internal static class HostingExtensions
 {
-    public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddTransient<IProfileService, ProfileService>();
-        builder.Services.AddRazorPages();
+	public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
+	{
+		builder.Services.AddTransient<IProfileService, ProfileService>();
+		builder.Services.AddRazorPages();
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+		var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
+		                       builder.Configuration.GetConnectionString("DefaultConnection");
 
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+		Console.WriteLine($"Using connection string: {connectionString}");
 
-        builder.Services
-            .AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
+		builder.Services.AddDbContext<ApplicationDbContext>(options =>
+			options.UseSqlServer(connectionString));
 
-                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-                options.EmitStaticAudienceClaim = true;
-            })
-            .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
-            .AddAspNetIdentity<ApplicationUser>()
-            .AddProfileService<ProfileService>();
+		builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+			.AddEntityFrameworkStores<ApplicationDbContext>()
+			.AddDefaultTokenProviders();
 
-        builder.Services.AddAuthentication()
-            .AddGoogle(options =>
-            {
-                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+		builder.Services
+			.AddIdentityServer(options =>
+			{
+				options.Events.RaiseErrorEvents = true;
+				options.Events.RaiseInformationEvents = true;
+				options.Events.RaiseFailureEvents = true;
+				options.Events.RaiseSuccessEvents = true;
 
-                // register your IdentityServer with Google at https://console.developers.google.com
-                // enable the Google+ API
-                // set the redirect URI to https://localhost:5001/signin-google
-                options.ClientId = "copy client ID from Google here";
-                options.ClientSecret = "copy client secret from Google here";
-            });
-        
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("CORS", policy => policy.WithOrigins(
-                    "https://localhost:5001",
-                    "https://localhost:6001",
-                    "https://localhost:7001",
-                    "http://localhost:5173"
-                )
-                .AllowAnyHeader()
-                .AllowAnyMethod());
-        });
+				// see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
+				options.EmitStaticAudienceClaim = true;
+			})
+			.AddInMemoryIdentityResources(Config.IdentityResources)
+			.AddInMemoryApiScopes(Config.ApiScopes)
+			.AddInMemoryClients(Config.Clients)
+			.AddAspNetIdentity<ApplicationUser>()
+			.AddProfileService<ProfileService>();
 
-        return builder.Build();
-    }
+		builder.Services.AddAuthentication()
+			.AddGoogle(options =>
+			{
+				options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-    public static WebApplication ConfigurePipeline(this WebApplication app)
-    {
-        app.UseSerilogRequestLogging();
+				// register your IdentityServer with Google at https://console.developers.google.com
+				// enable the Google+ API
+				// set the redirect URI to https://localhost:5001/signin-google
+				options.ClientId = "copy client ID from Google here";
+				options.ClientSecret = "copy client secret from Google here";
+			});
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
+		builder.Services.AddCors(options =>
+		{
+			options.AddPolicy("CORS", policy => policy.WithOrigins(
+					"https://localhost:5001",
+					"https://localhost:6001",
+					"https://localhost:7001",
+					"http://localhost:5173",
+					$"{Environment.GetEnvironmentVariable("API_URL")}"
+				)
+				.AllowAnyHeader()
+				.AllowAnyMethod());
+		});
 
-        app.UseStaticFiles();
-        app.UseRouting();
-        app.UseIdentityServer();
+		return builder.Build();
+	}
 
-        
-        app.UseCors("CORS");
+	public static WebApplication ConfigurePipeline(this WebApplication app)
+	{
+		app.UseSerilogRequestLogging();
 
-        app.UseIdentityServer();
-        app.UseAuthorization();
+		if (app.Environment.IsDevelopment())
+		{
+			app.UseDeveloperExceptionPage();
+		}
 
-        app.MapRazorPages()
-            .AllowAnonymous();
+		app.UseStaticFiles();
+		app.UseRouting();
+		app.UseIdentityServer();
 
-        return app;
-    }
+
+		app.UseCors("CORS");
+
+		app.UseIdentityServer();
+		app.UseAuthorization();
+
+		app.MapRazorPages()
+			.AllowAnonymous();
+
+		return app;
+	}
 }

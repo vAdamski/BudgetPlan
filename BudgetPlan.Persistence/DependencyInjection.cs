@@ -1,5 +1,6 @@
 using BudgetPlan.Application.Common.Interfaces;
 using BudgetPlan.Application.Common.Interfaces.Repositories;
+using BudgetPlan.Common.Helpers;
 using BudgetPlan.Persistence.Respositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<BudgetPlanDbContext>(options => options.UseSqlServer(configuration.GetConnectionString()).EnableSensitiveDataLogging(false));
+        var connectionString = ConnectionStringGetter.GetConnectionString(configuration);
+        
+        services.AddDbContext<BudgetPlanDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(false));
         services.AddScoped<IBudgetPlanDbContext, BudgetPlanDbContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
@@ -24,17 +27,5 @@ public static class DependencyInjection
         services.AddTransient<IAccessedPersonsRepository, AccessedPersonsRepository>();
         
         return services;
-    }
-    
-    private static string GetConnectionString(this IConfiguration configuration)
-    {
-        string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-        
-        if (string.IsNullOrEmpty(connectionString))
-        {
-            connectionString = configuration.GetConnectionString("DefaultConnection");
-        }
-        
-        return connectionString;
     }
 }
