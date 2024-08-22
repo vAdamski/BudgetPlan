@@ -52,14 +52,12 @@ public static class Config
 				AllowAccessTokensViaBrowser = true,
 				RedirectUris =
 				{
-					"https://localhost:6001/swagger/oauth2-redirect.html",
-					$"{Environment.GetEnvironmentVariable("API_URL")}/swagger/oauth2-redirect.html"
+					$"{API_URL()}/swagger/oauth2-redirect.html"
 				},
 				AllowedCorsOrigins =
 				{
-					"https://localhost:6001", 
+					$"{API_URL()}",
 					"https://localhost:5001",
-					$"{Environment.GetEnvironmentVariable("API_URL")}"
 				},
 				Enabled = true
 			},
@@ -81,4 +79,11 @@ public static class Config
 				PostLogoutRedirectUris = { "http://localhost:5173/" }
 			},
 		};
+
+	private static string API_URL()
+	{
+		return string.IsNullOrEmpty(Environment.GetEnvironmentVariable("API_URL"))
+			? "https://localhost:6001"
+			: Environment.GetEnvironmentVariable("API_URL");
+	}
 }
