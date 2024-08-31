@@ -16,7 +16,8 @@ public class TransactionDetailsRepository(IBudgetPlanDbContext context, ICurrent
 		return await context.TransactionDetails.Where(x =>
 				subCategoryIds.Contains(x.TransactionCategoryId) &&
 				x.TransactionDate >= dateFrom &&
-				x.TransactionDate <= dateTo)
+				x.TransactionDate <= dateTo &&
+				x.StatusId == 1)
 			.ToListAsync(cancellationToken);
 	}
 
@@ -30,7 +31,8 @@ public class TransactionDetailsRepository(IBudgetPlanDbContext context, ICurrent
 		if (response == null)
 			throw new NotFoundException(nameof(TransactionDetail), id);
 
-		if (response.Access.IsAccessed(currentUserService.Email))
+		
+		if (!response.Access.IsAccessed(currentUserService.Email))
 			throw new AccessDeniedException();
 
 		return response;

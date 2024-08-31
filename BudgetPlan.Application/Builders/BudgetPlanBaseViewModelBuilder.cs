@@ -23,9 +23,9 @@ public class BudgetPlanBaseViewModelBuilder(
 
 		vm.BudgetPlanBaseId = budgetPlanBase.Id;
 
-		var categories = budgetPlan.TransactionCategories.Where(x => x.IsOverCategory).ToList();
+		var categories = budgetPlan.TransactionCategories.Where(x => x.IsOverCategory && x.StatusId == 1).ToList();
 
-		var subCategoryIds = categories.SelectMany(x => x.SubTransactionCategories.Select(x => x.Id)).ToList();
+		var subCategoryIds = categories.SelectMany(x => x.SubTransactionCategories.Where(x => x.StatusId == 1).Select(x => x.Id)).ToList();
 
 		var days = ListDaysBetween(budgetPlanBase.DateFrom, budgetPlanBase.DateTo);
 

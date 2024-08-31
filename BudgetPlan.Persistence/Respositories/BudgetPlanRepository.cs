@@ -84,7 +84,7 @@ public class BudgetPlanRepository(IBudgetPlanDbContext ctx, ICurrentUserService 
 			.ThenInclude(stc => stc.TransactionDetails.Where(td => td.StatusId == 1))
 			.Include(bp => bp.BudgetPlanBases.Where(x => x.StatusId == 1))
 			.ThenInclude(bpb => bpb.BudgetPlanDetailsList.Where(bpd => bpd.StatusId == 1))
-			.Where(bp => bp.Id == id)
+			.Where(bp => bp.Id == id && bp.StatusId == 1)
 			.FirstOrDefaultAsync(cancellationToken);
 
 		if (budgetPlan == null)
