@@ -9,6 +9,7 @@ public class BudgetPlanBasesListViewModel
 
 	public BudgetPlanBasesListViewModel(List<BudgetPlanBase> budgetPlanBases)
 	{
-		BudgetPlanBasesDtos = budgetPlanBases.Select(x => new BudgetPlanBaseDto(x)).ToList();
+		BudgetPlanBasesDtos = budgetPlanBases.Select(x => new BudgetPlanBaseDto(x)).OrderBy(x => x.DateFrom)
+			.ThenBy(x => x.DateTo).ToList();
 	}
 }

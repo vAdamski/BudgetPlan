@@ -23,9 +23,11 @@ public class BudgetPlanBaseViewModelBuilder(
 
 		vm.BudgetPlanBaseId = budgetPlanBase.Id;
 
-		var categories = budgetPlan.TransactionCategories.Where(x => x.IsOverCategory && x.StatusId == 1).ToList();
+		var categories = budgetPlan.TransactionCategories.Where(x => x.IsOverCategory && x.StatusId == 1)
+			.OrderBy(x => x.TransactionType).ThenBy(x => x.TransactionCategoryName).ToList();
 
-		var subCategoryIds = categories.SelectMany(x => x.SubTransactionCategories.Where(x => x.StatusId == 1).Select(x => x.Id)).ToList();
+		var subCategoryIds = categories
+			.SelectMany(x => x.SubTransactionCategories.Where(x => x.StatusId == 1).Select(x => x.Id)).ToList();
 
 		var days = ListDaysBetween(budgetPlanBase.DateFrom, budgetPlanBase.DateTo);
 
@@ -39,7 +41,7 @@ public class BudgetPlanBaseViewModelBuilder(
 
 			var subCategories = category.SubTransactionCategories;
 
-			foreach (var subCategory in subCategories)
+			foreach (var subCategory in subCategories.OrderBy(x => x.TransactionCategoryName))
 			{
 				var budgetPlanDetail =
 					budgetPlanBase.BudgetPlanDetailsList.First(x => x.TransactionCategoryId == subCategory.Id);
@@ -67,6 +69,7 @@ public class BudgetPlanBaseViewModelBuilder(
 				{
 					Id = budgetPlanDetail.Id,
 					AmountAllocated = budgetPlanDetail.ExpectedAmount,
+					TransactionType = category.TransactionType,
 					TransactionItemsForDaysDtos = transactionItemsPerDayDtos
 				};
 

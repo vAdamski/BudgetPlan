@@ -14,5 +14,5 @@ public class TransactionCategoryDetailsViewDto
 	public double RealAmount => SubTransactionCategoryDetailsViewDtos.Sum(
 		x => x.BudgetPlanDetailsDto.SumAmountOfAllDay);
 
-	public double Difference => PlannedAmount - RealAmount;
+	public double Difference => TransactionType == Domain.Enums.TransactionType.Expense ? PlannedAmount - RealAmount : RealAmount - PlannedAmount;
 }
