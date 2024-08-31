@@ -1,6 +1,14 @@
 import {Button, ButtonGroup, Table} from "react-bootstrap";
+import {useEffect, useState} from "react";
 
 function TransactionTable({transactions, onEdit, onDelete}) {
+    const [transactionsInside, setTransactionsInside] = useState([]);
+
+    useEffect(() => {
+        setTransactionsInside(transactions);
+    }, [transactions]);
+
+
     return (
         <Table striped bordered hover>
             <thead>
@@ -12,7 +20,7 @@ function TransactionTable({transactions, onEdit, onDelete}) {
             </tr>
             </thead>
             <tbody>
-            {transactions.map((trans) => (
+            {transactionsInside.map((trans) => (
                 <tr key={trans.id}>
                     <td>{trans.value}</td>
                     <td>{trans.description}</td>

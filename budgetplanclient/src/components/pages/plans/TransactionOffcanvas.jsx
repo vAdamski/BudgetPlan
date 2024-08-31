@@ -13,6 +13,7 @@ function TransactionOffcanvas({ show, handleClose, transactionCategoryId, select
         setTransaction({ id: "", value: 0, description: "", date: selectedDay?.date || "" });
     }, [selectedDay]);
 
+
     const handleEdit = (trans) => {
         setTransaction(trans);
     };
@@ -20,12 +21,14 @@ function TransactionOffcanvas({ show, handleClose, transactionCategoryId, select
     const handleSave = async (trans) => {
         const { id, value, description, date } = trans;
 
+        console.log(trans);
+
         if (id) {
             await putTransactionDetails(id, {
-                transactionCategoryId: transactionCategoryId,
+                id: id,
                 value: value,
                 description: description,
-                transactionDate: date,
+                date: date,
             });
         } else {
             await createTransactionDetails({
@@ -41,7 +44,10 @@ function TransactionOffcanvas({ show, handleClose, transactionCategoryId, select
     };
 
     const handleDelete = async (id) => {
+        console.log(id);
         await deleteTransactionDetails(id);
+
+        handleUpdate();
     };
 
     const handleCancel = () => {

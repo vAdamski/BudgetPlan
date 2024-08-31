@@ -14,6 +14,7 @@ function MainCategoryRow({ mainCategory, handleUpdateBudgetPlanBase }) {
     const [editedAmount, setEditedAmount] = useState(null);
     const [editingBudgetPlanId, setEditingBudgetPlanId] = useState(null);
 
+
     const handleClose = () => setShow(false);
     const handleShow = (day, transactionCategoryId) => {
         setSelectedDay(day);
