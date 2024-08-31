@@ -12,13 +12,13 @@ function SidebarFooter() {
             {user ?
                 (
                     <div className="sidebar-footer">
-                        <a className="sidebar-link">
-                            <i className="lni lni-user"></i>
-                            <span>Witaj {userName}!</span>
+                        <a className="sidebar-link d-flex align-content-center">
+                            <span className="material-icons-outlined">person</span>
+                            <span className={'mx-2'}>Witaj {userName}!</span>
                         </a>
-                        <a className="sidebar-link" onClick={logout}>
-                            <i className="lni lni-exit"></i>
-                            <span>Wyloguj się</span>
+                        <a className="sidebar-link d-flex align-content-center" onClick={logout}>
+                            <span className="material-icons-outlined">logout</span>
+                            <span className={'mx-2'}>Wyloguj się</span>
                         </a>
                     </div>
                 )

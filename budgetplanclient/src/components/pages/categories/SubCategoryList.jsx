@@ -8,7 +8,7 @@ const SubCategoryList = ({subCategories, mainCategoryId, handleAction}) => {
                 <li key={subCategory.id}>
                     <div className="d-flex align-items-center justify-content-between mb-1">
                         {subCategory.transactionCategoryName}
-                        <span className="material-symbols-outlined" style={{
+                        <span className="material-icons-outlined" style={{
                             'font-size': '1.5rem',
                             'color': 'red',
                             'cursor': 'pointer',

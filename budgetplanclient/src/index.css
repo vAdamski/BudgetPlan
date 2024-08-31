@@ -15,7 +15,6 @@ li {
 
 h1 {
     font-weight: 600;
-    font-size: 1.5rem;
 }
 
 body {
@@ -66,18 +65,17 @@ body {
 }
 
 .toggle-btn i {
-    font-size: 1.5rem;
     color: #FFF;
 }
 
 .sidebar-logo {
-    margin: auto 0;
 }
 
 .sidebar-logo a {
     color: #FFF;
     font-size: 1.15rem;
     font-weight: 600;
+    text-decoration: none;
 }
 
 #sidebar:not(.expand) .sidebar-logo,
@@ -94,13 +92,12 @@ a.sidebar-link {
     padding: .625rem 1.625rem;
     color: #FFF;
     display: block;
-    font-size: 0.9rem;
     white-space: nowrap;
     border-left: 3px solid transparent;
+    text-decoration: none;
 }
 
 .sidebar-link i {
-    font-size: 1.1rem;
     margin-right: .75rem;
 }
 

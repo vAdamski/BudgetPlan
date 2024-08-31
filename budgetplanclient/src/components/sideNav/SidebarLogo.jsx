@@ -8,7 +8,7 @@ function SidebarLogo() {
     }
 
     return (
-        <div  className="sidebar-logo">
+        <div className="sidebar-logo my-2">
             <a href={''} onClick={() => handleClick('/')}>Budżet Plan</a>
         </div>
     );

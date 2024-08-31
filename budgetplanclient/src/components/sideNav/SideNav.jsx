@@ -53,30 +53,29 @@ function SideNav({handleToggleSideNav}) {
 
     return (
         <>
-            <div className="d-flex">
-                <ToggleButton handleToggleSideNav={handleToggleSideNav}/>
+            <div className="d-flex align-content-center justify-content-center">
                 <SidebarLogo/>
             </div>
             <ul className="sidebar-nav">
                 {user ? (
                     <>
-                        <SidebarItem onClick={() => handleClick("/")} icon="lni-home">Strona główna</SidebarItem>
+                        {/*<SidebarItem onClick={() => handleClick("/")} icon="home">Strona główna</SidebarItem>*/}
                         {budgetPlans.map((budgetPlan) => (
                             <SidebarDropdown
                                 key={budgetPlan.id}
                                 id={`multi`}
                                 target={`multi`}
-                                icon="lni-layout"
+                                icon="currency_exchange"
                                 label={budgetPlan.name}
                             >
-                                <SidebarItem onClick={() => handleClick(`/${budgetPlan.id}/Dashboard`)}>Pulpit</SidebarItem>
-                                <SidebarItem onClick={() => handleClick(`/${budgetPlan.id}/Plans`)}>Plany</SidebarItem>
-                                <SidebarItem onClick={() => handleClick(`/${budgetPlan.id}/TransactionCategory`)}>Kategorie</SidebarItem>
-                                <SidebarItem onClick={() => handleClick(`/${budgetPlan.id}/BudgetPlanSettings`)}>Ustawienia</SidebarItem>
+                                <SidebarItem icon={'data_usage'} onClick={() => handleClick(`/${budgetPlan.id}/Dashboard`)}>Pulpit</SidebarItem>
+                                <SidebarItem icon={'table_rows'} onClick={() => handleClick(`/${budgetPlan.id}/Plans`)}>Plany</SidebarItem>
+                                <SidebarItem icon={'category'} onClick={() => handleClick(`/${budgetPlan.id}/TransactionCategory`)}>Kategorie</SidebarItem>
+                                <SidebarItem icon={'settings'} onClick={() => handleClick(`/${budgetPlan.id}/BudgetPlanSettings`)}>Ustawienia</SidebarItem>
                             </SidebarDropdown>
                         ))}
-                        <SidebarItem onClick={handleShow} icon="lni-plus">Utwórz Plan</SidebarItem>
-                        <SidebarItem onClick={() => handleClick("/Settings")} icon="lni-cog">Ustawienia</SidebarItem>
+                        <SidebarItem onClick={handleShow} icon="add">Utwórz Plan</SidebarItem>
+                        {/*<SidebarItem onClick={() => handleClick("/Settings")} icon="lni-cog">Ustawienia</SidebarItem>*/}
                     </>
                 ) : (
                     <>

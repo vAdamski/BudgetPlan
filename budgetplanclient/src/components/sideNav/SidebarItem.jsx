@@ -10,9 +10,9 @@ function SidebarItem({link, icon, children, className, ...props}) {
 
     return (
         <li className={`sidebar-item ${className || ''}`}>
-            <a className="sidebar-link" onClick={handleClick} {...props}>
-                <i className={`lni ${icon}`}></i>
-                <span className={''}>{children}</span>
+            <a className="sidebar-link d-flex align-content-center" onClick={handleClick} {...props}>
+                <span className={`material-icons-outlined`}>{icon}</span>
+                <span className={'mx-2'}>{children}</span>
             </a>
         </li>
     );
