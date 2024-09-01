@@ -3,7 +3,7 @@ function AccessedUserItem({accessedUser, key, onRemoveAccessedUser}) {
         <li key={key}>
             <div className="d-flex align-items-center justify-content-between mb-1">
                 {accessedUser.email}
-                <span className="material-symbols-outlined" style={{
+                <span className="material-icons-outlined" style={{
                     'font-size': '1.5rem',
                     'color': 'red',
                     'cursor': 'pointer',
