@@ -42,16 +42,10 @@ public class Index : PageModel
         _events = events;
     }
 
-    public async Task<IActionResult> OnGet(string returnUrl)
+    public async Task<IActionResult> OnGetAsync(string returnUrl)
     {
         await BuildModelAsync(returnUrl);
-
-        if (View.IsExternalLoginOnly)
-        {
-            // we only have one option for logging in and it's an external provider
-            return RedirectToPage("/ExternalLogin/Challenge", new { scheme = View.ExternalLoginScheme, returnUrl });
-        }
-
+        Input.ReturnUrl = returnUrl; // Store the full ReturnUrl in the Input model
         return Page();
     }
 

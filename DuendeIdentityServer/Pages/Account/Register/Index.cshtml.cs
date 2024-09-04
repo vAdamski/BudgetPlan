@@ -1,3 +1,4 @@
+using System.Web;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
@@ -11,114 +12,98 @@ namespace DuendeIdentityServer.Pages.Account.Register;
 
 public class Index : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IIdentityServerInteractionService _interaction;
-    private readonly IEventService _events;
-    private readonly IAuthenticationSchemeProvider _schemeProvider;
-    private readonly IIdentityProviderStore _identityProviderStore;
+	private readonly UserManager<ApplicationUser> _userManager;
+	private readonly IIdentityServerInteractionService _interaction;
 
-    public Index(
-        IIdentityServerInteractionService interaction,
-        IAuthenticationSchemeProvider schemeProvider,
-        IIdentityProviderStore identityProviderStore,
-        IEventService events,
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
-    {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _interaction = interaction;
-        _schemeProvider = schemeProvider;
-        _identityProviderStore = identityProviderStore;
-        _events = events;
-    }
+	public Index(
+		IIdentityServerInteractionService interaction,
+		IAuthenticationSchemeProvider schemeProvider,
+		IIdentityProviderStore identityProviderStore,
+		IEventService events,
+		UserManager<ApplicationUser> userManager,
+		SignInManager<ApplicationUser> signInManager)
+	{
+		_userManager = userManager;
+		_interaction = interaction;
+	}
 
-    [BindProperty] public RegisterViewModel RegisterVm { get; set; }
+	[BindProperty] public RegisterViewModel RegisterVm { get; set; }
 
-    public async Task<IActionResult> OnGetAsync(string returnUrl)
-    {
-        await BuildModelAsync(returnUrl);
+	public async Task<IActionResult> OnGetAsync(string returnUrl)
+	{
+		await BuildModelAsync(returnUrl);
+		RegisterVm.ReturnUrl = returnUrl; // Preserve the entire ReturnUrl with all parameters
+		return Page();
+	}
 
-        return Page();
-    }
+	public async Task<IActionResult> OnPostAsync()
+	{
+		if (RegisterVm.ButtonAction != "register")
+		{
+			var context = await _interaction.GetAuthorizationContextAsync(RegisterVm.ReturnUrl);
+			if (context != null)
+			{
+				await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
 
-    public async Task<IActionResult> OnPostAsync()
-    {
-        var context = await _interaction.GetAuthorizationContextAsync(RegisterVm.ReturnUrl);
+				if (context.IsNativeClient())
+				{
+					return this.LoadingPage(RegisterVm.ReturnUrl);
+				}
 
-        if (RegisterVm.ButtonAction != "register")
-        {
-            if (context != null)
-            {
-                // if the user cancels, send a result back into IdentityServer as if they 
-                // denied the consent (even if this client does not require consent).
-                // this will send back an access denied OIDC error response to the client.
-                await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
+				return Redirect(RegisterVm.ReturnUrl);
+			}
+			else
+			{
+				return Redirect("~/");
+			}
+		}
 
-                // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                if (context.IsNativeClient())
-                {
-                    // The client is native, so this change in how to
-                    // return the response is for better UX for the end user.
-                    return this.LoadingPage(RegisterVm.ReturnUrl);
-                }
+		if (!ModelState.IsValid)
+		{
+			await BuildModelAsync(RegisterVm.ReturnUrl);
+			return Page();
+		}
 
-                return Redirect(RegisterVm.ReturnUrl);
-            }
-            else
-            {
-                // since we don't have a valid context, then we just go back to the home page
-                return Redirect("~/");
-            }
-        }
+		var userExist = await _userManager.FindByEmailAsync(RegisterVm.Email);
+		if (userExist != null)
+		{
+			ModelState.AddModelError("", "Username already exists");
+			await BuildModelAsync(RegisterVm.ReturnUrl);
+			return Page();
+		}
 
-        if (!ModelState.IsValid)
-        {
-            await BuildModelAsync(RegisterVm.ReturnUrl);
-            return Page();
-        }
+		var user = new ApplicationUser
+		{
+			Id = Guid.NewGuid().ToString(),
+			FirstName = RegisterVm.FirstName,
+			NormalizedFirstName = RegisterVm.FirstName.Normalize().ToUpper(),
+			LastName = RegisterVm.LastName,
+			NormalizedLastName = RegisterVm.LastName.Normalize().ToUpper(),
+			UserName = RegisterVm.Username,
+			NormalizedUserName = RegisterVm.Username.Normalize().ToUpper(),
+			Email = RegisterVm.Email,
+			NormalizedEmail = RegisterVm.Email.Normalize().ToUpper(),
+			EmailConfirmed = true,
+			PasswordHash = Guid.NewGuid().ToString()
+		};
 
-        var userExist = await _userManager.FindByNameAsync(RegisterVm.Username);
-        if (userExist is not null)
-        {
-            ModelState.AddModelError("", "Username already exist");
-            await BuildModelAsync(RegisterVm.ReturnUrl);
-            return Page();
-        }
+		var createUserResponse = await _userManager.CreateAsync(user, RegisterVm.Password);
 
-        var user = new ApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            FirstName = RegisterVm.FirstName,
-            NormalizedFirstName = RegisterVm.FirstName.ToUpper(),
-            LastName = RegisterVm.LastName,
-            NormalizedLastName = RegisterVm.LastName.ToUpper(),
-            UserName = RegisterVm.Username,
-            NormalizedUserName = RegisterVm.Username.ToUpper(),
-            Email = RegisterVm.Email,
-            NormalizedEmail = RegisterVm.Email.ToUpper(),
-            EmailConfirmed = true,
-            PasswordHash = Guid.NewGuid().ToString()
-        };
-
-        var createUserResponse = await _userManager.CreateAsync(user, RegisterVm.Password);
-
-        if (!createUserResponse.Succeeded)
-        {
-            ModelState.AddModelError("", "Something goes wrong");
-            await BuildModelAsync(RegisterVm.ReturnUrl);
-            return Page();
-        }
+		if (!createUserResponse.Succeeded)
+		{
+			ModelState.AddModelError("", "Something went wrong");
+			await BuildModelAsync(RegisterVm.ReturnUrl);
+			return Page();
+		}
 
         return Redirect(RegisterVm.ReturnUrl);
     }
 
-    private async Task BuildModelAsync(string returnUrl)
-    {
-        RegisterVm = new RegisterViewModel()
-        {
-            ReturnUrl = returnUrl
-        };
-    }
+	private async Task BuildModelAsync(string returnUrl)
+	{
+		RegisterVm = new RegisterViewModel()
+		{
+			ReturnUrl = returnUrl
+		};
+	}
 }
