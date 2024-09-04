@@ -14,12 +14,12 @@ public class IncomesExpenseDataSummaryCollector(IBudgetPlanDbContext ctx) : IInc
 	public async Task<double> LeftToSpend(Guid budgetPlanId, Guid? budgetPlanBaseId, CancellationToken cancellationToken = default)
 	{
 		var data = await GetDataForEntirePeriod(budgetPlanId, cancellationToken);
-		var expectedIncomes = CalculateExpectedAmount(data, budgetPlanBaseId, TransactionType.Income);
+		// var expectedIncomes = CalculateExpectedAmount(data, budgetPlanBaseId, TransactionType.Income);
 		var realIncomes = CalculateRealAmount(data, budgetPlanBaseId, TransactionType.Income);
-		var expectedExpenses = CalculateExpectedAmount(data, budgetPlanBaseId, TransactionType.Expense);
+		// var expectedExpenses = CalculateExpectedAmount(data, budgetPlanBaseId, TransactionType.Expense);
 		var realExpenses = CalculateRealAmount(data, budgetPlanBaseId, TransactionType.Expense);
 
-		return expectedIncomes - realIncomes - expectedExpenses + realExpenses;
+		return realIncomes - realExpenses;
 	}
 	
 	public async Task<PieChartDataDoubleViewModel> GetIncomeSummary(Guid budgetPlanId, Guid? budgetPlanBaseId,
