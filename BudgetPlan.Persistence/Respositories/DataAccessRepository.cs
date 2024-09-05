@@ -22,7 +22,7 @@ public class DataAccessRepository(IBudgetPlanDbContext context, ICurrentUserServ
 		if (dataAccess == null)
 			throw new NotFoundException(nameof(dataAccess), id);
 		
-		if (!dataAccess.IsAccessed(currentUserService.Email))
+		if (dataAccess.CreatedBy != currentUserService.Email)
 			throw new AccessDeniedException();
 
 		return dataAccess;

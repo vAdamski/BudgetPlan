@@ -67,6 +67,7 @@ public class TransactionCategoriesRepository(
 		CancellationToken cancellationToken = default)
 	{
 		return await context.TransactionCategories
+			.Include(x => x.BudgetPlanDetails)
 			.Include(x => x.Access)
 			.ThenInclude(x => x.AccessedPersons)
 			.Include(x => x.TransactionDetails)
@@ -101,6 +102,7 @@ public class TransactionCategoriesRepository(
 	{
 		var data = await context.TransactionCategories
 			.Include(x => x.SubTransactionCategories)
+			.ThenInclude(x => x.BudgetPlanDetails)
 			.Include(x => x.TransactionDetails)
 			.Include(x => x.Access)
 			.ThenInclude(x => x.AccessedPersons)
@@ -122,9 +124,21 @@ public class TransactionCategoriesRepository(
 		await context.SaveChangesAsync(cancellationToken);
 	}
 
-	public async Task DeleteAsync(TransactionCategory transactionCategory, CancellationToken cancellationToken = default)
+	public async Task DeleteAsync(TransactionCategory transactionCategory,
+		CancellationToken cancellationToken = default)
 	{
-		context.TransactionCategories.Remove(transactionCategory);
+		TransactionCategory? transactionCategoryToDelete =
+			await context.TransactionCategories.FirstOrDefaultAsync(x => x.Id == transactionCategory.Id,
+				cancellationToken);
+		
+		if (transactionCategoryToDelete == null)
+			throw new NotFoundException(nameof(TransactionCategory), transactionCategory.Id);
+
+		transactionCategoryToDelete.StatusId = 0;
+		transactionCategoryToDelete.InactivatedBy = currentUserService.Email;
+		transactionCategoryToDelete.Inactivated = DateTime.Now;
+
+		context.TransactionCategories.Update(transactionCategoryToDelete);
 
 		await context.SaveChangesAsync(cancellationToken);
 	}

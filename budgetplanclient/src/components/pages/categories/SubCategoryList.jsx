@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import AddSubCategoryForm from './AddSubCategoryForm';
 
-const SubCategoryList = ({subCategories, mainCategoryId, handleAction}) => {
+const SubCategoryList = ({subCategories, mainCategoryId, handleDeleteCategory, handleAction}) => {
     return (
         <ul>
             {subCategories.map(subCategory => (
@@ -12,7 +12,8 @@ const SubCategoryList = ({subCategories, mainCategoryId, handleAction}) => {
                             'font-size': '1.5rem',
                             'color': 'red',
                             'cursor': 'pointer',
-                        }}>delete_forever</span>
+                        }}
+                        onClick={() => handleDeleteCategory(subCategory.id)}>delete_forever</span>
                     </div>
                 </li>
             ))}

@@ -10,8 +10,10 @@ public class TransactionCategoriesForBudgetPlanViewModel
 	public TransactionCategoriesForBudgetPlanViewModel(List<TransactionCategory> transactionCategories)
 	{
 		TransactionCategoryDtos = transactionCategories
-			.OrderBy(x => x.TransactionType).ThenBy(x => x.TransactionCategoryName)
-			.Select(tc => new OverTransactionCategoryDto(tc, tc.SubTransactionCategories.OrderBy(x => x.TransactionCategoryName).ToList()))
+			.Where(x => x.StatusId == 1)
+			.OrderBy(x => x.TransactionType)
+			.ThenBy(x => x.TransactionCategoryName)
+			.Select(tc => new OverTransactionCategoryDto(tc, tc.SubTransactionCategories.Where(x => x.StatusId == 1).OrderBy(x => x.TransactionCategoryName).ToList()))
 			.ToList();
 	}
 }

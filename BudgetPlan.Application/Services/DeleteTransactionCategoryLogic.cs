@@ -8,6 +8,7 @@ namespace BudgetPlan.Application.Services;
 public class DeleteTransactionCategoryLogic(
 	ITransactionCategoriesRepository transactionCategoriesRepository,
 	ITransactionDetailsRepository transactionDetailsRepository,
+	IBudgetPlanDetailsRepository budgetPlanDetailsRepository,
 	IUnitOfWork unitOfWork) : IDeleteTransactionCategoryLogic
 {
 	public async Task DeleteTransactionCategory(Guid transactionCategoryId, CancellationToken cancellationToken = default)
@@ -44,10 +45,27 @@ public class DeleteTransactionCategoryLogic(
 			{
 				transactionDetailsToDelete.AddRange(transactionCategoryToDelete.TransactionDetails);
 			}
+			
+			List<BudgetPlanDetails> budgetPlanDetailsToDelete = new();
+			
+			if (isOverTransactionCategory)
+			{
+				budgetPlanDetailsToDelete.AddRange(transactionCategoryToDelete.SubTransactionCategories
+					.SelectMany(x => x.BudgetPlanDetails));
+			}
+			else
+			{
+				budgetPlanDetailsToDelete.AddRange(transactionCategoryToDelete.BudgetPlanDetails);
+			}
 
 			await transactionDetailsRepository.DeleteRangeAsync(transactionDetailsToDelete, cancellationToken);
+			await unitOfWork.SaveChangesAsync(cancellationToken);
+			
+			await budgetPlanDetailsRepository.DeleteRangeAsync(budgetPlanDetailsToDelete, cancellationToken);
+			await unitOfWork.SaveChangesAsync(cancellationToken);
 			
 			await transactionCategoriesRepository.DeleteAsync(transactionCategoryToDelete, cancellationToken);
+			await unitOfWork.SaveChangesAsync(cancellationToken);
 		}
 		catch (Exception e)
 		{

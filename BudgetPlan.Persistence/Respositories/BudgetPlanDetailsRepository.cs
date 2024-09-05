@@ -32,4 +32,10 @@ public class BudgetPlanDetailsRepository(
         context.BudgetPlanDetails.Update(budgetPlanDetails);
         await context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task DeleteRangeAsync(IReadOnlyCollection<BudgetPlanDetails> budgetPlanDetails, CancellationToken cancellationToken = default)
+    {
+        context.BudgetPlanDetails.RemoveRange(budgetPlanDetails);
+        await context.SaveChangesAsync(cancellationToken);
+    }
 }

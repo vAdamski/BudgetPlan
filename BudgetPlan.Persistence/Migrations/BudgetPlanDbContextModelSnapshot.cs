@@ -465,7 +465,7 @@ namespace BudgetPlan.Persistence.Migrations
                     b.HasOne("BudgetPlan.Domain.Entities.TransactionCategory", "TransactionCategory")
                         .WithMany("TransactionDetails")
                         .HasForeignKey("TransactionCategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Access");

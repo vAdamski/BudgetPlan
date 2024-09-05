@@ -6,4 +6,5 @@ public interface IBudgetPlanDetailsRepository
 {
 	Task<BudgetPlanDetails> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 	Task UpdateAsync(BudgetPlanDetails budgetPlanDetails, CancellationToken cancellationToken = default);
+	Task DeleteRangeAsync(IReadOnlyCollection<BudgetPlanDetails> budgetPlanDetails, CancellationToken cancellationToken = default);
 }
