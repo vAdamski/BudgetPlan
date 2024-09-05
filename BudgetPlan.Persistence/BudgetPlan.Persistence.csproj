@@ -33,4 +33,9 @@
       <ProjectReference Include="..\BudgetPlan.Domain\BudgetPlan.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Migrations\20240905134530_CascadeDeleteForBudgetPlanDetails.Designer.cs" />
+      <Compile Remove="Migrations\20240905134530_CascadeDeleteForBudgetPlanDetails.cs" />
+    </ItemGroup>
+
 </Project>
